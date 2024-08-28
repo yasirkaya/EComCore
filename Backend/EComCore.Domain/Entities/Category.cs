@@ -9,4 +9,5 @@ public class Category
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     public ICollection<ProductToCategory> ProductToCategories { get; set; }
+    public ICollection<Category> SubCategories { get; set; }
 }
