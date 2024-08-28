@@ -9,7 +9,7 @@ public class Payment
     public string PaymentMethod { get; set; }
     public decimal Amount { get; set; }
     public string Status { get; set; }
-    public string FailureReason { get; set; }
+    public string? FailureReason { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 }

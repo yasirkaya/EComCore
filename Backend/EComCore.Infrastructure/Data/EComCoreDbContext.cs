@@ -207,5 +207,114 @@ public class EComCoreDbContext : DbContext
                .WithOne(oi => oi.Order)
                .HasForeignKey(oi => oi.OrderId);
         });
+
+        modelBuilder.Entity<OrderItem>(entity =>
+        {
+            entity.HasKey(oi => oi.Id);
+
+            entity.Property(oi => oi.ProductName)
+                .IsRequired()
+                .HasMaxLength(255);
+
+            entity.Property(oi => oi.ProductDescription)
+                .IsRequired()
+                .HasMaxLength(1000);
+
+            entity.Property(oi => oi.ProductSku)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            entity.Property(oi => oi.Quantity)
+                .IsRequired();
+
+            entity.Property(oi => oi.UnitPrice)
+                .IsRequired()
+                .HasColumnType("decimal(18,2)");
+
+            entity.Property(oi => oi.CreatedAt)
+                .IsRequired();
+
+            entity.HasOne(oi => oi.Product)
+                .WithMany()
+                .HasForeignKey(oi => oi.ProductId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.SetNull);
+
+        });
+
+        modelBuilder.Entity<Payment>(entity =>
+        {
+            entity.HasKey(p => p.Id);
+
+            entity.Property(p => p.TransactionId)
+                .IsRequired()
+                .HasMaxLength(255);
+
+            entity.Property(p => p.PaymentMethod)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            entity.Property(p => p.Amount)
+                .IsRequired()
+                .HasColumnType("decimal(18,2)");
+
+            entity.Property(p => p.Status)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            entity.Property(p => p.FailureReason)
+                .HasMaxLength(500);
+
+            entity.Property(p => p.CreatedAt)
+                .IsRequired();
+
+            entity.HasOne(p => p.Order)
+                .WithMany()
+                .HasForeignKey(p => p.OrderId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<Product>(entity =>
+        {
+            entity.HasKey(p => p.Id);
+
+            entity.Property(p => p.Name)
+                .IsRequired()
+                .HasMaxLength(255);
+
+            entity.Property(p => p.Description)
+                .IsRequired()
+                .HasMaxLength(1000);
+
+            entity.Property(p => p.Price)
+                .IsRequired()
+                .HasColumnType("decimal(18,2)");
+
+            entity.Property(p => p.Sku)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            entity.Property(p => p.StockQuantity)
+                .IsRequired();
+
+            entity.Property(p => p.GroupId)
+                .IsRequired();
+
+            entity.Property(p => p.ImageUrl)
+                .HasMaxLength(1000);
+
+            entity.Property(p => p.Rating)
+                .IsRequired()
+                .HasColumnType("decimal(1,2)");
+
+            entity.Property(p => p.CreatedAt)
+                .IsRequired();
+
+            entity.HasMany(p => p.ProductToAttributes)
+                .WithOne(pa => pa.Product)
+                .HasForeignKey(pa => pa.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+        });
     }
 }
