@@ -13,7 +13,8 @@ public class Product
     public decimal Rating { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
-    public ICollection<ProductToCategory> ProductToCategories { get; set; }
-    public ICollection<ProductToAttribute> ProductToAttributes { get; set; }
+    public ICollection<ProductToCategory> ProductToCategories { get; set; } = new List<ProductToCategory>();
+    public ICollection<ProductToAttribute> ProductToAttributes { get; set; } = new List<ProductToAttribute>();
+    public ICollection<Review> Reviews { get; set; } = new List<Review>();
 
 }

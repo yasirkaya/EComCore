@@ -8,6 +8,6 @@ public class Category
     public Category Parent { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
-    public ICollection<ProductToCategory> ProductToCategories { get; set; }
-    public ICollection<Category> SubCategories { get; set; }
+    public ICollection<ProductToCategory> ProductToCategories { get; set; } = new List<ProductToCategory>();
+    public ICollection<Category> SubCategories { get; set; } = new List<Category>();
 }

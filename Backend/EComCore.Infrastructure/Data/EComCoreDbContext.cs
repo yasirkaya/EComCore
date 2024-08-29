@@ -31,42 +31,6 @@ public class EComCoreDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Category>(entity =>
-        {
-            entity.HasKey(c => c.Id);
-
-            entity.Property(c => c.Name)
-                .IsRequired()
-                .HasMaxLength(50);
-
-            entity.HasOne(c => c.Parent)
-                .WithMany(pc => pc.SubCategories)
-                .HasForeignKey(c => c.ParentId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            entity.Property(c => c.CreatedAt)
-                .IsRequired();
-
-        });
-
-        modelBuilder.Entity<ProductToCategory>(entity =>
-        {
-            entity.HasKey(pc => pc.Id);
-
-            entity.Property(pc => pc.CreatedAt)
-                .IsRequired();
-
-            entity.HasOne(pc => pc.Product)
-                .WithMany(p => p.ProductToCategories)
-                .HasForeignKey(pc => pc.ProductId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            entity.HasOne(pc => pc.Category)
-                .WithMany(c => c.ProductToCategories)
-                .HasForeignKey(pc => pc.CategoryId)
-                .OnDelete(DeleteBehavior.Restrict);
-        });
-
         modelBuilder.Entity<Address>(entity =>
         {
             entity.HasKey(a => a.Id);
@@ -118,6 +82,24 @@ public class EComCoreDbContext : DbContext
             entity.Property(av => av.Value)
                 .IsRequired()
                 .HasMaxLength(50);
+
+        });
+
+        modelBuilder.Entity<Category>(entity =>
+        {
+            entity.HasKey(c => c.Id);
+
+            entity.Property(c => c.Name)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            entity.HasOne(c => c.Parent)
+                .WithMany(pc => pc.SubCategories)
+                .HasForeignKey(c => c.ParentId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.Property(c => c.CreatedAt)
+                .IsRequired();
 
         });
 
@@ -313,8 +295,142 @@ public class EComCoreDbContext : DbContext
             entity.HasMany(p => p.ProductToAttributes)
                 .WithOne(pa => pa.Product)
                 .HasForeignKey(pa => pa.ProductId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
+        });
+
+        modelBuilder.Entity<ProductToAttribute>(entity =>
+        {
+            entity.HasKey(pta => pta.Id);
+
+            entity.Property(pta => pta.ProductId)
+                .IsRequired();
+
+            entity.Property(pta => pta.AttributeId)
+                .IsRequired();
+
+            entity.Property(pta => pta.AttributeValueId)
+                .IsRequired();
+
+            entity.Property(pta => pta.CreatedAt)
+                .IsRequired();
+
+            entity.HasOne(pa => pa.Attribute)
+                .WithMany()
+                .HasForeignKey(pa => pa.AttributeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(pa => pa.AttributeValue)
+                .WithMany()
+                .HasForeignKey(pa => pa.AttributeValueId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+        });
+
+        modelBuilder.Entity<ProductToCategory>(entity =>
+        {
+            entity.HasKey(pc => pc.Id);
+
+            entity.Property(pc => pc.CreatedAt)
+                .IsRequired();
+
+            entity.HasOne(pc => pc.Product)
+                .WithMany(p => p.ProductToCategories)
+                .HasForeignKey(pc => pc.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(pc => pc.Category)
+                .WithMany(c => c.ProductToCategories)
+                .HasForeignKey(pc => pc.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<Review>(entity =>
+        {
+            entity.HasKey(r => r.Id);
+
+            entity.Property(r => r.Rating)
+               .IsRequired();
+
+            entity.Property(r => r.Comment)
+                .IsRequired()
+                .HasMaxLength(1000);
+
+            entity.Property(r => r.Status)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            entity.Property(r => r.CreatedAt)
+                .IsRequired();
+
+            entity.HasOne(r => r.Product)
+                .WithMany(p => p.Reviews)
+                .HasForeignKey(r => r.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<Shipment>(entity =>
+        {
+            entity.HasKey(s => s.Id);
+
+            entity.Property(s => s.TrackingNumber)
+                .IsRequired()
+                .HasMaxLength(12);
+
+            entity.Property(s => s.Carrier)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            entity.Property(s => s.Status)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            entity.Property(s => s.CreatedAt)
+                .IsRequired();
+
+            entity.HasOne(s => s.Order)
+                .WithOne(o => o.Shipment)
+                .HasForeignKey<Shipment>(s => s.OrderId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<ShoppingCart>(entity =>
+        {
+            entity.HasKey(sc => sc.Id);
+
+            entity.Property(sc => sc.SessionId)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            entity.Property(sc => sc.CreatedAt)
+                .IsRequired();
+
+            entity.HasOne(sc => sc.Member)
+                .WithOne(m => m.ShoppingCart)
+                .HasForeignKey<ShoppingCart>(sc => sc.MemberId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<ShoppingCartItem>(entity =>
+        {
+            entity.HasKey(sci => sci.Id);
+
+            entity.Property(sci => sci.Quantity)
+                .IsRequired();
+
+            entity.Property(sci => sci.CreatedAt)
+                .IsRequired();
+
+            entity.HasOne(sci => sci.ShoppingCart)
+                .WithMany(sc => sc.ShoppingCartItems)
+                .HasForeignKey(sci => sci.ShoppingCartId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(sci => sci.Product)
+                .WithMany()
+                .HasForeignKey(sci => sci.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
     }
 }
