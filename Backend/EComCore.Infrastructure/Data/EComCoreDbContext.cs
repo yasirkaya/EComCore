@@ -33,6 +33,8 @@ public class EComCoreDbContext : DbContext
 
         modelBuilder.Entity<Address>(entity =>
         {
+            entity.ToTable("Addresses");
+
             entity.HasKey(a => a.Id);
 
             entity.Property(a => a.Name)
@@ -59,6 +61,8 @@ public class EComCoreDbContext : DbContext
 
         modelBuilder.Entity<Domain.Entities.Attribute>(entity =>
         {
+            entity.ToTable("Attributes");
+
             entity.HasKey(a => a.Id);
 
             entity.Property(a => a.Name)
@@ -77,6 +81,8 @@ public class EComCoreDbContext : DbContext
 
         modelBuilder.Entity<AttributeValue>(entity =>
         {
+            entity.ToTable("AttributeValues");
+
             entity.HasKey(av => av.Id);
 
             entity.Property(av => av.Value)
@@ -87,6 +93,8 @@ public class EComCoreDbContext : DbContext
 
         modelBuilder.Entity<Category>(entity =>
         {
+            entity.ToTable("Categories");
+
             entity.HasKey(c => c.Id);
 
             entity.Property(c => c.Name)
@@ -105,6 +113,8 @@ public class EComCoreDbContext : DbContext
 
         modelBuilder.Entity<Member>(entity =>
         {
+            entity.ToTable("Members");
+
             entity.HasKey(m => m.Id);
 
             entity.Property(m => m.FirstName)
@@ -148,6 +158,8 @@ public class EComCoreDbContext : DbContext
 
         modelBuilder.Entity<Order>(entity =>
         {
+            entity.ToTable("Orders");
+
             entity.HasKey(o => o.Id);
 
             entity.Property(o => o.SessionId)
@@ -192,6 +204,8 @@ public class EComCoreDbContext : DbContext
 
         modelBuilder.Entity<OrderItem>(entity =>
         {
+            entity.ToTable("OrderItems");
+
             entity.HasKey(oi => oi.Id);
 
             entity.Property(oi => oi.ProductName)
@@ -226,6 +240,8 @@ public class EComCoreDbContext : DbContext
 
         modelBuilder.Entity<Payment>(entity =>
         {
+            entity.ToTable("Payments");
+
             entity.HasKey(p => p.Id);
 
             entity.Property(p => p.TransactionId)
@@ -258,6 +274,8 @@ public class EComCoreDbContext : DbContext
 
         modelBuilder.Entity<Product>(entity =>
         {
+            entity.ToTable("Products");
+
             entity.HasKey(p => p.Id);
 
             entity.Property(p => p.Name)
@@ -287,7 +305,7 @@ public class EComCoreDbContext : DbContext
 
             entity.Property(p => p.Rating)
                 .IsRequired()
-                .HasColumnType("decimal(1,2)");
+                .HasColumnType("decimal(3,2)");
 
             entity.Property(p => p.CreatedAt)
                 .IsRequired();
@@ -301,6 +319,8 @@ public class EComCoreDbContext : DbContext
 
         modelBuilder.Entity<ProductToAttribute>(entity =>
         {
+            entity.ToTable("ProductToAttributes");
+
             entity.HasKey(pta => pta.Id);
 
             entity.Property(pta => pta.ProductId)
@@ -329,6 +349,8 @@ public class EComCoreDbContext : DbContext
 
         modelBuilder.Entity<ProductToCategory>(entity =>
         {
+            entity.ToTable("ProductToCategories");
+
             entity.HasKey(pc => pc.Id);
 
             entity.Property(pc => pc.CreatedAt)
@@ -347,6 +369,8 @@ public class EComCoreDbContext : DbContext
 
         modelBuilder.Entity<Review>(entity =>
         {
+            entity.ToTable("Reviews");
+
             entity.HasKey(r => r.Id);
 
             entity.Property(r => r.Rating)
@@ -371,6 +395,8 @@ public class EComCoreDbContext : DbContext
 
         modelBuilder.Entity<Shipment>(entity =>
         {
+            entity.ToTable("Shipments");
+
             entity.HasKey(s => s.Id);
 
             entity.Property(s => s.TrackingNumber)
@@ -396,6 +422,8 @@ public class EComCoreDbContext : DbContext
 
         modelBuilder.Entity<ShoppingCart>(entity =>
         {
+            entity.ToTable("ShoppingCarts");
+
             entity.HasKey(sc => sc.Id);
 
             entity.Property(sc => sc.SessionId)
@@ -414,6 +442,8 @@ public class EComCoreDbContext : DbContext
 
         modelBuilder.Entity<ShoppingCartItem>(entity =>
         {
+            entity.ToTable("ShoppingCartItems");
+
             entity.HasKey(sci => sci.Id);
 
             entity.Property(sci => sci.Quantity)
