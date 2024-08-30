@@ -1,3 +1,5 @@
+using System.Reflection;
+using EComCore.Application.Mappers;
 using EComCore.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +14,7 @@ public class Program
         // Add services to the container.
         builder.Services.AddDbContext<EComCoreDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("EComCoreDatabase")));
+        builder.Services.AddAutoMapper(typeof(MappingProfile));
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
