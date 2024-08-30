@@ -6,7 +6,7 @@ namespace EComCore.Application.Mappers;
 
 public class MappingProfile : Profile
 {
-    protected MappingProfile()
+    public MappingProfile()
     {
         CreateMap<CreateCategoryCommand, Category>();
     }

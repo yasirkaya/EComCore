@@ -1,7 +1,11 @@
 using System.Reflection;
+using MediatR;
 using EComCore.Application.Mappers;
 using EComCore.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using EComCore.Domain.Repositories;
+using EComCore.Infrastructure.Repositories;
+using EComCore.Application.Services.CategoryOperations.Commands;
 
 namespace EComCore.API;
 
@@ -15,6 +19,12 @@ public class Program
         builder.Services.AddDbContext<EComCoreDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("EComCoreDatabase")));
         builder.Services.AddAutoMapper(typeof(MappingProfile));
+        builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateCategoryCommand).Assembly));
+
+        builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+        builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
