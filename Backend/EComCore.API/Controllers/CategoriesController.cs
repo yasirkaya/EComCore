@@ -20,4 +20,11 @@ public class CategoriesController : ControllerBase
         var result = await _mediator.Send(command);
         return Ok(result);
     }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateCategory(int id, [FromBody] UpdateCategoryCommand command)
+    {
+        await _mediator.Send(command);
+        return NoContent();
+    }
 }
