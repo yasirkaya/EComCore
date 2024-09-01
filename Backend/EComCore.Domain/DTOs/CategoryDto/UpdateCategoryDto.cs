@@ -1,8 +1,6 @@
-using MediatR;
+namespace EComCore.Domain.DTOs.CategoryDto;
 
-namespace EComCore.Application.Services.CategoryOperations.Commands;
-
-public class UpdateCategoryCommand : IRequest
+public class UpdateCategoryDto
 {
     public int Id { get; set; }
     public string Name { get; set; }

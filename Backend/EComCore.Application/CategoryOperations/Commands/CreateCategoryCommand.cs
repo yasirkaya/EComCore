@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace EComCore.Application.Services.CategoryOperations.Commands;
+namespace EComCore.Application.CategoryOperations.Commands;
 
 public class CreateCategoryCommand : IRequest<int>
 {

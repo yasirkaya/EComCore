@@ -1,4 +1,4 @@
-using EComCore.Application.Services.CategoryOperations.Commands;
+using EComCore.Application.CategoryOperations.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

@@ -5,7 +5,9 @@ using EComCore.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using EComCore.Domain.Repositories;
 using EComCore.Infrastructure.Repositories;
-using EComCore.Application.Services.CategoryOperations.Commands;
+using EComCore.Application.CategoryOperations.Commands;
+using EComCore.Domain.Services.Commands;
+using EComCore.Application.Services.Commands;
 
 namespace EComCore.API;
 
@@ -23,6 +25,7 @@ public class Program
 
         builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+        builder.Services.AddScoped<ICategoryCommandService, CategoryCommandService>();
 
 
         builder.Services.AddControllers();
