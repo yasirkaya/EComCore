@@ -23,9 +23,16 @@ public class CategoryCommandService : ICategoryCommandService
         return category.Id;
     }
 
-    public Task DeleteAsync(DeleteCategoryDto dto)
+    public async Task DeleteAsync(DeleteCategoryDto dto)
     {
-        throw new NotImplementedException();
+        var category = await _categoryRepository.GetByIdAsync(dto.Id);
+
+        if (category == null)
+        {
+            throw new Exception($"Category with Id {dto.Id} not found.");
+        }
+
+        await _categoryRepository.DeleteAsync(category);
     }
 
     public async Task UpdateAsync(UpdateCategoryDto dto)

@@ -1,4 +1,5 @@
 using EComCore.Application.CategoryOperations.Commands;
+using EComCore.Application.CategoryOperations.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,6 +13,26 @@ public class CategoriesController : ControllerBase
     public CategoriesController(IMediator mediator)
     {
         _mediator = mediator;
+    }
+    [HttpGet]
+    public async Task<IActionResult> GetCategories()
+    {
+        var result = await _mediator.Send(new GetCategoriesQuery());
+        return Ok(result);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetCategoryById(int id)
+    {
+        var result = await _mediator.Send(new GetCategoryByIdQuery { Id = id });
+        return Ok(result);
+    }
+
+    [HttpGet("{id}/subcategories")]
+    public async Task<IActionResult> GetSubCategories(int id)
+    {
+        var result = await _mediator.Send(new GetSubCategoriesQuery { Id = id });
+        return Ok(result);
     }
 
     [HttpPost]
@@ -27,4 +48,12 @@ public class CategoriesController : ControllerBase
         await _mediator.Send(command);
         return NoContent();
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteCategory(int id)
+    {
+        await _mediator.Send(new DeleteCategoryCommand { Id = id });
+        return NoContent();
+    }
+
 }

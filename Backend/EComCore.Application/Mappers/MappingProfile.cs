@@ -15,6 +15,7 @@ public class MappingProfile : Profile
         CreateMap<UpdateCategoryDto, Category>()
             .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
             .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
-
+        CreateMap<DeleteCategoryCommand, DeleteCategoryDto>();
+        CreateMap<Category, CategoryDto>();
     }
 }

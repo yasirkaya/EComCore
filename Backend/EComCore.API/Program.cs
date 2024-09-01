@@ -8,6 +8,8 @@ using EComCore.Infrastructure.Repositories;
 using EComCore.Application.CategoryOperations.Commands;
 using EComCore.Domain.Services.Commands;
 using EComCore.Application.Services.Commands;
+using EComCore.Domain.Services.Queries;
+using EComCore.Application.CategoryOperations.Queries;
 
 namespace EComCore.API;
 
@@ -26,6 +28,7 @@ public class Program
         builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
         builder.Services.AddScoped<ICategoryCommandService, CategoryCommandService>();
+        builder.Services.AddScoped<ICategoryQueryService, CategoryQueryService>();
 
 
         builder.Services.AddControllers();
