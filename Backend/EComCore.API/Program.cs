@@ -25,10 +25,11 @@ public class Program
         builder.Services.AddAutoMapper(typeof(MappingProfile));
         builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateCategoryCommand).Assembly));
 
-        builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+        builder.Services.AddScoped<IAttributeRepository, AttributeRepository>();
         builder.Services.AddScoped<ICategoryCommandService, CategoryCommandService>();
         builder.Services.AddScoped<ICategoryQueryService, CategoryQueryService>();
+        builder.Services.AddScoped<ICustomAttributeCommandService, CustomAttributeCommandService>();
 
 
         builder.Services.AddControllers();

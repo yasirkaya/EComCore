@@ -23,7 +23,7 @@ public class EComCoreDbContext : DbContext
     public DbSet<Payment> Payments { get; set; }
     public DbSet<Review> Reviews { get; set; }
     public DbSet<Shipment> Shipments { get; set; }
-    public DbSet<Domain.Entities.Attribute> Attributes { get; set; }
+    public DbSet<CustomAttribute> Attributes { get; set; }
     public DbSet<AttributeValue> AttributeValues { get; set; }
     public DbSet<ProductToAttribute> ProductToAttributes { get; set; }
 
@@ -59,7 +59,7 @@ public class EComCoreDbContext : DbContext
                 .IsRequired();
         });
 
-        modelBuilder.Entity<Domain.Entities.Attribute>(entity =>
+        modelBuilder.Entity<CustomAttribute>(entity =>
         {
             entity.ToTable("Attributes");
 
