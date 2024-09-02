@@ -10,6 +10,7 @@ using EComCore.Domain.Services.Commands;
 using EComCore.Application.Services.Commands;
 using EComCore.Domain.Services.Queries;
 using EComCore.Application.CategoryOperations.Queries;
+using EComCore.Application.CustomAttributeOperations.Queries;
 
 namespace EComCore.API;
 
@@ -27,9 +28,11 @@ public class Program
 
         builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
         builder.Services.AddScoped<IAttributeRepository, AttributeRepository>();
+
         builder.Services.AddScoped<ICategoryCommandService, CategoryCommandService>();
         builder.Services.AddScoped<ICategoryQueryService, CategoryQueryService>();
         builder.Services.AddScoped<ICustomAttributeCommandService, CustomAttributeCommandService>();
+        builder.Services.AddScoped<ICustomAttributeQueryService, CustomAttributeQueryService>();
 
 
         builder.Services.AddControllers();

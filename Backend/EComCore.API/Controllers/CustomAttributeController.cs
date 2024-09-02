@@ -1,4 +1,5 @@
 using EComCore.Application.CustomAttributeOperations.Commands;
+using EComCore.Application.CustomAttributeOperations.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,6 +12,20 @@ public class CustomAttributeController : ControllerBase
     public CustomAttributeController(IMediator mediator)
     {
         _mediator = mediator;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetCustomAttribute()
+    {
+        var result = await _mediator.Send(new GetCustomAttributesQuery());
+        return Ok(result);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetCustomAttributeById(int id)
+    {
+        var result = await _mediator.Send(new GetCustomAttributeByIdQuery { Id = id });
+        return Ok(result);
     }
 
     [HttpPost]

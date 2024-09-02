@@ -28,5 +28,6 @@ public class MappingProfile : Profile
             .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         CreateMap<UpdateCustomAttributeCommand, UpdateAttribureDto>();
         CreateMap<DeleteCustomAttributeCommand, DeleteAttribureDto>();
+        CreateMap<CustomAttribute, CustomAttributeDto>();
     }
 }
