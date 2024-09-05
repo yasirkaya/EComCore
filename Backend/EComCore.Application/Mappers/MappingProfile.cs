@@ -1,7 +1,9 @@
 using AutoMapper;
+using EComCore.Application.AttributeValueOperations.Commands;
 using EComCore.Application.CategoryOperations.Commands;
 using EComCore.Application.CustomAttributeOperations.Commands;
 using EComCore.Domain.DTOs.AttributeDto;
+using EComCore.Domain.DTOs.AttributeValueDto;
 using EComCore.Domain.DTOs.CategoryDto;
 using EComCore.Domain.Entities;
 
@@ -29,5 +31,13 @@ public class MappingProfile : Profile
         CreateMap<UpdateCustomAttributeCommand, UpdateAttribureDto>();
         CreateMap<DeleteCustomAttributeCommand, DeleteAttribureDto>();
         CreateMap<CustomAttribute, CustomAttributeDto>();
+        CreateMap<CreateAttributeValueCommand, CreateAttributeValueDto>();
+        CreateMap<CreateAttributeValueDto, AttributeValue>()
+            .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow));
+        CreateMap<UpdateAttributeValueDto, AttributeValue>()
+            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
+            .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+        CreateMap<UpdateAttributeValueCommand, UpdateAttributeValueDto>();
+        CreateMap<DeleteAttributeValueCommand, DeleteAttributeValueDto>();
     }
 }

@@ -7,5 +7,5 @@ public interface IAttributeValueCommandService
     Task<int> AddAsync(CreateAttributeValueDto dto);
     Task UpdateAsync(UpdateAttributeValueDto dto);
     Task DeleteAsync(DeleteAttributeValueDto dto);
-    Task DeleteByAttributeIdAsync(DeleteAttributeValueDto dto);
+    Task DeleteByAttributeIdAsync(int attributeId);
 }
