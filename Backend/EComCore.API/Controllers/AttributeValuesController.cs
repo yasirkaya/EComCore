@@ -1,4 +1,5 @@
 using EComCore.Application.AttributeValueOperations.Commands;
+using EComCore.Application.AttributeValueOperations.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,6 +12,27 @@ public class AttributeValuesController : ControllerBase
     public AttributeValuesController(IMediator mediator)
     {
         _mediator = mediator;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Get()
+    {
+        var result = await _mediator.Send(new GetAttributeValuesQuery());
+        return Ok(result);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var result = await _mediator.Send(new GetAttributeValueByIdQuery { Id = id });
+        return Ok(result);
+    }
+
+    [HttpGet("attributes/{attributeId}/values")]
+    public async Task<IActionResult> GetValuesByAttributeId(int attributeId)
+    {
+        var result = await _mediator.Send(new GetValuesByAttributeIdQuery { AttributeId = attributeId });
+        return Ok(result);
     }
 
     [HttpPost]

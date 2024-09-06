@@ -26,12 +26,12 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
         await _context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<TEntity>> GetAllAsync()
+    public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
     {
         return await _dbSet.AsNoTracking().ToListAsync();
     }
 
-    public async Task<TEntity> GetByIdAsync<TKey>(TKey id)
+    public virtual async Task<TEntity> GetByIdAsync(int id)
     {
         return await _dbSet.FindAsync(id);
     }

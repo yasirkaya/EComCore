@@ -35,6 +35,7 @@ public class Program
         builder.Services.AddScoped<ICustomAttributeCommandService, CustomAttributeCommandService>();
         builder.Services.AddScoped<ICustomAttributeQueryService, CustomAttributeQueryService>();
         builder.Services.AddScoped<IAttributeValueCommandService, AttributeValueCommandService>();
+        builder.Services.AddScoped<IAttributeValueQueryService, AttributeValueQueryService>();
 
 
         builder.Services.AddControllers();

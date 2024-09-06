@@ -20,7 +20,7 @@ public class AttributeValueCommandService : IAttributeValueCommandService
 
     public async Task<int> AddAsync(CreateAttributeValueDto dto)
     {
-        var attribute = _attributeRepository.GetByIdAsync(dto.AttributeId);
+        var attribute = await _attributeRepository.GetByIdAsync(dto.AttributeId);
         if (attribute == null)
         {
             throw new Exception("Attribute not found for the given AttributeId.");

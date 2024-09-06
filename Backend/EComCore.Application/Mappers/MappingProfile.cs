@@ -13,6 +13,7 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
+        // Category
         CreateMap<CreateCategoryCommand, CreateCategoryDto>();
         CreateMap<CreateCategoryDto, Category>()
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow));
@@ -22,6 +23,8 @@ public class MappingProfile : Profile
             .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         CreateMap<DeleteCategoryCommand, DeleteCategoryDto>();
         CreateMap<Category, CategoryDto>();
+
+        // CustomAttribute
         CreateMap<CreateCustomAttributeCommand, CreateAttribureDto>();
         CreateMap<CreateAttribureDto, CustomAttribute>()
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow));
@@ -31,6 +34,8 @@ public class MappingProfile : Profile
         CreateMap<UpdateCustomAttributeCommand, UpdateAttribureDto>();
         CreateMap<DeleteCustomAttributeCommand, DeleteAttribureDto>();
         CreateMap<CustomAttribute, CustomAttributeDto>();
+
+        // AttributeValue
         CreateMap<CreateAttributeValueCommand, CreateAttributeValueDto>();
         CreateMap<CreateAttributeValueDto, AttributeValue>()
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow));
@@ -39,5 +44,7 @@ public class MappingProfile : Profile
             .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         CreateMap<UpdateAttributeValueCommand, UpdateAttributeValueDto>();
         CreateMap<DeleteAttributeValueCommand, DeleteAttributeValueDto>();
+        CreateMap<AttributeValue, AttributeValueDto>()
+            .ForMember(dest => dest.AttributeName, opt => opt.MapFrom(src => src.Attribute.Name));
     }
 }
