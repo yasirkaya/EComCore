@@ -33,6 +33,19 @@ public class ProductCommandService : IProductCommandService
         await _productRepository.DeleteAsync(product);
     }
 
+    public async Task SoftDelete(DeleteProductDto dto)
+    {
+        var product = await _productRepository.GetByIdAsync(dto.Id);
+        if (product == null)
+        {
+            throw new Exception($"Product with Id {dto.Id} not found.");
+        }
+        product.IsDeleted = true;
+
+        await _productRepository.UpdateAsync(product);
+
+    }
+
     public async Task UpdateAsync(UpdateProductDto dto)
     {
         var product = await _productRepository.GetByIdAsync(dto.Id);

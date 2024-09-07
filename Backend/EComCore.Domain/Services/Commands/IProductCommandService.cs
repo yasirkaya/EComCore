@@ -7,4 +7,5 @@ public interface IProductCommandService
     Task<int> AddAsync(CreateProductDto dto);
     Task UpdateAsync(UpdateProductDto dto);
     Task DeleteAsync(DeleteProductDto dto);
+    Task SoftDelete(DeleteProductDto dto);
 }

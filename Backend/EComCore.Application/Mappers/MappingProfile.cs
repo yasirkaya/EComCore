@@ -59,5 +59,6 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
             .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         CreateMap<DeleteProductCommand, DeleteProductDto>();
+        CreateMap<Product, ProductDto>();
     }
 }

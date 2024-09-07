@@ -17,7 +17,7 @@ public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand>
 
     public async Task Handle(DeleteProductCommand request, CancellationToken cancellationToken)
     {
-        await _productCommandService.DeleteAsync(_mapper.Map<DeleteProductDto>(request));
+        await _productCommandService.SoftDelete(_mapper.Map<DeleteProductDto>(request));
         return;
     }
 }
