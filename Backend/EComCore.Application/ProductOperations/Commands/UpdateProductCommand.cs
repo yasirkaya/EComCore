@@ -1,7 +1,10 @@
-namespace EComCore.Domain.DTOs.ProductDTO;
+using MediatR;
 
-public class CreateProductDto
+namespace EComCore.Application.ProductOperations.Commands;
+
+public class UpdateProductCommand : IRequest
 {
+    public int Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
     public decimal Price { get; set; }
@@ -9,4 +12,5 @@ public class CreateProductDto
     public int StockQuantity { get; set; }
     public int GroupId { get; set; }
     public string ImageUrl { get; set; }
+    public bool IsDeleted { get; set; }
 }

@@ -1,6 +1,8 @@
-namespace EComCore.Domain.DTOs.ProductDTO;
+using MediatR;
 
-public class CreateProductDto
+namespace EComCore.Application.ProductOperations.Commands;
+
+public class CreateProductCommand : IRequest<int>
 {
     public string Name { get; set; }
     public string Description { get; set; }

@@ -2,9 +2,11 @@ using AutoMapper;
 using EComCore.Application.AttributeValueOperations.Commands;
 using EComCore.Application.CategoryOperations.Commands;
 using EComCore.Application.CustomAttributeOperations.Commands;
+using EComCore.Application.ProductOperations.Commands;
 using EComCore.Domain.DTOs.AttributeDTO;
 using EComCore.Domain.DTOs.AttributeValueDTO;
 using EComCore.Domain.DTOs.CategoryDTO;
+using EComCore.Domain.DTOs.ProductDTO;
 using EComCore.Domain.Entities;
 
 namespace EComCore.Application.Mappers;
@@ -46,5 +48,16 @@ public class MappingProfile : Profile
         CreateMap<DeleteAttributeValueCommand, DeleteAttributeValueDto>();
         CreateMap<AttributeValue, AttributeValueDto>()
             .ForMember(dest => dest.AttributeName, opt => opt.MapFrom(src => src.Attribute.Name));
+
+        //Product
+        CreateMap<CreateProductCommand, CreateProductDto>();
+        CreateMap<CreateProductDto, Product>()
+            .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
+            .ForMember(dest => dest.IsDeleted, opt => opt.MapFrom(src => false));
+        CreateMap<UpdateProductCommand, UpdateProductDto>();
+        CreateMap<UpdateProductDto, Product>()
+            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
+            .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+        CreateMap<DeleteProductCommand, DeleteProductDto>();
     }
 }
