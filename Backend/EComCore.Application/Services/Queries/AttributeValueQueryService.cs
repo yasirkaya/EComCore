@@ -1,5 +1,5 @@
 using AutoMapper;
-using EComCore.Domain.DTOs.AttributeValueDto;
+using EComCore.Domain.DTOs.AttributeValueDTO;
 using EComCore.Domain.Repositories;
 using EComCore.Domain.Services.Queries;
 

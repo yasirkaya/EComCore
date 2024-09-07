@@ -1,6 +1,6 @@
-namespace EComCore.Domain.DTOs.AttributeDto;
+namespace EComCore.Domain.DTOs.AttributeDTO;
 
-public class UpdateAttribureDto
+public class UpdateAttributeDto
 {
     public int Id { get; set; }
     public string Name { get; set; }

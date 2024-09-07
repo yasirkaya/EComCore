@@ -1,5 +1,5 @@
 using AutoMapper;
-using EComCore.Domain.DTOs.CategoryDto;
+using EComCore.Domain.DTOs.CategoryDTO;
 using EComCore.Domain.Services.Commands;
 using MediatR;
 

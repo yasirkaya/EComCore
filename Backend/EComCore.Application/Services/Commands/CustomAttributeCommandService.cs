@@ -1,5 +1,5 @@
 using AutoMapper;
-using EComCore.Domain.DTOs.AttributeDto;
+using EComCore.Domain.DTOs.AttributeDTO;
 using EComCore.Domain.Entities;
 using EComCore.Domain.Repositories;
 using EComCore.Domain.Services.Commands;
@@ -16,14 +16,14 @@ public class CustomAttributeCommandService : ICustomAttributeCommandService
         _mapper = mapper;
     }
 
-    public async Task<int> AddAsync(CreateAttribureDto dto)
+    public async Task<int> AddAsync(CreateAttributeDto dto)
     {
         var attribute = _mapper.Map<CustomAttribute>(dto);
         await _attributeRepository.AddAsync(attribute);
         return attribute.Id;
     }
 
-    public async Task DeleteAsync(DeleteAttribureDto dto)
+    public async Task DeleteAsync(DeleteAttributeDto dto)
     {
         var attribute = await _attributeRepository.GetByIdAsync(dto.Id);
         if (attribute == null)
@@ -34,7 +34,7 @@ public class CustomAttributeCommandService : ICustomAttributeCommandService
         await _attributeRepository.DeleteAsync(attribute);
     }
 
-    public async Task UpdateAsync(UpdateAttribureDto dto)
+    public async Task UpdateAsync(UpdateAttributeDto dto)
     {
         var attribute = await _attributeRepository.GetByIdAsync(dto.Id);
         if (attribute == null)

@@ -1,4 +1,4 @@
-namespace EComCore.Domain.DTOs.AttributeValueDto;
+namespace EComCore.Domain.DTOs.AttributeValueDTO;
 
 public class UpdateAttributeValueDto
 {

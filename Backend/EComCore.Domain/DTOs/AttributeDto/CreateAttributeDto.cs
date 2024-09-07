@@ -1,6 +1,6 @@
-namespace EComCore.Domain.DTOs.AttributeDto;
+namespace EComCore.Domain.DTOs.AttributeDTO;
 
-public class CreateAttribureDto
+public class CreateAttributeDto
 {
     public string Name { get; set; }
     public DateTime CreatedAt { get; set; }

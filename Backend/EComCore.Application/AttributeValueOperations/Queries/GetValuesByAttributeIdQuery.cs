@@ -1,4 +1,4 @@
-using EComCore.Domain.DTOs.AttributeValueDto;
+using EComCore.Domain.DTOs.AttributeValueDTO;
 using MediatR;
 
 namespace EComCore.Application.AttributeValueOperations.Queries;

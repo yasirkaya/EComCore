@@ -1,5 +1,5 @@
 using System.ComponentModel;
-using EComCore.Domain.DTOs.AttributeValueDto;
+using EComCore.Domain.DTOs.AttributeValueDTO;
 
 namespace EComCore.Domain.Services.Queries;
 

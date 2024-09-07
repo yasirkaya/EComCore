@@ -1,5 +1,5 @@
 using AutoMapper;
-using EComCore.Domain.DTOs.AttributeDto;
+using EComCore.Domain.DTOs.AttributeDTO;
 using EComCore.Domain.Services.Commands;
 using MediatR;
 
@@ -17,7 +17,7 @@ public class DeleteCustomAttributeCommandHandler : IRequestHandler<DeleteCustomA
 
     public async Task Handle(DeleteCustomAttributeCommand request, CancellationToken cancellationToken)
     {
-        var attribute = _mapper.Map<DeleteAttribureDto>(request);
+        var attribute = _mapper.Map<DeleteAttributeDto>(request);
         await _attributeCommandService.DeleteAsync(attribute);
         return;
     }

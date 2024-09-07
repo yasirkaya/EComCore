@@ -2,7 +2,7 @@ using AutoMapper;
 using EComCore.Domain.Repositories;
 using EComCore.Domain.Entities;
 using MediatR;
-using EComCore.Domain.DTOs.CategoryDto;
+using EComCore.Domain.DTOs.CategoryDTO;
 using EComCore.Domain.Services.Commands;
 
 namespace EComCore.Application.CategoryOperations.Commands;

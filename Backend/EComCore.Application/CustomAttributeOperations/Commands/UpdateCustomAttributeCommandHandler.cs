@@ -1,5 +1,5 @@
 using AutoMapper;
-using EComCore.Domain.DTOs.AttributeDto;
+using EComCore.Domain.DTOs.AttributeDTO;
 using EComCore.Domain.Services.Commands;
 using MediatR;
 
@@ -17,7 +17,7 @@ public class UpdateCustomAttributeCommandHandler : IRequestHandler<UpdateCustomA
 
     public async Task Handle(UpdateCustomAttributeCommand request, CancellationToken cancellationToken)
     {
-        var attribute = _mapper.Map<UpdateAttribureDto>(request);
+        var attribute = _mapper.Map<UpdateAttributeDto>(request);
         await _commandService.UpdateAsync(attribute);
         return;
     }

@@ -1,4 +1,4 @@
-using EComCore.Domain.DTOs.AttributeDto;
+using EComCore.Domain.DTOs.AttributeDTO;
 
 namespace EComCore.Domain.Services.Queries;
 

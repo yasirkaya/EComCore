@@ -1,7 +1,7 @@
 using MediatR;
 using EComCore.Domain.Services.Commands;
 using AutoMapper;
-using EComCore.Domain.DTOs.AttributeDto;
+using EComCore.Domain.DTOs.AttributeDTO;
 
 namespace EComCore.Application.CustomAttributeOperations.Commands;
 
@@ -17,7 +17,7 @@ public class CreateCustomAttributeCommandHandler : IRequestHandler<CreateCustomA
 
     public async Task<int> Handle(CreateCustomAttributeCommand request, CancellationToken cancellationToken)
     {
-        var attribute = _mapper.Map<CreateAttribureDto>(request);
+        var attribute = _mapper.Map<CreateAttributeDto>(request);
 
         return await _attributeCommandService.AddAsync(attribute);
     }

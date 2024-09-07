@@ -1,4 +1,4 @@
-using EComCore.Domain.DTOs.CategoryDto;
+using EComCore.Domain.DTOs.CategoryDTO;
 
 namespace EComCore.Domain.Services.Commands;
 

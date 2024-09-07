@@ -29,6 +29,7 @@ public class Program
         builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
         builder.Services.AddScoped<IAttributeRepository, AttributeRepository>();
         builder.Services.AddScoped<IAttributeValueRepository, AttributeValueRepository>();
+        builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
         builder.Services.AddScoped<ICategoryCommandService, CategoryCommandService>();
         builder.Services.AddScoped<ICategoryQueryService, CategoryQueryService>();

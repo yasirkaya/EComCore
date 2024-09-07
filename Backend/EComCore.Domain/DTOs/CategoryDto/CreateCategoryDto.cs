@@ -1,4 +1,4 @@
-namespace EComCore.Domain.DTOs.CategoryDto;
+namespace EComCore.Domain.DTOs.CategoryDTO;
 
 public class CreateCategoryDto
 {

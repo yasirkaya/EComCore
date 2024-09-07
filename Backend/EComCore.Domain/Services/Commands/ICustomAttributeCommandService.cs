@@ -1,10 +1,10 @@
-using EComCore.Domain.DTOs.AttributeDto;
+using EComCore.Domain.DTOs.AttributeDTO;
 
 namespace EComCore.Domain.Services.Commands;
 
 public interface ICustomAttributeCommandService
 {
-    Task<int> AddAsync(CreateAttribureDto dto);
-    Task UpdateAsync(UpdateAttribureDto dto);
-    Task DeleteAsync(DeleteAttribureDto dto);
+    Task<int> AddAsync(CreateAttributeDto dto);
+    Task UpdateAsync(UpdateAttributeDto dto);
+    Task DeleteAsync(DeleteAttributeDto dto);
 }
