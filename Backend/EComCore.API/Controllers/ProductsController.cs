@@ -1,4 +1,5 @@
 using EComCore.Application.ProductOperations.Commands;
+using EComCore.Application.ProductOperations.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,6 +12,20 @@ public class ProductsController : ControllerBase
     public ProductsController(IMediator mediator)
     {
         _mediator = mediator;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Get()
+    {
+        var result = await _mediator.Send(new GetProductsQuery());
+        return Ok(result);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var result = await _mediator.Send(new GetProductByIdQuery { Id = id });
+        return Ok(result);
     }
 
     [HttpPost]

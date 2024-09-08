@@ -17,7 +17,7 @@ public class ProductQueryService : IProductQueryService
 
     public async Task<IEnumerable<ProductDto>> GetAllAsync()
     {
-        var products = await _productRepository.GetAllActiveAsync();
+        var products = await _productRepository.GetAllAsync();
         return _mapper.Map<IEnumerable<ProductDto>>(products);
     }
 

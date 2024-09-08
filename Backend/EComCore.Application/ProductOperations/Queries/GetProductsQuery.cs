@@ -3,7 +3,7 @@ using MediatR;
 
 namespace EComCore.Application.ProductOperations.Queries;
 
-public class GetActiveProductsQuery : IRequest<IEnumerable<ProductDto>>
+public class GetProductsQuery : IRequest<IEnumerable<ProductDto>>
 {
 
 }

@@ -4,7 +4,7 @@ using MediatR;
 
 namespace EComCore.Application.ProductOperations.Queries;
 
-public class GetActiveProductsQueryHandler : IRequestHandler<GetActiveProductsQuery, IEnumerable<ProductDto>>
+public class GetActiveProductsQueryHandler : IRequestHandler<GetProductsQuery, IEnumerable<ProductDto>>
 {
     private readonly IProductQueryService _productQueryService;
     public GetActiveProductsQueryHandler(IProductQueryService productQueryService)
@@ -12,7 +12,7 @@ public class GetActiveProductsQueryHandler : IRequestHandler<GetActiveProductsQu
         _productQueryService = productQueryService;
     }
 
-    public async Task<IEnumerable<ProductDto>> Handle(GetActiveProductsQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<ProductDto>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
     {
         return await _productQueryService.GetAllAsync();
     }

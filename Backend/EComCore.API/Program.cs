@@ -38,6 +38,8 @@ public class Program
         builder.Services.AddScoped<IAttributeValueCommandService, AttributeValueCommandService>();
         builder.Services.AddScoped<IAttributeValueQueryService, AttributeValueQueryService>();
         builder.Services.AddScoped<IProductCommandService, ProductCommandService>();
+        builder.Services.AddScoped<IProductQueryService, ProductQueryService>();
+
 
 
         builder.Services.AddControllers();

@@ -13,9 +13,19 @@ public class ProductRepository : Repository<Product>, IProductRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<Product>> GetAllActiveAsync()
+    public override async Task<IEnumerable<Product>> GetAllAsync()
     {
         return await _context.Products.Where(e => !e.IsDeleted).ToListAsync();
+    }
+
+    public override async Task<Product> GetByIdAsync(int id)
+    {
+        return await _context.Products.Where(e => !e.IsDeleted).SingleOrDefaultAsync();
+    }
+
+    public async Task<IEnumerable<Product>> GetAllwithDeletedAsync()
+    {
+        return await _context.Products.ToListAsync();
     }
 
 }
