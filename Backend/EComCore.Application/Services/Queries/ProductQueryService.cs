@@ -15,6 +15,39 @@ public class ProductQueryService : IProductQueryService
         _mapper = mapper;
     }
 
+    public async Task<bool> CheckProductStockAsync(int productId, int quantity)
+    {
+        var product = await _productRepository.GetByIdAsync(productId);
+
+        if (product == null)
+        {
+            throw new Exception("Product not found");
+        }
+
+        if (product.StockQuantity >= quantity)
+        {
+            return true;
+        }
+        return false;
+
+    }
+
+    public async Task<bool> CheckProductPriceAsync(int productId, decimal requestedPrice)
+    {
+        var product = await _productRepository.GetByIdAsync(productId);
+
+        if (product == null)
+        {
+            throw new Exception("Product not found");
+        }
+
+        if (product.Price == requestedPrice)
+        {
+            return true;
+        }
+        return false;
+    }
+
     public async Task<IEnumerable<ProductDto>> GetAllAsync()
     {
         var products = await _productRepository.GetAllAsync();
