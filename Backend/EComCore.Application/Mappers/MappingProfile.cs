@@ -7,6 +7,7 @@ using EComCore.Domain.DTOs.AttributeDTO;
 using EComCore.Domain.DTOs.AttributeValueDTO;
 using EComCore.Domain.DTOs.CategoryDTO;
 using EComCore.Domain.DTOs.ProductDTO;
+using EComCore.Domain.DTOs.ProductToAttributeDTO;
 using EComCore.Domain.Entities;
 
 namespace EComCore.Application.Mappers;
@@ -60,5 +61,19 @@ public class MappingProfile : Profile
             .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         CreateMap<DeleteProductCommand, DeleteProductDto>();
         CreateMap<Product, ProductDto>();
+
+        //ProdusctToAttribute
+        //CreateMap<CreateProductToAttributeCommand, CreateProductToAttributeDto>();
+        CreateMap<CreateProductToAttributeDto, ProductToAttribute>()
+            .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow));
+        //CreateMap<UpdateProductToAttributeCommand, UpdateProductToAttributeDto>();
+        CreateMap<UpdateProductToAttributeDto, ProductToAttribute>()
+            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
+            .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+        //CreateMap<DeleteProductCommand, DeleteProductDto>();
+        CreateMap<ProductToAttribute, ProductToAttributeDto>()
+            .ForMember(dest => dest.AttributeName, opt => opt.MapFrom(src => src.Attribute.Name))
+            .ForMember(dest => dest.AttributeValue, opt => opt.MapFrom(src => src.AttributeValue.Value));
+
     }
 }
