@@ -26,6 +26,10 @@ public class ProductToAttributeQueryService : IProductToAttributeQueryService
     public async Task<ProductToAttributeDto> GetByIdAsync(int id)
     {
         var prodAttr = await _productToAttributeRepository.GetByIdAsync(id);
+        if (prodAttr == null)
+        {
+            throw new Exception($"ProductToAttribute with Id {id} not found.");
+        }
         return _mapper.Map<ProductToAttributeDto>(prodAttr);
     }
 }
