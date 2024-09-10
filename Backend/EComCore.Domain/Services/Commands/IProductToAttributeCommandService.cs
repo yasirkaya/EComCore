@@ -7,4 +7,6 @@ public interface IProductToAttributeCommandService
     Task<int> AddAsync(CreateProductToAttributeDto dto);
     Task UpdateAsync(UpdateProductToAttributeDto dto);
     Task DeleteAsync(DeleteProductToAttributeDto dto);
+    Task AddAttributesToProductAsync(IEnumerable<CreateProductToAttributeDto> dtos);
+    Task DeleteAttributesFromProductAsync(int productId);
 }

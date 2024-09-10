@@ -20,9 +20,9 @@ public class ProductToAttributeCommandService : IProductToAttributeCommandServic
 
     public async Task<int> AddAsync(CreateProductToAttributeDto dto)
     {
-        var pta = _mapper.Map<ProductToAttribute>(dto);
-        await _productToAttributeRepository.AddAsync(pta);
-        return pta.Id;
+        var prodAttr = _mapper.Map<ProductToAttribute>(dto);
+        await _productToAttributeRepository.AddAsync(prodAttr);
+        return prodAttr.Id;
     }
 
     public async Task AddAttributesToProductAsync(IEnumerable<CreateProductToAttributeDto> dtos)
@@ -39,31 +39,32 @@ public class ProductToAttributeCommandService : IProductToAttributeCommandServic
 
     public async Task DeleteAsync(DeleteProductToAttributeDto dto)
     {
-        var pta = await _productToAttributeRepository.GetByIdAsync(dto.Id);
-        if (pta == null)
+        var prodAttr = await _productToAttributeRepository.GetByIdAsync(dto.Id);
+        if (prodAttr == null)
         {
             throw new Exception($"Product with Id {dto.Id} not found.");
         }
-        await _productToAttributeRepository.DeleteAsync(pta);
+        await _productToAttributeRepository.DeleteAsync(prodAttr);
     }
 
-    public async Task DeleteAttributesFromProductAsync(DeleteProductToAttributeDto dto)
+    public async Task DeleteAttributesFromProductAsync(int productId)
     {
-        var prodAttrs = await _productToAttributeRepository.GetAttributesByProductIdAsync(dto.Id);
+        var prodAttrs = await _productToAttributeRepository.GetAttributesByProductIdAsync(productId);
         if (prodAttrs.IsNullOrEmpty())
         {
-            throw new Exception($"Product with Id {dto.Id} not found.");
+            throw new Exception($"Product with Id {productId} not found.");
         }
         await _productToAttributeRepository.DeleteRangeAsync(prodAttrs);
     }
 
     public async Task UpdateAsync(UpdateProductToAttributeDto dto)
     {
-        var pta = await _productToAttributeRepository.GetByIdAsync(dto.Id);
-        if (pta == null)
+        var prodAttr = await _productToAttributeRepository.GetByIdAsync(dto.Id);
+        if (prodAttr == null)
         {
             throw new Exception($"Product with Id {dto.Id} not found.");
         }
-        await _productToAttributeRepository.UpdateAsync(pta);
+        _mapper.Map(dto, prodAttr);
+        await _productToAttributeRepository.UpdateAsync(prodAttr);
     }
 }

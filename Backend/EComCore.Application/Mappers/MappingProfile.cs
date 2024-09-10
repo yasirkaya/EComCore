@@ -3,6 +3,7 @@ using EComCore.Application.AttributeValueOperations.Commands;
 using EComCore.Application.CategoryOperations.Commands;
 using EComCore.Application.CustomAttributeOperations.Commands;
 using EComCore.Application.ProductOperations.Commands;
+using EComCore.Application.ProductToAttributeOperations.Commands;
 using EComCore.Domain.DTOs.AttributeDTO;
 using EComCore.Domain.DTOs.AttributeValueDTO;
 using EComCore.Domain.DTOs.CategoryDTO;
@@ -63,14 +64,14 @@ public class MappingProfile : Profile
         CreateMap<Product, ProductDto>();
 
         //ProdusctToAttribute
-        //CreateMap<CreateProductToAttributeCommand, CreateProductToAttributeDto>();
+        CreateMap<CreateProductToAttributeCommand, CreateProductToAttributeDto>();
         CreateMap<CreateProductToAttributeDto, ProductToAttribute>()
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow));
-        //CreateMap<UpdateProductToAttributeCommand, UpdateProductToAttributeDto>();
+        CreateMap<UpdateProductToAttributeCommand, UpdateProductToAttributeDto>();
         CreateMap<UpdateProductToAttributeDto, ProductToAttribute>()
             .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
             .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
-        //CreateMap<DeleteProductCommand, DeleteProductDto>();
+        CreateMap<DeleteProductToAttributeCommand, DeleteProductToAttributeDto>();
         CreateMap<ProductToAttribute, ProductToAttributeDto>()
             .ForMember(dest => dest.AttributeName, opt => opt.MapFrom(src => src.Attribute.Name))
             .ForMember(dest => dest.AttributeValue, opt => opt.MapFrom(src => src.AttributeValue.Value));
