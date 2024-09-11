@@ -1,4 +1,6 @@
+using EComCore.Application.ProductToAttributeOperations.Commands.Queries;
 using EComCore.Application.ProductToCategoryOperations.Commands;
+using EComCore.Application.ProductToCategoryOperations.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,6 +14,26 @@ public class ProductToCategoryController : ControllerBase
     public ProductToCategoryController(IMediator mediator)
     {
         _mediator = mediator;
+    }
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var result = await _mediator.Send(new GetProductToCategoriesQuery());
+        return Ok(result);
+    }
+
+    [HttpGet("products/{productId}/categories")]
+    public async Task<IActionResult> GetCategoriesByProductId(int productId)
+    {
+        var result = await _mediator.Send(new GetCategoriesByProductIdQuery { ProductId = productId });
+        return Ok(result);
+    }
+
+    [HttpGet("categories/{categoryId}/products")]
+    public async Task<IActionResult> GetProductsByCategoryId(int categoryId)
+    {
+        var result = await _mediator.Send(new GetProductsByCategoryIdQuery { CategoryId = categoryId });
+        return Ok(result);
     }
 
     [HttpPost]
