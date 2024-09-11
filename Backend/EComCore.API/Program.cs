@@ -31,6 +31,7 @@ public class Program
         builder.Services.AddScoped<IAttributeValueRepository, AttributeValueRepository>();
         builder.Services.AddScoped<IProductRepository, ProductRepository>();
         builder.Services.AddScoped<IProductToAttributeRepository, ProductToAttributeRepository>();
+        builder.Services.AddScoped<IProductToCategoryRepository, ProductToCategoryRepository>();
 
         builder.Services.AddScoped<ICategoryCommandService, CategoryCommandService>();
         builder.Services.AddScoped<ICategoryQueryService, CategoryQueryService>();
@@ -42,6 +43,8 @@ public class Program
         builder.Services.AddScoped<IProductQueryService, ProductQueryService>();
         builder.Services.AddScoped<IProductToAttributeCommandService, ProductToAttributeCommandService>();
         builder.Services.AddScoped<IProductToAttributeQueryService, ProductToAttributeQueryService>();
+        builder.Services.AddScoped<IProductToCategoryCommandService, ProductToCategoryCommandService>();
+        builder.Services.AddScoped<IProductToCategoryQueryService, ProductToCategoryQueryService>();
 
 
 

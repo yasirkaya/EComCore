@@ -20,7 +20,7 @@ public class ProductRepository : Repository<Product>, IProductRepository
 
     public override async Task<Product> GetByIdAsync(int id)
     {
-        return await _context.Products.Where(e => !e.IsDeleted).SingleOrDefaultAsync();
+        return await _context.Products.Where(e => !e.IsDeleted).FirstOrDefaultAsync();
     }
 
     public async Task<IEnumerable<Product>> GetAllwithDeletedAsync()
