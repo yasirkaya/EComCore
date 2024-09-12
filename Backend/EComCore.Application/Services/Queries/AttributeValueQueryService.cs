@@ -1,5 +1,6 @@
 using AutoMapper;
 using EComCore.Domain.DTOs.AttributeValueDTO;
+using EComCore.Domain.Extensions;
 using EComCore.Domain.Repositories;
 using EComCore.Domain.Services.Queries;
 
@@ -24,20 +25,16 @@ public class AttributeValueQueryService : IAttributeValueQueryService
     public async Task<AttributeValueDto> GetAttributeValueByIdAsync(int id)
     {
         var attributeValue = await _attributeValueRepository.GetByIdAsync(id);
-        if (attributeValue == null)
-        {
-            throw new Exception($"AttributeValue with Id {id} not found.");
-        }
+        await attributeValue.EnsureNotNullAsync(id: id);
+
         return _mapper.Map<AttributeValueDto>(attributeValue);
     }
 
     public async Task<IEnumerable<AttributeValueDto>> GetValuesByAttributeIdAsync(int attributeId)
     {
         var values = await _attributeValueRepository.GetValuesByAttributeIdAsync(attributeId);
-        if (!values.Any())
-        {
-            throw new Exception("No attribute values found for the given attribute ID.");
-        }
+        await values.EnsureNotNullOrEmptyAsync(message: "No attribute values found for the given attribute ID.");
+
         return _mapper.Map<IEnumerable<AttributeValueDto>>(values);
     }
 }

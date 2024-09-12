@@ -1,6 +1,7 @@
 using AutoMapper;
 using EComCore.Domain.DTOs.ProductDTO;
 using EComCore.Domain.Entities;
+using EComCore.Domain.Extensions;
 using EComCore.Domain.Repositories;
 using EComCore.Domain.Services.Commands;
 
@@ -26,20 +27,16 @@ public class ProductCommandService : IProductCommandService
     public async Task DeleteAsync(DeleteProductDto dto)
     {
         var product = await _productRepository.GetByIdAsync(dto.Id);
-        if (product == null)
-        {
-            throw new Exception($"Product with Id {dto.Id} not found.");
-        }
+        await product.EnsureNotNullAsync(id: dto.Id);
+
         await _productRepository.DeleteAsync(product);
     }
 
     public async Task SoftDelete(DeleteProductDto dto)
     {
         var product = await _productRepository.GetByIdAsync(dto.Id);
-        if (product == null)
-        {
-            throw new Exception($"Product with Id {dto.Id} not found.");
-        }
+        await product.EnsureNotNullAsync(id: dto.Id);
+
         product.IsDeleted = true;
 
         await _productRepository.UpdateAsync(product);
@@ -49,10 +46,8 @@ public class ProductCommandService : IProductCommandService
     public async Task UpdateAsync(UpdateProductDto dto)
     {
         var product = await _productRepository.GetByIdAsync(dto.Id);
-        if (product == null)
-        {
-            throw new Exception($"Product with Id {dto.Id} not found.");
-        }
+        await product.EnsureNotNullAsync(id: dto.Id);
+
         _mapper.Map(dto, product);
         await _productRepository.UpdateAsync(product);
     }

@@ -1,6 +1,7 @@
 using AutoMapper;
 using EComCore.Domain.DTOs.ProductToAttributeDTO;
 using EComCore.Domain.Entities;
+using EComCore.Domain.Extensions;
 using EComCore.Domain.Repositories;
 using EComCore.Domain.Services.Queries;
 
@@ -26,10 +27,8 @@ public class ProductToAttributeQueryService : IProductToAttributeQueryService
     public async Task<ProductToAttributeDto> GetByIdAsync(int id)
     {
         var prodAttr = await _productToAttributeRepository.GetByIdAsync(id);
-        if (prodAttr == null)
-        {
-            throw new Exception($"ProductToAttribute with Id {id} not found.");
-        }
+        await prodAttr.EnsureNotNullAsync(id: id);
+
         return _mapper.Map<ProductToAttributeDto>(prodAttr);
     }
 }

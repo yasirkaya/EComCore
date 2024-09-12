@@ -1,5 +1,6 @@
 using AutoMapper;
 using EComCore.Domain.DTOs.ProductDTO;
+using EComCore.Domain.Extensions;
 using EComCore.Domain.Repositories;
 using EComCore.Domain.Services.Queries;
 
@@ -18,11 +19,7 @@ public class ProductQueryService : IProductQueryService
     public async Task<bool> CheckProductStockAsync(int productId, int quantity)
     {
         var product = await _productRepository.GetByIdAsync(productId);
-
-        if (product == null)
-        {
-            throw new Exception("Product not found");
-        }
+        await product.EnsureNotNullAsync(id: productId);
 
         if (product.StockQuantity >= quantity)
         {
@@ -35,11 +32,7 @@ public class ProductQueryService : IProductQueryService
     public async Task<bool> CheckProductPriceAsync(int productId, decimal requestedPrice)
     {
         var product = await _productRepository.GetByIdAsync(productId);
-
-        if (product == null)
-        {
-            throw new Exception("Product not found");
-        }
+        await product.EnsureNotNullAsync(id: productId);
 
         if (product.Price == requestedPrice)
         {
@@ -57,10 +50,8 @@ public class ProductQueryService : IProductQueryService
     public async Task<ProductDto> GetByIdAsync(int id)
     {
         var product = await _productRepository.GetByIdAsync(id);
-        if (product == null)
-        {
-            throw new Exception($"Product with Id {id} not found.");
-        }
+        await product.EnsureNotNullAsync(id: id);
+
         return _mapper.Map<ProductDto>(product);
     }
 }

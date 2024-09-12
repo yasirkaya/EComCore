@@ -1,6 +1,7 @@
 using AutoMapper;
 using EComCore.Domain.DTOs.CategoryDTO;
 using EComCore.Domain.Entities;
+using EComCore.Domain.Extensions;
 using EComCore.Domain.Repositories;
 using EComCore.Domain.Services.Commands;
 
@@ -26,11 +27,7 @@ public class CategoryCommandService : ICategoryCommandService
     public async Task DeleteAsync(DeleteCategoryDto dto)
     {
         var category = await _categoryRepository.GetByIdAsync(dto.Id);
-
-        if (category == null)
-        {
-            throw new Exception($"Category with Id {dto.Id} not found.");
-        }
+        await category.EnsureNotNullAsync(id: dto.Id);
 
         await _categoryRepository.DeleteAsync(category);
     }
@@ -38,11 +35,7 @@ public class CategoryCommandService : ICategoryCommandService
     public async Task UpdateAsync(UpdateCategoryDto dto)
     {
         var category = await _categoryRepository.GetByIdAsync(dto.Id);
-
-        if (category == null)
-        {
-            throw new Exception($"Category with Id {dto.Id} not found.");
-        }
+        await category.EnsureNotNullAsync(id: dto.Id);
 
         _mapper.Map(dto, category);
         await _categoryRepository.UpdateAsync(category);

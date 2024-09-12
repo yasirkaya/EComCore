@@ -1,6 +1,8 @@
+using System.Data.Common;
 using AutoMapper;
 using EComCore.Domain.DTOs.AttributeValueDTO;
 using EComCore.Domain.Entities;
+using EComCore.Domain.Extensions;
 using EComCore.Domain.Repositories;
 using EComCore.Domain.Services.Commands;
 
@@ -21,10 +23,8 @@ public class AttributeValueCommandService : IAttributeValueCommandService
     public async Task<int> AddAsync(CreateAttributeValueDto dto)
     {
         var attribute = await _attributeRepository.GetByIdAsync(dto.AttributeId);
-        if (attribute == null)
-        {
-            throw new Exception("Attribute not found for the given AttributeId.");
-        }
+        await attribute.EnsureNotNullAsync(id: dto.AttributeId);
+
         var attributeValue = _mapper.Map<AttributeValue>(dto);
         await _attributeValueRepository.AddAsync(attributeValue);
         return attributeValue.Id;
@@ -33,31 +33,23 @@ public class AttributeValueCommandService : IAttributeValueCommandService
     public async Task DeleteAsync(DeleteAttributeValueDto dto)
     {
         var attributeValue = await _attributeValueRepository.GetByIdAsync(dto.Id);
-        if (attributeValue == null)
-        {
-            throw new Exception($"AttributeValue with Id {dto.Id} not found.");
-        }
+        await attributeValue.EnsureNotNullAsync(id: dto.Id);
+
         await _attributeValueRepository.DeleteAsync(attributeValue);
     }
 
     public async Task DeleteByAttributeIdAsync(int attributeId)
     {
         var attibuteValues = await _attributeValueRepository.GetValuesByAttributeIdAsync(attributeId);
-        if (!attibuteValues.Any())
-        {
-            throw new Exception("No attribute values found for the given attribute ID.");
-        }
+        await attibuteValues.EnsureNotNullOrEmptyAsync(message: "No attribute values found for the given attribute ID.");
+
         await _attributeValueRepository.RemoveRangeAsync(attibuteValues);
     }
 
     public async Task UpdateAsync(UpdateAttributeValueDto dto)
     {
         var attibuteValue = await _attributeValueRepository.GetByIdAsync(dto.Id);
-
-        if (attibuteValue == null)
-        {
-            throw new Exception($"AttributeValue with Id {dto.Id} not found.");
-        }
+        await attibuteValue.EnsureNotNullAsync(id: dto.Id);
 
         _mapper.Map(dto, attibuteValue);
         await _attributeValueRepository.UpdateAsync(attibuteValue);

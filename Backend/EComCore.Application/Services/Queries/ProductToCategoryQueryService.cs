@@ -1,5 +1,6 @@
 using AutoMapper;
 using EComCore.Domain.DTOs.ProductToCategoryDTO;
+using EComCore.Domain.Extensions;
 using EComCore.Domain.Repositories;
 using EComCore.Domain.Services.Queries;
 using Microsoft.IdentityModel.Tokens;
@@ -25,20 +26,16 @@ public class ProductToCategoryQueryService : IProductToCategoryQueryService
     public async Task<IEnumerable<ProductToCategoryDto>> GetCategoriesByProductIdAsync(int productId)
     {
         var prodCats = await _productToCategoryRepository.GetByProductIdAsync(productId);
-        if (prodCats.IsNullOrEmpty())
-        {
-            throw new Exception($"Product with Id {productId} does not have any associated categories.");
-        }
+        await prodCats.EnsureNotNullOrEmptyAsync($"Product with Id {productId} does not have any associated categories.");
+
         return _mapper.Map<IEnumerable<ProductToCategoryDto>>(prodCats);
     }
 
     public async Task<IEnumerable<ProductToCategoryDto>> GetProductsByCategoryIdAsync(int categoryId)
     {
         var prodCats = await _productToCategoryRepository.GetByCategoryIdAsync(categoryId);
-        if (prodCats.IsNullOrEmpty())
-        {
-            throw new Exception($"Category with Id {categoryId} does not have any associated products.");
-        }
+        await prodCats.EnsureNotNullOrEmptyAsync($"Category with Id {categoryId} does not have any associated products.");
+
         return _mapper.Map<IEnumerable<ProductToCategoryDto>>(prodCats);
     }
 }

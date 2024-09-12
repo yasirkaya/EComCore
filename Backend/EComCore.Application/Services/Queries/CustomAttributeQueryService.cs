@@ -1,5 +1,6 @@
 using AutoMapper;
 using EComCore.Domain.DTOs.AttributeDTO;
+using EComCore.Domain.Extensions;
 using EComCore.Domain.Repositories;
 using EComCore.Domain.Services.Queries;
 
@@ -24,10 +25,8 @@ public class CustomAttributeQueryService : ICustomAttributeQueryService
     public async Task<CustomAttributeDto> GetByIdAsync(int id)
     {
         var attribute = await _attributeRepository.GetByIdAsync(id);
-        if (attribute == null)
-        {
-            throw new Exception($"Attribute with Id {id} not found.");
-        }
+        await attribute.EnsureNotNullAsync(id: id);
+
         return _mapper.Map<CustomAttributeDto>(attribute);
     }
 }

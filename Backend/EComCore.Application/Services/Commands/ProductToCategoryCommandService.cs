@@ -1,6 +1,7 @@
 using AutoMapper;
 using EComCore.Domain.DTOs.ProductToCategoryDTO;
 using EComCore.Domain.Entities;
+using EComCore.Domain.Extensions;
 using EComCore.Domain.Repositories;
 using EComCore.Domain.Services.Commands;
 using Microsoft.IdentityModel.Tokens;
@@ -27,30 +28,24 @@ public class ProductToCategoryCommandService : IProductToCategoryCommandService
     public async Task DeleteAsync(DeleteProductToCategoryDto dto)
     {
         var prodCat = await _productToCategoryRepository.GetByIdAsync(dto.Id);
-        if (prodCat == null)
-        {
-            throw new Exception($"ProductToCategory with Id {dto.Id} not found.");
-        }
+        await prodCat.EnsureNotNullAsync(id: dto.Id);
+
         await _productToCategoryRepository.DeleteAsync(prodCat); ;
     }
 
     public async Task DeleteProductFromCategoriesAsync(int productId)
     {
         var prodCats = await _productToCategoryRepository.GetByProductIdAsync(productId);
-        if (prodCats.IsNullOrEmpty())
-        {
-            throw new ArgumentException("Product list cannot be null or empty.");
-        }
+        await prodCats.EnsureNotNullOrEmptyAsync(message: "Product list cannot be null or empty.");
+
         await _productToCategoryRepository.DeleteByProductIdAsync(prodCats);
     }
 
     public async Task UpdateAsync(UpdateProductToCategoryDto dto)
     {
         var prodCat = await _productToCategoryRepository.GetByIdAsync(dto.Id);
-        if (prodCat == null)
-        {
-            throw new Exception($"ProductToCategory with Id {dto.Id} not found.");
-        }
+        await prodCat.EnsureNotNullAsync(id: dto.Id);
+
         _mapper.Map(dto, prodCat);
         await _productToCategoryRepository.UpdateAsync(prodCat);
     }

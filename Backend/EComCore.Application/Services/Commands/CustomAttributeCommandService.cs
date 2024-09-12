@@ -1,6 +1,7 @@
 using AutoMapper;
 using EComCore.Domain.DTOs.AttributeDTO;
 using EComCore.Domain.Entities;
+using EComCore.Domain.Extensions;
 using EComCore.Domain.Repositories;
 using EComCore.Domain.Services.Commands;
 
@@ -26,10 +27,7 @@ public class CustomAttributeCommandService : ICustomAttributeCommandService
     public async Task DeleteAsync(DeleteAttributeDto dto)
     {
         var attribute = await _attributeRepository.GetByIdAsync(dto.Id);
-        if (attribute == null)
-        {
-            throw new Exception($"Attribute with Id {dto.Id} not found.");
-        }
+        await attribute.EnsureNotNullAsync(id: dto.Id);
 
         await _attributeRepository.DeleteAsync(attribute);
     }
@@ -37,10 +35,8 @@ public class CustomAttributeCommandService : ICustomAttributeCommandService
     public async Task UpdateAsync(UpdateAttributeDto dto)
     {
         var attribute = await _attributeRepository.GetByIdAsync(dto.Id);
-        if (attribute == null)
-        {
-            throw new Exception($"Attribute with Id {dto.Id} not found.");
-        }
+        await attribute.EnsureNotNullAsync(id: dto.Id);
+
         _mapper.Map(dto, attribute);
         await _attributeRepository.UpdateAsync(attribute);
 
