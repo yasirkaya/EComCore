@@ -4,7 +4,7 @@ public class Order
 {
     public int Id { get; set; }
     public int MemberId { get; set; }
-    public Member Member { get; set; }
+    public User User { get; set; }
     public string SessionId { get; set; }
     public string Email { get; set; }
     public decimal TotalAmount { get; set; }
