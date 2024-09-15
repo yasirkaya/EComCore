@@ -11,7 +11,7 @@ public class EComCoreDbContext : DbContext
     }
 
 
-    public DbSet<User> Users { get; set; }
+    public DbSet<Member> Members { get; set; }
     public DbSet<Address> Addresses { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<Order> Orders { get; set; }
@@ -111,9 +111,9 @@ public class EComCoreDbContext : DbContext
 
         });
 
-        modelBuilder.Entity<User>(entity =>
+        modelBuilder.Entity<Member>(entity =>
         {
-            entity.ToTable("Users");
+            entity.ToTable("Members");
 
             entity.HasKey(m => m.Id);
 
@@ -148,11 +148,11 @@ public class EComCoreDbContext : DbContext
                 .IsRequired(false);
 
             entity.HasMany(m => m.Orders)
-                .WithOne(o => o.User)
+                .WithOne(o => o.Member)
                 .HasForeignKey(o => o.MemberId);
 
             entity.HasMany(m => m.Reviews)
-                .WithOne(r => r.User)
+                .WithOne(r => r.Member)
                 .HasForeignKey(r => r.MemberId);
         });
 
@@ -433,7 +433,7 @@ public class EComCoreDbContext : DbContext
             entity.Property(sc => sc.CreatedAt)
                 .IsRequired();
 
-            entity.HasOne(sc => sc.User)
+            entity.HasOne(sc => sc.Member)
                 .WithOne(m => m.ShoppingCart)
                 .HasForeignKey<ShoppingCart>(sc => sc.MemberId)
                 .IsRequired(false)

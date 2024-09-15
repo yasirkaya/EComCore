@@ -1,6 +1,6 @@
 namespace EComCore.Domain.Entities;
 
-public class User
+public class Member
 {
     public int Id { get; set; }
     public string FirstName { get; set; }
