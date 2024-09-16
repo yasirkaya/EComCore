@@ -11,7 +11,9 @@ using EComCore.Domain.DTOs.CategoryDTO;
 using EComCore.Domain.DTOs.ProductDTO;
 using EComCore.Domain.DTOs.ProductToAttributeDTO;
 using EComCore.Domain.DTOs.ProductToCategoryDTO;
+using EComCore.Domain.DTOs.UserDTO;
 using EComCore.Domain.Entities;
+using EComCore.Domain.Extensions;
 
 namespace EComCore.Application.Mappers;
 
@@ -88,6 +90,13 @@ public class MappingProfile : Profile
             .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         CreateMap<DeleteProductToCategoryCommand, DeleteProductToCategoryDto>();
         CreateMap<ProductToCategory, ProductToCategoryDto>();
+
+        //User
+        CreateMap<CreateUserDto, User>()
+            .ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => PasswordHashExtensions.HashPassword(src.Password)))
+            .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
+            .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => true));
+        CreateMap<User, AuthenticatedUserDto>();
 
     }
 }
