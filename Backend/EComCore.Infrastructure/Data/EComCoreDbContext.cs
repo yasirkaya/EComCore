@@ -26,6 +26,11 @@ public class EComCoreDbContext : DbContext
     public DbSet<CustomAttribute> Attributes { get; set; }
     public DbSet<AttributeValue> AttributeValues { get; set; }
     public DbSet<ProductToAttribute> ProductToAttributes { get; set; }
+    public DbSet<User> Users { get; set; }
+    public DbSet<Role> Roles { get; set; }
+    public DbSet<UserRole> UserRoles { get; set; }
+    public DbSet<Permission> Permissions { get; set; }
+    public DbSet<RolePermission> RolePermissions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -154,6 +159,10 @@ public class EComCoreDbContext : DbContext
             entity.HasMany(m => m.Reviews)
                 .WithOne(r => r.Member)
                 .HasForeignKey(r => r.MemberId);
+
+            entity.HasOne(m => m.User)
+                .WithOne()
+                .HasForeignKey<Member>(m => m.UserId);
         });
 
         modelBuilder.Entity<Order>(entity =>
@@ -461,6 +470,81 @@ public class EComCoreDbContext : DbContext
                 .WithMany()
                 .HasForeignKey(sci => sci.ProductId)
                 .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.ToTable("Users");
+
+            entity.HasKey(u => u.Id);
+
+            entity.HasIndex(u => u.Email).IsUnique();
+
+            entity.HasIndex(u => u.Username).IsUnique();
+
+            entity.Property(u => u.Username)
+                .HasMaxLength(20)
+                .IsRequired();
+
+            entity.Property(u => u.Email)
+                .IsRequired();
+
+            entity.Property(u => u.CreatedAt)
+                .IsRequired();
+
+        });
+
+        modelBuilder.Entity<Role>(entity =>
+        {
+            entity.ToTable("Roles");
+
+            entity.HasKey(r => r.Id);
+
+            entity.Property(r => r.Name)
+                .IsRequired();
+
+            entity.Property(r => r.CreatedAt)
+                .IsRequired();
+        });
+
+        modelBuilder.Entity<UserRole>(entity =>
+        {
+            entity.ToTable("UserRoles");
+
+            entity.HasKey(ur => ur.Id);
+
+            entity.HasOne(ur => ur.Role)
+                .WithMany()
+                .HasForeignKey(ur => ur.RoleId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(ur => ur.User)
+                .WithMany(u => u.UserRoles)
+                .HasForeignKey(ur => ur.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<Permission>(entity =>
+        {
+            entity.HasKey(p => p.Id);
+
+            entity.Property(p => p.Name)
+                .IsRequired();
+        });
+
+        modelBuilder.Entity<RolePermission>(entity =>
+        {
+            entity.HasKey(rp => rp.Id);
+
+            entity.HasOne(rp => rp.Role)
+            .WithMany(r => r.RolePermissions)
+            .HasForeignKey(rp => rp.RoleId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(rp => rp.Permission)
+            .WithMany()
+            .HasForeignKey(rp => rp.PermissionId)
+            .OnDelete(DeleteBehavior.Restrict);
         });
     }
 }
