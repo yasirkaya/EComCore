@@ -17,4 +17,5 @@ public class UserRepository : Repository<User>, IUserRepository
     {
         return await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
     }
+
 }

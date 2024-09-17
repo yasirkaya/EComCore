@@ -96,7 +96,9 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => PasswordHashExtensions.HashPassword(src.Password)))
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
             .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => true));
-        CreateMap<User, AuthenticatedUserDto>();
+        CreateMap<User, AuthenticatedUserDto>()
+            .ForMember(dest => dest.Token, opt => opt.Ignore());
+
 
     }
 }
