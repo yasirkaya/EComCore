@@ -14,6 +14,8 @@ using EComCore.Application.CustomAttributeOperations.Queries;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using EComCore.Domain.Services.Shared;
+using EComCore.Application.Services.Shared;
 
 namespace EComCore.API;
 
@@ -35,6 +37,7 @@ public class Program
         builder.Services.AddScoped<IProductRepository, ProductRepository>();
         builder.Services.AddScoped<IProductToAttributeRepository, ProductToAttributeRepository>();
         builder.Services.AddScoped<IProductToCategoryRepository, ProductToCategoryRepository>();
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
 
         builder.Services.AddScoped<ICategoryCommandService, CategoryCommandService>();
         builder.Services.AddScoped<ICategoryQueryService, CategoryQueryService>();
@@ -48,6 +51,10 @@ public class Program
         builder.Services.AddScoped<IProductToAttributeQueryService, ProductToAttributeQueryService>();
         builder.Services.AddScoped<IProductToCategoryCommandService, ProductToCategoryCommandService>();
         builder.Services.AddScoped<IProductToCategoryQueryService, ProductToCategoryQueryService>();
+        builder.Services.AddScoped<IUserCommandService, UserCommandService>();
+
+
+        builder.Services.AddScoped<IJwtService, JwtService>();
 
 
 
@@ -57,7 +64,7 @@ public class Program
         builder.Services.AddSwaggerGen();
 
         var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-        var secretKey = jwtSettings["SecretKey"];
+        var secretKey = jwtSettings["Secret"];
 
         builder.Services.AddAuthentication(options =>
         {

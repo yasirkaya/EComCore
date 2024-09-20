@@ -1,6 +1,7 @@
 using EComCore.Application.CategoryOperations.Commands;
 using EComCore.Application.CategoryOperations.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EComCore.API.Controllers;
@@ -14,6 +15,7 @@ public class CategoriesController : ControllerBase
     {
         _mediator = mediator;
     }
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetCategories()
     {

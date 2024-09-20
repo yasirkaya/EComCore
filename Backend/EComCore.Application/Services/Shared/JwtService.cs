@@ -3,12 +3,13 @@ using System.Security.Claims;
 using System.Text;
 using EComCore.Domain.DTOs.UserDTO;
 using EComCore.Domain.Entities;
+using EComCore.Domain.Services.Shared;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace EComCore.Application.Services.Shared;
 
-public class JwtService
+public class JwtService : IJwtService
 {
     private readonly IConfiguration _configuration;
 
@@ -22,7 +23,7 @@ public class JwtService
         var secretKey = _configuration["JwtSettings:Secret"];
         var issuer = _configuration["JwtSettings:Issuer"];
         var audience = _configuration["JwtSettings:Audience"];
-        var expiration = int.Parse(_configuration["JwtSettings:ExpirationMinutes"]);
+        var expiration = int.Parse(_configuration["JwtSettings:ExpiryMinutes"]);
 
         var claims = new[]
         {
