@@ -38,6 +38,7 @@ public class Program
         builder.Services.AddScoped<IProductToAttributeRepository, ProductToAttributeRepository>();
         builder.Services.AddScoped<IProductToCategoryRepository, ProductToCategoryRepository>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 
         builder.Services.AddScoped<ICategoryCommandService, CategoryCommandService>();
         builder.Services.AddScoped<ICategoryQueryService, CategoryQueryService>();
@@ -52,6 +53,8 @@ public class Program
         builder.Services.AddScoped<IProductToCategoryCommandService, ProductToCategoryCommandService>();
         builder.Services.AddScoped<IProductToCategoryQueryService, ProductToCategoryQueryService>();
         builder.Services.AddScoped<IUserCommandService, UserCommandService>();
+        //builder.Services.AddScoped<IUserQueryService, UserQueryService>();
+        builder.Services.AddScoped<IRoleQueryService, RoleQueryService>();
 
 
         builder.Services.AddScoped<IJwtService, JwtService>();
