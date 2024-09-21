@@ -13,6 +13,7 @@ using EComCore.Domain.DTOs.ProductDTO;
 using EComCore.Domain.DTOs.ProductToAttributeDTO;
 using EComCore.Domain.DTOs.ProductToCategoryDTO;
 using EComCore.Domain.DTOs.UserDTO;
+using EComCore.Domain.DTOs.UserRoleDTO;
 using EComCore.Domain.Entities;
 using EComCore.Domain.Extensions;
 
@@ -102,6 +103,16 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Token, opt => opt.Ignore());
         CreateMap<LoginUserCommand, LoginDto>();
         CreateMap<DeleteUserCommand, DeleteUserDto>();
+
+        //UserRole
+        CreateMap<CreateUserRoleDto, UserRole>();
+        CreateMap<UserRole, UserRoleDetailsDto>()
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.Username))
+            .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.Name))
+            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email));
+        CreateMap<UserRole, UserDetailsDto>()
+            .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username))
+            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email));
 
 
 
