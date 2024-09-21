@@ -103,6 +103,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Token, opt => opt.Ignore());
         CreateMap<LoginUserCommand, LoginDto>();
         CreateMap<DeleteUserCommand, DeleteUserDto>();
+        CreateMap<User, UserDetailsDto>();
 
         //UserRole
         CreateMap<CreateUserRoleDto, UserRole>();

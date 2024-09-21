@@ -1,3 +1,4 @@
+using System.IO.Compression;
 using EComCore.Domain.Entities;
 using EComCore.Domain.Repositories;
 using EComCore.Infrastructure.Data;
@@ -16,6 +17,16 @@ public class UserRepository : Repository<User>, IUserRepository
     public async Task<User> GetByEmailAsync(string email)
     {
         return await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
+    }
+
+    public async Task<IEnumerable<User>> GetAllActiveUsersAsync()
+    {
+        return await _context.Users.Where(u => u.IsActive).ToListAsync();
+    }
+
+    public async Task<User> GetByIdActiveAsync(int id)
+    {
+        return await _context.Users.FirstOrDefaultAsync(u => u.Id == id && u.IsActive);
     }
 
 }
