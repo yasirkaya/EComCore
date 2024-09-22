@@ -20,15 +20,6 @@ public class UsersController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginUserCommand command)
-    {
-
-        var result = await _mediator.Send(command);
-        return Ok(result);
-
-    }
-
     [HttpPut("delete/{id}")]
     public async Task<IActionResult> Delete(int id)
     {

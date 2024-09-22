@@ -3,7 +3,7 @@ using EComCore.Domain.DTOs.UserDTO;
 using EComCore.Domain.Services.Commands;
 using MediatR;
 
-namespace EComCore.Application.UserOperations.Commands;
+namespace EComCore.Application.AuthOperations.Commands;
 
 public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, AuthenticatedUserDto>
 {

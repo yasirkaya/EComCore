@@ -15,7 +15,7 @@ public class CategoriesController : ControllerBase
     {
         _mediator = mediator;
     }
-    [Authorize]
+
     [HttpGet]
     public async Task<IActionResult> GetCategories()
     {
@@ -38,6 +38,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryCommand command)
     {
         var result = await _mediator.Send(command);
@@ -45,6 +46,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateCategory(int id, [FromBody] UpdateCategoryCommand command)
     {
         await _mediator.Send(command);
@@ -52,6 +54,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteCategory(int id)
     {
         await _mediator.Send(new DeleteCategoryCommand { Id = id });

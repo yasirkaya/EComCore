@@ -1,7 +1,7 @@
 using EComCore.Domain.DTOs.UserDTO;
 using MediatR;
 
-namespace EComCore.Application.UserOperations.Commands;
+namespace EComCore.Application.AuthOperations.Commands;
 
 public class LoginUserCommand : IRequest<AuthenticatedUserDto>
 {

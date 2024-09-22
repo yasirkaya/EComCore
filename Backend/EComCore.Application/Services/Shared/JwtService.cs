@@ -25,7 +25,7 @@ public class JwtService : IJwtService
         _userRoleRepository = userRoleRepository;
     }
 
-    public async Task<AuthTokenDto> GenerateToken(LoginDto dto)
+    public async Task<AuthTokenDto> GenerateTokenAsync(LoginDto dto)
     {
         var secretKey = _configuration["JwtSettings:Secret"];
         var issuer = _configuration["JwtSettings:Issuer"];

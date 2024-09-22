@@ -1,5 +1,6 @@
 using AutoMapper;
 using EComCore.Application.AttributeValueOperations.Commands;
+using EComCore.Application.AuthOperations.Commands;
 using EComCore.Application.CategoryOperations.Commands;
 using EComCore.Application.CustomAttributeOperations.Commands;
 using EComCore.Application.ProductOperations.Commands;
