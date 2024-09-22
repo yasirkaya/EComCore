@@ -1,4 +1,5 @@
 using System.IO.Compression;
+using System.Reflection;
 using EComCore.Domain.Entities;
 using EComCore.Domain.Repositories;
 using EComCore.Infrastructure.Data;

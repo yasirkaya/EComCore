@@ -47,4 +47,13 @@ public class UserRoleRepository : Repository<UserRole>, IUserRoleRepository
             .AnyAsync(x => x.UserId == userId && x.RoleId == roleId);
     }
 
+    public async Task<IEnumerable<string>> GetUserRolesAsync(int id)
+    {
+        return await _context.Users
+        .Where(x => x.Id == id)
+        .SelectMany(u => u.UserRoles.Select(ur => ur.Role.Name))
+        .ToListAsync();
+
+    }
+
 }

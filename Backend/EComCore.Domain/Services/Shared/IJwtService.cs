@@ -4,5 +4,5 @@ namespace EComCore.Domain.Services.Shared;
 
 public interface IJwtService
 {
-    string GenerateToken(LoginDto dto);
+    Task<AuthTokenDto> GenerateToken(LoginDto dto);
 }

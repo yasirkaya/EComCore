@@ -45,7 +45,10 @@ public class UserCommandService : IUserCommandService
 
         var authUser = _mapper.Map<AuthenticatedUserDto>(user);
 
-        authUser.Token = _jwtService.GenerateToken(loginDto);
+        var authToken = await _jwtService.GenerateToken(loginDto);
+
+        authUser.Token = authToken.Token;
+        authUser.RefreshToken = authToken.RefreshToken;
 
         return authUser;
     }
