@@ -1,6 +1,7 @@
 using EComCore.Application.CustomAttributeOperations.Commands;
 using EComCore.Application.CustomAttributeOperations.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EComCore.API.Controllers;
@@ -29,6 +30,7 @@ public class CustomAttributeController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateCustomAttribute(CreateCustomAttributeCommand command)
     {
         var result = await _mediator.Send(command);
@@ -36,6 +38,7 @@ public class CustomAttributeController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateCustomAttribute(int id, [FromBody] UpdateCustomAttributeCommand command)
     {
         await _mediator.Send(command);
@@ -43,6 +46,7 @@ public class CustomAttributeController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteCustomAttribute(int id)
     {
         await _mediator.Send(new DeleteCustomAttributeCommand { Id = id });

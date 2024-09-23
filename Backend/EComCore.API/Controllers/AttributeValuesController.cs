@@ -1,6 +1,7 @@
 using EComCore.Application.AttributeValueOperations.Commands;
 using EComCore.Application.AttributeValueOperations.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EComCore.API.Controllers;
@@ -36,6 +37,7 @@ public class AttributeValuesController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Post([FromBody] CreateAttributeValueCommand command)
     {
         var result = await _mediator.Send(command);
@@ -43,6 +45,7 @@ public class AttributeValuesController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Put(int id, [FromBody] UpdateAttributeValueCommand command)
     {
         await _mediator.Send(command);
@@ -50,6 +53,7 @@ public class AttributeValuesController : ControllerBase
     }
 
     [HttpDelete("id")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int id)
     {
         await _mediator.Send(new DeleteAttributeValueCommand { Id = id });
@@ -57,6 +61,7 @@ public class AttributeValuesController : ControllerBase
     }
 
     [HttpDelete("attribute/{attributeId}/values")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteRange(int attributeId)
     {
         await _mediator.Send(new DeleteByAttributeIdCommand { AttributeId = attributeId });

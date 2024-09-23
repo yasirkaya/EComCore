@@ -1,6 +1,7 @@
 using EComCore.Application.ProductToAttributeOperations.Commands;
 using EComCore.Application.ProductToAttributeOperations.Commands.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EComCore.API.Controllers;
@@ -29,6 +30,7 @@ public class ProductToAttributeController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Post([FromBody] CreateProductToAttributeCommand command)
     {
         var result = await _mediator.Send(command);
@@ -36,6 +38,7 @@ public class ProductToAttributeController : ControllerBase
     }
 
     [HttpPost("attributes")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> AddAttributesToProduct([FromBody] AddAttributesToProductCommand command)
     {
         await _mediator.Send(command);
@@ -43,6 +46,7 @@ public class ProductToAttributeController : ControllerBase
     }
 
     [HttpPut("id")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Put(int id, [FromBody] UpdateProductToAttributeCommand command)
     {
         command.Id = id;
@@ -51,6 +55,7 @@ public class ProductToAttributeController : ControllerBase
     }
 
     [HttpDelete("id")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int id)
     {
         await _mediator.Send(new DeleteProductToAttributeCommand { Id = id });
@@ -58,6 +63,7 @@ public class ProductToAttributeController : ControllerBase
     }
 
     [HttpDelete("products/{productId}/attributes")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteAttributesByProductId(int productId)
     {
         await _mediator.Send(new DeleteAttributesByProductIdCommand { ProductId = productId });

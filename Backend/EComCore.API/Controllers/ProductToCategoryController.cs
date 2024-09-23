@@ -2,6 +2,7 @@ using EComCore.Application.ProductToAttributeOperations.Commands.Queries;
 using EComCore.Application.ProductToCategoryOperations.Commands;
 using EComCore.Application.ProductToCategoryOperations.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EComCore.API.Controllers;
@@ -37,6 +38,7 @@ public class ProductToCategoryController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Post([FromBody] CreateProductToCategoryCommand command)
     {
         var result = await _mediator.Send(command);
@@ -44,6 +46,7 @@ public class ProductToCategoryController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Put(int id, [FromBody] UpdateProductToCategoryCommand command)
     {
         command.Id = id;
@@ -52,6 +55,7 @@ public class ProductToCategoryController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int id)
     {
         await _mediator.Send(new DeleteProductToCategoryCommand { Id = id });
@@ -59,6 +63,7 @@ public class ProductToCategoryController : ControllerBase
     }
 
     [HttpDelete("products/{productId}/categories")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteByProductId(int productId)
     {
         await _mediator.Send(new DeleteProductFromCategoriesCommand { ProductId = productId });

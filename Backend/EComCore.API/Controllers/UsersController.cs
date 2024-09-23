@@ -1,5 +1,6 @@
 using EComCore.Application.UserOperations.Commands;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EComCore.API.Controllers;
@@ -21,6 +22,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPut("delete/{id}")]
+    [Authorize]
     public async Task<IActionResult> Delete(int id)
     {
         await _mediator.Send(new DeleteUserCommand { Id = id });
