@@ -30,4 +30,8 @@ public class UserRepository : Repository<User>, IUserRepository
         return await _context.Users.FirstOrDefaultAsync(u => u.Id == id && u.IsActive);
     }
 
+    public async Task<User> GetByRefreshTokenAsync(string refreshToken)
+    {
+        return await _context.Users.FirstOrDefaultAsync(x => x.RefreshToken == refreshToken);
+    }
 }

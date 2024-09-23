@@ -9,6 +9,7 @@ using EComCore.Application.ProductToCategoryOperations.Commands;
 using EComCore.Application.UserOperations.Commands;
 using EComCore.Domain.DTOs.AttributeDTO;
 using EComCore.Domain.DTOs.AttributeValueDTO;
+using EComCore.Domain.DTOs.AuthDTO;
 using EComCore.Domain.DTOs.CategoryDTO;
 using EComCore.Domain.DTOs.ProductDTO;
 using EComCore.Domain.DTOs.ProductToAttributeDTO;
@@ -116,7 +117,8 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username))
             .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email));
 
-
+        //Auth
+        CreateMap<User, RefreshTokenResponseDto>();
 
     }
 }

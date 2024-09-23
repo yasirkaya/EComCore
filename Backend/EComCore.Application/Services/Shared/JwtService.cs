@@ -25,15 +25,15 @@ public class JwtService : IJwtService
         _userRoleRepository = userRoleRepository;
     }
 
-    public async Task<AuthTokenDto> GenerateTokenAsync(LoginDto dto)
+    public async Task<AuthTokenDto> GenerateTokenAsync(string email)
     {
         var secretKey = _configuration["JwtSettings:Secret"];
         var issuer = _configuration["JwtSettings:Issuer"];
         var audience = _configuration["JwtSettings:Audience"];
         var expiration = int.Parse(_configuration["JwtSettings:ExpiryMinutes"]);
 
-        var user = await _userRepository.GetByEmailAsync(dto.Email);
-        await user.EnsureNotNullAsync(message: $"User with Email {dto.Email} not found");
+        var user = await _userRepository.GetByEmailAsync(email);
+        await user.EnsureNotNullAsync(message: $"User with Email {email} not found");
 
         if (user.RefreshTokenExpiryTime > DateTime.UtcNow || user.RefreshTokenExpiryTime == null)
         {
@@ -44,7 +44,7 @@ public class JwtService : IJwtService
 
         var claims = new List<Claim>
         {
-            new Claim(JwtRegisteredClaimNames.Email, dto.Email),
+            new Claim(JwtRegisteredClaimNames.Email, email),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 

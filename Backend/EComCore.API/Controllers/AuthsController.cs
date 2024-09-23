@@ -1,6 +1,7 @@
 using EComCore.Application.AuthOperations.Commands;
 using EComCore.Domain.DTOs.AuthDTO;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EComCore.API.Controllers;
@@ -18,6 +19,15 @@ public class AuthsController : ControllerBase
     public async Task<IActionResult> Login([FromBody] LoginUserCommand command)
     {
 
+        var result = await _mediator.Send(command);
+        return Ok(result);
+
+    }
+
+    [Authorize]
+    [HttpPost("refresh")]
+    public async Task<IActionResult> Refresh([FromBody] RefreshTokenCommand command)
+    {
         var result = await _mediator.Send(command);
         return Ok(result);
 

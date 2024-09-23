@@ -1,4 +1,5 @@
 using AutoMapper;
+using EComCore.Domain.DTOs.AuthDTO;
 using EComCore.Domain.DTOs.UserDTO;
 using EComCore.Domain.Extensions;
 using EComCore.Domain.Repositories;
@@ -36,6 +37,14 @@ public class UserQueryService : IUserQueryService
     {
         var user = await _userRepository.GetByIdActiveAsync(id);
         await user.EnsureNotNullAsync(id: id);
+
+        return _mapper.Map<UserDetailsDto>(user);
+    }
+
+    public async Task<UserDetailsDto> GetByRefreshTokenAsync(string refreshToken)
+    {
+        var user = await _userRepository.GetByRefreshTokenAsync(refreshToken);
+        await user.EnsureNotNullAsync(message: $"User with RefreshToken not found");
 
         return _mapper.Map<UserDetailsDto>(user);
     }
