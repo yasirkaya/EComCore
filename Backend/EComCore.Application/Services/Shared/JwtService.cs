@@ -37,7 +37,7 @@ public class JwtService : IJwtService
 
         if (user.RefreshTokenExpiryTime > DateTime.UtcNow || user.RefreshTokenExpiryTime == null)
         {
-            user.RefreshToken = await GenerateRefreshToken();
+            user.RefreshToken = await GenerateRefreshTokenAsync();
             user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
             await _userRepository.UpdateAsync(user);
         }
@@ -74,7 +74,7 @@ public class JwtService : IJwtService
         };
     }
 
-    private async Task<string> GenerateRefreshToken()
+    private async Task<string> GenerateRefreshTokenAsync()
     {
         var randomNumber = new byte[32];
 

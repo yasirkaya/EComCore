@@ -8,4 +8,5 @@ public interface IUserCommandService
     Task<int> RegisterAsync(CreateUserDto createUserDto);
     Task<AuthenticatedUserDto> LoginAsync(LoginDto loginDto);
     Task DeleteUserAsync(DeleteUserDto dto);
+    Task LogoutAsync(string email);
 }

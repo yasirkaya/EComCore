@@ -1,4 +1,6 @@
+using System.Security.Claims;
 using EComCore.Application.UserOperations.Commands;
+using EComCore.Application.UserOperations.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +29,22 @@ public class UsersController : ControllerBase
     {
         await _mediator.Send(new DeleteUserCommand { Id = id });
         return Ok();
+    }
+
+    [Authorize]
+    [HttpGet("me")]
+    public async Task<IActionResult> Get()
+    {
+        var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+
+        if (userEmail == null)
+        {
+            return Unauthorized();
+        }
+
+        var result = await _mediator.Send(new GetCurrentUserQuery { Email = userEmail });
+
+        return Ok(result);
     }
 
 }

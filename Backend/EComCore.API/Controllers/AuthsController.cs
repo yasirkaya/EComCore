@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using EComCore.Application.AuthOperations.Commands;
 using EComCore.Domain.DTOs.AuthDTO;
 using MediatR;
@@ -32,4 +33,21 @@ public class AuthsController : ControllerBase
         return Ok(result);
 
     }
+
+    [Authorize]
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout()
+    {
+        var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+
+        if (userEmail == null)
+        {
+            return BadRequest("Email address not found. Please log in.");
+        }
+
+        await _mediator.Send(new LogoutUserCommand { Email = userEmail });
+
+        return Ok(new { message = "Logout successful." });
+    }
+
 }

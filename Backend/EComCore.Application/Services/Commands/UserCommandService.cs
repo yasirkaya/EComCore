@@ -71,4 +71,13 @@ public class UserCommandService : IUserCommandService
         return user.Id;
     }
 
+    public async Task LogoutAsync(string email)
+    {
+        var user = await _userRepository.GetByEmailAsync(email);
+        await user.EnsureNotNullAsync(message: "Geçersiz Kimlik Bilgileri.");
+
+        user.RefreshToken = null;
+        await _userRepository.UpdateAsync(user);
+    }
+
 }
