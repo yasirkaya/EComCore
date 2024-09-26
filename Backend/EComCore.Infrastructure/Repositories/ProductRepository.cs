@@ -1,5 +1,6 @@
 using EComCore.Domain.Entities;
 using EComCore.Domain.Repositories;
+using EComCore.Domain.Shared.RequestFeatures;
 using EComCore.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,9 +14,14 @@ public class ProductRepository : Repository<Product>, IProductRepository
         _context = context;
     }
 
-    public override async Task<IEnumerable<Product>> GetAllAsync()
+    public async Task<IEnumerable<Product>> GetAllAsync(ProductParameters productParameters)
     {
-        return await _context.Products.Where(e => !e.IsDeleted).ToListAsync();
+        return await _context.Products
+            .Where(p => !p.IsDeleted)
+            .OrderBy(p => p.Name)
+            .Skip((productParameters.PageNumber - 1) * productParameters.PageSize)
+            .Take(productParameters.PageSize)
+            .ToListAsync();
     }
 
     public override async Task<Product> GetByIdAsync(int id)
@@ -23,9 +29,13 @@ public class ProductRepository : Repository<Product>, IProductRepository
         return await _context.Products.Where(e => !e.IsDeleted).FirstOrDefaultAsync();
     }
 
-    public async Task<IEnumerable<Product>> GetAllwithDeletedAsync()
+    public async Task<IEnumerable<Product>> GetAllwithDeletedAsync(ProductParameters productParameters)
     {
-        return await _context.Products.ToListAsync();
+        return await _context.Products
+            .OrderBy(p => p.Name)
+            .Skip((productParameters.PageNumber - 1) * productParameters.PageSize)
+            .Take(productParameters.PageSize)
+            .ToListAsync();
     }
 
 }

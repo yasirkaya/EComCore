@@ -3,6 +3,7 @@ using EComCore.Domain.DTOs.ProductDTO;
 using EComCore.Domain.Extensions;
 using EComCore.Domain.Repositories;
 using EComCore.Domain.Services.Queries;
+using EComCore.Domain.Shared.RequestFeatures;
 
 namespace EComCore.Application.CustomAttributeOperations.Queries;
 
@@ -41,9 +42,9 @@ public class ProductQueryService : IProductQueryService
         return false;
     }
 
-    public async Task<IEnumerable<ProductDto>> GetAllAsync()
+    public async Task<IEnumerable<ProductDto>> GetAllAsync(ProductParameters productParameters)
     {
-        var products = await _productRepository.GetAllAsync();
+        var products = await _productRepository.GetAllAsync(productParameters);
         return _mapper.Map<IEnumerable<ProductDto>>(products);
     }
 

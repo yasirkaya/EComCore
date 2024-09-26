@@ -1,5 +1,6 @@
 using EComCore.Application.ProductOperations.Commands;
 using EComCore.Application.ProductOperations.Queries;
+using EComCore.Domain.Shared.RequestFeatures;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,9 +16,9 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> Get([FromQuery] ProductParameters productParameters)
     {
-        var result = await _mediator.Send(new GetProductsQuery());
+        var result = await _mediator.Send(new GetProductsQuery(productParameters));
         return Ok(result);
     }
 
