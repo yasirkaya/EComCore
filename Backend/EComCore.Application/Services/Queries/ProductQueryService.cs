@@ -4,6 +4,7 @@ using EComCore.Domain.Extensions;
 using EComCore.Domain.Repositories;
 using EComCore.Domain.Services.Queries;
 using EComCore.Domain.Shared.RequestFeatures;
+using Microsoft.EntityFrameworkCore;
 
 namespace EComCore.Application.CustomAttributeOperations.Queries;
 
@@ -44,8 +45,51 @@ public class ProductQueryService : IProductQueryService
 
     public async Task<IEnumerable<ProductDto>> GetAllAsync(ProductParameters productParameters)
     {
-        var products = await _productRepository.GetAllAsync(productParameters);
-        return _mapper.Map<IEnumerable<ProductDto>>(products);
+
+        var products = _productRepository.GetQueryable();
+
+        if (productParameters.MinPrice.HasValue)
+        {
+            products = products.Where(p => p.Price >= productParameters.MinPrice.Value);
+        }
+
+        if (productParameters.MaxPrice.HasValue)
+        {
+            products = products.Where(p => p.Price <= productParameters.MaxPrice.Value);
+        }
+
+        if (productParameters.MinRating.HasValue)
+        {
+            products = products.Where(p => p.Rating >= productParameters.MinRating.Value);
+        }
+
+        if (productParameters.GroupId.HasValue)
+        {
+            products = products.Where(p => p.GroupId == productParameters.GroupId.Value);
+        }
+
+        if (productParameters.CreatedFrom.HasValue)
+        {
+            products = products.Where(p => p.CreatedAt >= productParameters.CreatedFrom.Value);
+        }
+
+        if (productParameters.CreatedTo.HasValue)
+        {
+            products = products.Where(p => p.CreatedAt <= productParameters.CreatedTo.Value);
+        }
+
+        if (productParameters.IncludeDeleted.HasValue && !productParameters.IncludeDeleted.Value)
+        {
+            products = products.Where(p => !p.IsDeleted);
+        }
+
+        var pagedProducts = await products
+            .OrderBy(p => p.Id)
+            .Skip((productParameters.PageNumber - 1) * productParameters.PageSize)
+            .Take(productParameters.PageSize)
+            .ToListAsync();
+
+        return _mapper.Map<IEnumerable<ProductDto>>(pagedProducts);
     }
 
     public async Task<ProductDto> GetByIdAsync(int id)
