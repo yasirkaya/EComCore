@@ -41,4 +41,9 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
         _dbSet.Update(entity);
         await _context.SaveChangesAsync();
     }
+
+    public IQueryable<TEntity> GetQueryable()
+    {
+        return _dbSet.AsQueryable().AsNoTracking();
+    }
 }

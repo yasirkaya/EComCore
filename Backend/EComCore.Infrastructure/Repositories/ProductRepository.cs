@@ -1,5 +1,6 @@
 using EComCore.Domain.Entities;
 using EComCore.Domain.Repositories;
+using EComCore.Domain.Shared.RequestFeatures;
 using EComCore.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,19 +14,9 @@ public class ProductRepository : Repository<Product>, IProductRepository
         _context = context;
     }
 
-    public override async Task<IEnumerable<Product>> GetAllAsync()
-    {
-        return await _context.Products.Where(e => !e.IsDeleted).ToListAsync();
-    }
-
     public override async Task<Product> GetByIdAsync(int id)
     {
         return await _context.Products.Where(e => !e.IsDeleted).FirstOrDefaultAsync();
-    }
-
-    public async Task<IEnumerable<Product>> GetAllwithDeletedAsync()
-    {
-        return await _context.Products.ToListAsync();
     }
 
 }

@@ -14,6 +14,6 @@ public class GetProductsByCategoryIdQueryHandler : IRequestHandler<GetProductsBy
 
     public async Task<IEnumerable<ProductToCategoryDto>> Handle(GetProductsByCategoryIdQuery request, CancellationToken cancellationToken)
     {
-        return await _productToCategoryQueryService.GetProductsByCategoryIdAsync(request.CategoryId);
+        return await _productToCategoryQueryService.GetProductsByCategoryIdAsync(request.CategoryId, request.ProductToCategoryParameters);
     }
 }

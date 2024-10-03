@@ -1,6 +1,7 @@
 using EComCore.Application.ProductToAttributeOperations.Commands.Queries;
 using EComCore.Application.ProductToCategoryOperations.Commands;
 using EComCore.Application.ProductToCategoryOperations.Queries;
+using EComCore.Domain.Shared.RequestFeatures;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,9 +32,9 @@ public class ProductToCategoryController : ControllerBase
     }
 
     [HttpGet("categories/{categoryId}/products")]
-    public async Task<IActionResult> GetProductsByCategoryId(int categoryId)
+    public async Task<IActionResult> GetProductsByCategoryId(int categoryId, [FromQuery] ProductToCategoryParameters productToCategoryParameters)
     {
-        var result = await _mediator.Send(new GetProductsByCategoryIdQuery { CategoryId = categoryId });
+        var result = await _mediator.Send(new GetProductsByCategoryIdQuery(productToCategoryParameters) { CategoryId = categoryId });
         return Ok(result);
     }
 

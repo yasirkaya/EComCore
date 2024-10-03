@@ -3,6 +3,7 @@ using EComCore.Domain.DTOs.ProductToCategoryDTO;
 using EComCore.Domain.Extensions;
 using EComCore.Domain.Repositories;
 using EComCore.Domain.Services.Queries;
+using EComCore.Domain.Shared.RequestFeatures;
 using Microsoft.IdentityModel.Tokens;
 
 namespace EComCore.Application.CustomAttributeOperations.Queries;
@@ -31,9 +32,9 @@ public class ProductToCategoryQueryService : IProductToCategoryQueryService
         return _mapper.Map<IEnumerable<ProductToCategoryDto>>(prodCats);
     }
 
-    public async Task<IEnumerable<ProductToCategoryDto>> GetProductsByCategoryIdAsync(int categoryId)
+    public async Task<IEnumerable<ProductToCategoryDto>> GetProductsByCategoryIdAsync(int categoryId, ProductToCategoryParameters productToCategoryParameters)
     {
-        var prodCats = await _productToCategoryRepository.GetByCategoryIdAsync(categoryId);
+        var prodCats = await _productToCategoryRepository.GetByCategoryIdAsync(categoryId, productToCategoryParameters);
         await prodCats.EnsureNotNullOrEmptyAsync($"Category with Id {categoryId} does not have any associated products.");
 
         return _mapper.Map<IEnumerable<ProductToCategoryDto>>(prodCats);
