@@ -6,9 +6,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EComCore.API.Controllers;
+
 [ApiController]
 [Route("api/[controller]")]
-public class ProductsController : ControllerBase
+public class ProductsController : BaseController
 {
     private readonly IMediator _mediator;
     public ProductsController(IMediator mediator)
@@ -53,5 +54,14 @@ public class ProductsController : ControllerBase
     {
         await _mediator.Send(new DeleteProductCommand { Id = id });
         return Ok();
+    }
+
+    [HttpPost("{id}/images")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> UploadProductImage(int id, IFormFile image)
+    {
+        var command = new UploadProductImageCommand { ProductId = id, Image = image };
+        var result = await _mediator.Send(command);
+        return Ok(result);
     }
 }
