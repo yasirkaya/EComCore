@@ -3,21 +3,41 @@ namespace EComCore.Domain.Entities;
 public class Order
 {
     public int Id { get; set; }
-    public int MemberId { get; set; }
-    public Member Member { get; set; }
-    public string SessionId { get; set; }
-    public string Email { get; set; }
+    public int UserId { get; set; }
+    public DateTime OrderDate { get; set; }
+    public OrderStatus Status { get; set; }
     public decimal TotalAmount { get; set; }
-    public int ShippingAddressId { get; set; }
-    public Address ShippingAddress { get; set; }
-    public int BillingAddressId { get; set; }
-    public Address BillingAddress { get; set; }
-    public string Status { get; set; }
-    public string PaymentStatus { get; set; }
-    public string? FailureReason { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime? UpdatedAt { get; set; }
-    public bool IsDeleted { get; set; }
-    public Shipment Shipment { get; set; }
-    public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+    public string ShippingAddress { get; set; }
+    public string BillingAddress { get; set; }
+    public PaymentStatus PaymentStatus { get; set; }
+    public List<OrderItem> Items { get; set; }
+    public User User { get; set; }
+}
+
+public class OrderItem
+{
+    public int Id { get; set; }
+    public int OrderId { get; set; }
+    public int ProductId { get; set; }
+    public int Quantity { get; set; }
+    public decimal Price { get; set; }
+    public Order Order { get; set; }
+    public Product Product { get; set; }
+}
+
+public enum OrderStatus
+{
+    Pending,
+    Processing,
+    Shipped,
+    Delivered,
+    Cancelled
+}
+
+public enum PaymentStatus
+{
+    Pending,
+    Completed,
+    Failed,
+    Refunded
 }
