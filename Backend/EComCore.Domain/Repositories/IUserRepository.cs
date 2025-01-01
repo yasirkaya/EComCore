@@ -8,4 +8,6 @@ public interface IUserRepository : IRepository<User>
     Task<IEnumerable<User>> GetAllActiveUsersAsync();
     Task<User> GetByIdActiveAsync(int id);
     Task<User> GetByRefreshTokenAsync(string refreshToken);
+    Task<User> GetByEmailVerificationTokenAsync(string token);
+    Task<User> GetByPasswordResetTokenAsync(string token);
 }

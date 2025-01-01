@@ -16,6 +16,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using EComCore.Domain.Services.Shared;
 using EComCore.Application.Services.Shared;
+using EComCore.Infrastructure.Services;
+using EComCore.Domain.Configurations;
 
 namespace EComCore.API;
 
@@ -31,6 +33,7 @@ public class Program
         builder.Services.AddAutoMapper(typeof(MappingProfile));
         builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateCategoryCommand).Assembly));
 
+        // Repository registrations
         builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
         builder.Services.AddScoped<IAttributeRepository, AttributeRepository>();
         builder.Services.AddScoped<IAttributeValueRepository, AttributeValueRepository>();
@@ -41,6 +44,7 @@ public class Program
         builder.Services.AddScoped<IRoleRepository, RoleRepository>();
         builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
 
+        // Service registrations
         builder.Services.AddScoped<ICategoryCommandService, CategoryCommandService>();
         builder.Services.AddScoped<ICategoryQueryService, CategoryQueryService>();
         builder.Services.AddScoped<ICustomAttributeCommandService, CustomAttributeCommandService>();
@@ -59,10 +63,11 @@ public class Program
         builder.Services.AddScoped<IUserRoleCommandService, UserRoleCommandService>();
         builder.Services.AddScoped<IUserRoleQueryService, UserRoleQueryService>();
 
-
         builder.Services.AddScoped<IJwtService, JwtService>();
+        builder.Services.AddScoped<IEmailService, EmailService>();
 
-
+        // Configure EmailService
+        builder.Services.Configure<EmailConfiguration>(builder.Configuration.GetSection("EmailSettings"));
 
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -106,8 +111,6 @@ public class Program
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
-        app.UseAuthorization();
-
 
         app.MapControllers();
 

@@ -13,11 +13,14 @@ public class UserCommandService : IUserCommandService
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
     private readonly IJwtService _jwtService;
-    public UserCommandService(IUserRepository userRepository, IMapper mapper, IJwtService jwtService)
+    private readonly IEmailService _emailService;
+
+    public UserCommandService(IUserRepository userRepository, IMapper mapper, IJwtService jwtService, IEmailService emailService)
     {
         _userRepository = userRepository;
         _mapper = mapper;
         _jwtService = jwtService;
+        _emailService = emailService;
     }
 
     public async Task DeleteUserAsync(DeleteUserDto dto)
@@ -80,4 +83,50 @@ public class UserCommandService : IUserCommandService
         await _userRepository.UpdateAsync(user);
     }
 
+    public async Task VerifyEmailAsync(string email, string token)
+    {
+        var user = await _userRepository.GetByEmailVerificationTokenAsync(token);
+        await user.EnsureNotNullAsync(message: "Geçersiz doğrulama token'ı.");
+
+        if (user.Email != email)
+        {
+            throw new Exception("Email adresi token ile eşleşmiyor.");
+        }
+
+        user.IsEmailVerified = true;
+        user.EmailVerificationToken = null;
+        await _userRepository.UpdateAsync(user);
+    }
+
+    public async Task ForgotPasswordAsync(string email)
+    {
+        var user = await _userRepository.GetByEmailAsync(email);
+        await user.EnsureNotNullAsync(message: "Bu email adresi ile kayıtlı kullanıcı bulunamadı.");
+
+        string resetToken = Guid.NewGuid().ToString();
+        user.PasswordResetToken = resetToken;
+        user.PasswordResetTokenExpiry = DateTime.UtcNow.AddHours(24);
+
+        await _userRepository.UpdateAsync(user);
+
+        // Email gönderme işlemi
+        await _emailService.SendPasswordResetEmailAsync(email, resetToken);
+    }
+
+    public async Task ResetPasswordAsync(string email, string token, string newPassword)
+    {
+        var user = await _userRepository.GetByPasswordResetTokenAsync(token);
+        await user.EnsureNotNullAsync(message: "Geçersiz veya süresi dolmuş token.");
+
+        if (user.Email != email)
+        {
+            throw new Exception("Email adresi token ile eşleşmiyor.");
+        }
+
+        user.PasswordHash = PasswordHashExtensions.HashPassword(newPassword);
+        user.PasswordResetToken = null;
+        user.PasswordResetTokenExpiry = null;
+
+        await _userRepository.UpdateAsync(user);
+    }
 }

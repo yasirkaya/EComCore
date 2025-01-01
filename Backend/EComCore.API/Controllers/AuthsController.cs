@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace EComCore.API.Controllers;
 [ApiController]
 [Route("api/[controller]")]
-public class AuthsController : ControllerBase
+public class AuthsController : BaseController
 {
     private readonly IMediator _mediator;
     public AuthsController(IMediator mediator)
@@ -48,6 +48,27 @@ public class AuthsController : ControllerBase
         await _mediator.Send(new LogoutUserCommand { Email = userEmail });
 
         return Ok(new { message = "Logout successful." });
+    }
+
+    [HttpPost("verify-email")]
+    public async Task<IActionResult> VerifyEmail([FromBody] VerifyEmailCommand command)
+    {
+        await _mediator.Send(command);
+        return Ok();
+    }
+
+    [HttpPost("forgot-password")]
+    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordCommand command)
+    {
+        await _mediator.Send(command);
+        return Ok();
+    }
+
+    [HttpPost("reset-password")]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand command)
+    {
+        await _mediator.Send(command);
+        return Ok();
     }
 
 }

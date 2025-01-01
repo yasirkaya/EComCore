@@ -17,7 +17,7 @@ public class UserRepository : Repository<User>, IUserRepository
 
     public async Task<User> GetByEmailAsync(string email)
     {
-        return await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
+        return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
     }
 
     public async Task<IEnumerable<User>> GetAllActiveUsersAsync()
@@ -32,6 +32,16 @@ public class UserRepository : Repository<User>, IUserRepository
 
     public async Task<User> GetByRefreshTokenAsync(string refreshToken)
     {
-        return await _context.Users.FirstOrDefaultAsync(x => x.RefreshToken == refreshToken);
+        return await _context.Users.FirstOrDefaultAsync(u => u.RefreshToken == refreshToken);
+    }
+
+    public async Task<User> GetByEmailVerificationTokenAsync(string token)
+    {
+        return await _context.Users.FirstOrDefaultAsync(u => u.EmailVerificationToken == token);
+    }
+
+    public async Task<User> GetByPasswordResetTokenAsync(string token)
+    {
+        return await _context.Users.FirstOrDefaultAsync(u => u.PasswordResetToken == token && u.PasswordResetTokenExpiry > DateTime.UtcNow);
     }
 }
