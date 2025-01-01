@@ -50,7 +50,7 @@ public class UserRoleRepository : Repository<UserRole>, IUserRoleRepository
     public async Task<IEnumerable<string>> GetUserRolesAsync(int id)
     {
         return await _context.UserRoles
-        .Where(x => x.Id == id)
+        .Where(x => x.UserId == id)
         .Select(x => x.Role.Name)
         .ToListAsync();
 

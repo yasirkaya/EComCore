@@ -14,10 +14,17 @@ public class UserCommandService : IUserCommandService
     private readonly IMapper _mapper;
     private readonly IJwtService _jwtService;
     private readonly IEmailService _emailService;
+    private readonly IUserRoleRepository _userRoleRepository;
 
-    public UserCommandService(IUserRepository userRepository, IMapper mapper, IJwtService jwtService, IEmailService emailService)
+    public UserCommandService(
+        IUserRepository userRepository,
+        IUserRoleRepository userRoleRepository,
+        IMapper mapper,
+        IJwtService jwtService,
+        IEmailService emailService)
     {
         _userRepository = userRepository;
+        _userRoleRepository = userRoleRepository;
         _mapper = mapper;
         _jwtService = jwtService;
         _emailService = emailService;
@@ -58,7 +65,6 @@ public class UserCommandService : IUserCommandService
 
     public async Task<int> RegisterAsync(CreateUserDto createUserDto)
     {
-
         var existingUser = await _userRepository.GetByEmailAsync(createUserDto.Email);
         if (existingUser != null)
         {
@@ -69,7 +75,13 @@ public class UserCommandService : IUserCommandService
 
         await _userRepository.AddAsync(user);
 
-        //Varsayılan rol eklenecek.
+        var userRole = new UserRole
+        {
+            UserId = user.Id,
+            RoleId = 6  // Customer
+        };
+
+        await _userRoleRepository.AddAsync(userRole);
 
         return user.Id;
     }
