@@ -39,10 +39,12 @@ public class EComCoreDbContext : DbContext
             entity.ToTable("ShoppingCarts");
             entity.HasKey(c => c.Id);
             entity.Property(c => c.CreatedAt).IsRequired();
+            entity.Property(c => c.UpdatedAt);
+            entity.Property(c => c.IsActive).IsRequired();
 
-            entity.HasOne(c => c.User)
-                .WithMany()
-                .HasForeignKey(c => c.UserId)
+            entity.HasOne<User>()
+                .WithOne()
+                .HasForeignKey<Cart>(c => c.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
 
@@ -51,10 +53,10 @@ public class EComCoreDbContext : DbContext
             entity.ToTable("ShoppingCartItems");
             entity.HasKey(ci => ci.Id);
             entity.Property(ci => ci.Quantity).IsRequired();
-            entity.Property(ci => ci.Price).HasColumnType("decimal(18,2)").IsRequired();
+            entity.Property(ci => ci.UnitPrice).HasColumnType("decimal(18,2)").IsRequired();
 
             entity.HasOne(ci => ci.Cart)
-                .WithMany(c => c.Items)
+                .WithMany(c => c.CartItems)
                 .HasForeignKey(ci => ci.CartId)
                 .OnDelete(DeleteBehavior.Cascade);
 
@@ -322,7 +324,7 @@ public class EComCoreDbContext : DbContext
                 .OnDelete(DeleteBehavior.Restrict);
 
             entity.HasOne(u => u.Cart)
-                .WithOne(c => c.User)
+                .WithOne()
                 .HasForeignKey<Cart>(c => c.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
         });

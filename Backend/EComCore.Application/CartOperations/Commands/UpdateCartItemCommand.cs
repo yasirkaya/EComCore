@@ -2,7 +2,7 @@ using MediatR;
 
 namespace EComCore.Application.CartOperations.Commands
 {
-    public class AddToCartCommand : IRequest<bool>
+    public class UpdateCartItemCommand : IRequest<bool>
     {
         public int UserId { get; set; }
         public int ProductId { get; set; }
