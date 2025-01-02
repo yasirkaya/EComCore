@@ -18,6 +18,10 @@ using EComCore.Domain.Services.Shared;
 using EComCore.Application.Services.Shared;
 using EComCore.Infrastructure.Services;
 using EComCore.Domain.Configurations;
+using EComCore.Application.CartOperations.Commands;
+using EComCore.Application.CartOperations.Queries;
+using EComCore.Domain.DTOs.CartDTO;
+using EComCore.Application.Services.Queries;
 
 namespace EComCore.API;
 
@@ -43,6 +47,7 @@ public class Program
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IRoleRepository, RoleRepository>();
         builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+        builder.Services.AddScoped<ICartRepository, CartRepository>();
 
         // Service registrations
         builder.Services.AddScoped<ICategoryCommandService, CategoryCommandService>();
@@ -62,6 +67,8 @@ public class Program
         builder.Services.AddScoped<IRoleQueryService, RoleQueryService>();
         builder.Services.AddScoped<IUserRoleCommandService, UserRoleCommandService>();
         builder.Services.AddScoped<IUserRoleQueryService, UserRoleQueryService>();
+        builder.Services.AddScoped<ICartCommandService, CartCommandService>();
+        builder.Services.AddScoped<ICartQueryService, CartQueryService>();
 
         builder.Services.AddScoped<IJwtService, JwtService>();
         builder.Services.AddScoped<IEmailService, EmailService>();
