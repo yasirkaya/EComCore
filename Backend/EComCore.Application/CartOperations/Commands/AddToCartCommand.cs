@@ -1,11 +1,10 @@
 using MediatR;
 
-namespace EComCore.Application.CartOperations.Commands
+namespace EComCore.Application.CartOperations.Commands;
+
+public class AddToCartCommand : IRequest<int>
 {
-    public class AddToCartCommand : IRequest<bool>
-    {
-        public int UserId { get; set; }
-        public int ProductId { get; set; }
-        public int Quantity { get; set; }
-    }
+    public int UserId { get; set; }
+    public int ProductId { get; set; }
+    public int Quantity { get; set; }
 }

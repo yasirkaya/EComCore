@@ -1,11 +1,10 @@
-using System.Threading.Tasks;
+using EComCore.Domain.DTOs.CartDTO;
 
-namespace EComCore.Domain.Services.Commands
+namespace EComCore.Domain.Services.Commands;
+
+public interface ICartCommandService
 {
-    public interface ICartCommandService
-    {
-        Task<bool> AddToCartAsync(int userId, int productId, int quantity);
-        Task<bool> UpdateCartItemAsync(int userId, int productId, int quantity);
-        Task<bool> RemoveFromCartAsync(int userId, int productId);
-    }
+    Task<int> AddToCartAsync(AddToCartDto dto);
+    Task UpdateCartItemAsync(UpdateCartItemDto dto);
+    Task RemoveFromCartAsync(int userId, int productId);
 }

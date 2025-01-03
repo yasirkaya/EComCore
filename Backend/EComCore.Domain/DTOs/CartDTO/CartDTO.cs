@@ -1,17 +1,11 @@
-using System;
 using System.Collections.Generic;
 
-namespace EComCore.Domain.DTOs.CartDTO
+namespace EComCore.Domain.DTOs.CartDTO;
+
+public class CartDto
 {
-    public class CartDto
-    {
-        public int Id { get; set; }
-        public int UserId { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
-        public bool IsActive { get; set; }
-        public List<CartItemDto> Items { get; set; } = new List<CartItemDto>();
-        public decimal TotalAmount { get; set; }
-    }
+    public int Id { get; set; }
+    public int UserId { get; set; }
+    public ICollection<CartItemDto> Items { get; set; }
 }
 

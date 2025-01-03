@@ -1,25 +1,28 @@
-using System;
-using System.Threading.Tasks;
-using EComCore.Application.CartOperations.Queries;
+using AutoMapper;
 using EComCore.Domain.DTOs.CartDTO;
+using EComCore.Domain.Extensions;
+using EComCore.Domain.Repositories;
 using EComCore.Domain.Services.Queries;
-using MediatR;
 
-namespace EComCore.Application.Services.Queries
+namespace EComCore.Application.Services.Queries;
+
+public class CartQueryService : ICartQueryService
 {
-    public class CartQueryService : ICartQueryService
+    private readonly ICartRepository _cartRepository;
+    private readonly IMapper _mapper;
+
+    public CartQueryService(ICartRepository cartRepository, IMapper mapper)
     {
-        private readonly IMediator _mediator;
+        _cartRepository = cartRepository;
+        _mapper = mapper;
+    }
 
-        public CartQueryService(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+    public async Task<CartDto> GetByUserIdAsync(int userId)
+    {
+        var cart = await _cartRepository.GetByUserIdAsync(userId);
+        if (cart == null)
+            return null;
 
-        public async Task<CartDto> GetCartAsync(int userId)
-        {
-            var query = new GetCartQuery { UserId = userId };
-            return await _mediator.Send(query);
-        }
+        return _mapper.Map<CartDto>(cart);
     }
 }

@@ -3,46 +3,23 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EComCore.Domain.DTOs.CartDTO;
-using EComCore.Domain.Repositories;
+using EComCore.Domain.Services.Queries;
 using MediatR;
 
 namespace EComCore.Application.CartOperations.Queries
 {
     public class GetCartQueryHandler : IRequestHandler<GetCartQuery, CartDto>
     {
-        private readonly ICartRepository _cartRepository;
+        private readonly ICartQueryService _cartQueryService;
 
-        public GetCartQueryHandler(ICartRepository cartRepository)
+        public GetCartQueryHandler(ICartQueryService cartQueryService)
         {
-            _cartRepository = cartRepository;
+            _cartQueryService = cartQueryService;
         }
 
         public async Task<CartDto> Handle(GetCartQuery request, CancellationToken cancellationToken)
         {
-            var cart = await _cartRepository.GetActiveCartByUserIdAsync(request.UserId);
-            if (cart == null)
-                return null;
-
-            var cartDto = new CartDto
-            {
-                Id = cart.Id,
-                UserId = cart.UserId,
-                CreatedAt = cart.CreatedAt,
-                UpdatedAt = cart.UpdatedAt,
-                IsActive = cart.IsActive,
-                Items = cart.CartItems.Select(ci => new CartItemDto
-                {
-                    Id = ci.Id,
-                    ProductId = ci.ProductId,
-                    ProductName = ci.Product.Name,
-                    Quantity = ci.Quantity,
-                    UnitPrice = ci.UnitPrice,
-                    TotalPrice = ci.UnitPrice * ci.Quantity
-                }).ToList(),
-                TotalAmount = cart.CartItems.Sum(ci => ci.UnitPrice * ci.Quantity)
-            };
-
-            return cartDto;
+            return await _cartQueryService.GetByUserIdAsync(request.UserId);
         }
     }
 }

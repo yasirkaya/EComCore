@@ -1,53 +1,80 @@
-using System;
-using System.Threading.Tasks;
-using EComCore.Application.CartOperations.Commands;
+using AutoMapper;
+using EComCore.Domain.DTOs.CartDTO;
+using EComCore.Domain.Entities;
+using EComCore.Domain.Extensions;
+using EComCore.Domain.Repositories;
 using EComCore.Domain.Services.Commands;
-using MediatR;
+using Microsoft.EntityFrameworkCore;
 
-namespace EComCore.Application.Services.Commands
+namespace EComCore.Application.Services.Commands;
+
+public class CartCommandService : ICartCommandService
 {
-    public class CartCommandService : ICartCommandService
+    private readonly ICartRepository _cartRepository;
+    private readonly IProductRepository _productRepository;
+    private readonly IMapper _mapper;
+
+    public CartCommandService(ICartRepository cartRepository, IProductRepository productRepository, IMapper mapper)
     {
-        private readonly IMediator _mediator;
+        _cartRepository = cartRepository;
+        _productRepository = productRepository;
+        _mapper = mapper;
+    }
 
-        public CartCommandService(IMediator mediator)
+    public async Task<int> AddToCartAsync(AddToCartDto dto)
+    {
+        var product = await _productRepository.GetByIdAsync(dto.ProductId);
+        await product.EnsureNotNullAsync(message: $"Product not found with id {dto.ProductId}");
+
+        var cart = await _cartRepository.GetByUserIdAsync(dto.UserId);
+        if (cart == null)
         {
-            _mediator = mediator;
+            cart = new Cart { UserId = dto.UserId };
+            await _cartRepository.AddAsync(cart);
         }
 
-        public async Task<bool> AddToCartAsync(int userId, int productId, int quantity)
+        var cartItem = cart.Items.FirstOrDefault(i => i.ProductId == dto.ProductId);
+        if (cartItem == null)
         {
-            var command = new AddToCartCommand
+            cartItem = new CartItem
             {
-                UserId = userId,
-                ProductId = productId,
-                Quantity = quantity
+                CartId = cart.Id,
+                ProductId = dto.ProductId,
+                Quantity = dto.Quantity,
+                UnitPrice = product.Price
             };
-
-            return await _mediator.Send(command);
+            cart.Items.Add(cartItem);
         }
-
-        public async Task<bool> UpdateCartItemAsync(int userId, int productId, int quantity)
+        else
         {
-            var command = new UpdateCartItemCommand
-            {
-                UserId = userId,
-                ProductId = productId,
-                Quantity = quantity
-            };
-
-            return await _mediator.Send(command);
+            cartItem.Quantity += dto.Quantity;
         }
 
-        public async Task<bool> RemoveFromCartAsync(int userId, int productId)
-        {
-            var command = new RemoveFromCartCommand
-            {
-                UserId = userId,
-                ProductId = productId
-            };
+        await _cartRepository.UpdateAsync(cart);
+        return cart.Id;
+    }
 
-            return await _mediator.Send(command);
-        }
+    public async Task UpdateCartItemAsync(UpdateCartItemDto dto)
+    {
+        var cart = await _cartRepository.GetByUserIdAsync(dto.UserId);
+        await cart.EnsureNotNullAsync(message: $"Cart not found for user {dto.UserId}");
+
+        var cartItem = cart.Items.FirstOrDefault(i => i.ProductId == dto.ProductId);
+        await cartItem.EnsureNotNullAsync(message: $"Cart item not found for product {dto.ProductId}");
+
+        cartItem.Quantity = dto.Quantity;
+        await _cartRepository.UpdateAsync(cart);
+    }
+
+    public async Task RemoveFromCartAsync(int userId, int productId)
+    {
+        var cart = await _cartRepository.GetByUserIdAsync(userId);
+        await cart.EnsureNotNullAsync(message: $"Cart not found for user {userId}");
+
+        var cartItem = cart.Items.FirstOrDefault(i => i.ProductId == productId);
+        await cartItem.EnsureNotNullAsync(message: $"Cart item not found for product {productId}");
+
+        cart.Items.Remove(cartItem);
+        await _cartRepository.UpdateAsync(cart);
     }
 }

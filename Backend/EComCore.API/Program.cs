@@ -82,7 +82,7 @@ public class Program
         builder.Services.AddSwaggerGen();
 
         var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-        var secretKey = jwtSettings["Secret"];
+        var secretKey = jwtSettings["Secret"] ?? throw new InvalidOperationException("JWT Secret key is not configured");
 
         builder.Services.AddAuthentication(options =>
         {

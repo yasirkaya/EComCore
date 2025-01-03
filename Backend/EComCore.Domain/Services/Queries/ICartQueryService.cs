@@ -1,10 +1,9 @@
 using System.Threading.Tasks;
 using EComCore.Domain.DTOs.CartDTO;
 
-namespace EComCore.Domain.Services.Queries
+namespace EComCore.Domain.Services.Queries;
+
+public interface ICartQueryService
 {
-    public interface ICartQueryService
-    {
-        Task<CartDto> GetCartAsync(int userId);
-    }
+    Task<CartDto> GetByUserIdAsync(int userId);
 }

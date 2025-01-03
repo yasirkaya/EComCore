@@ -40,7 +40,6 @@ public class EComCoreDbContext : DbContext
             entity.HasKey(c => c.Id);
             entity.Property(c => c.CreatedAt).IsRequired();
             entity.Property(c => c.UpdatedAt);
-            entity.Property(c => c.IsActive).IsRequired();
 
             entity.HasOne<User>()
                 .WithOne()
@@ -56,7 +55,7 @@ public class EComCoreDbContext : DbContext
             entity.Property(ci => ci.UnitPrice).HasColumnType("decimal(18,2)").IsRequired();
 
             entity.HasOne(ci => ci.Cart)
-                .WithMany(c => c.CartItems)
+                .WithMany(c => c.Items)
                 .HasForeignKey(ci => ci.CartId)
                 .OnDelete(DeleteBehavior.Cascade);
 

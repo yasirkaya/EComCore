@@ -35,6 +35,20 @@ namespace EComCore.API.Controllers
             return Ok(result);
         }
 
-        // Diğer endpoint'ler...
+        [HttpPut("items")]
+        public async Task<IActionResult> UpdateCartItem([FromBody] UpdateCartItemCommand command)
+        {
+            command.UserId = GetCurrentUserId();
+            await _mediator.Send(command);
+            return Ok();
+        }
+
+        [HttpDelete("items/{productId}")]
+        public async Task<IActionResult> RemoveFromCart(int productId)
+        {
+            var command = new RemoveFromCartCommand { UserId = GetCurrentUserId(), ProductId = productId };
+            await _mediator.Send(command);
+            return Ok();
+        }
     }
 }

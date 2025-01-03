@@ -1,6 +1,7 @@
 using AutoMapper;
 using EComCore.Application.AttributeValueOperations.Commands;
 using EComCore.Application.AuthOperations.Commands;
+using EComCore.Application.CartOperations.Commands;
 using EComCore.Application.CategoryOperations.Commands;
 using EComCore.Application.CustomAttributeOperations.Commands;
 using EComCore.Application.ProductOperations.Commands;
@@ -10,6 +11,7 @@ using EComCore.Application.UserOperations.Commands;
 using EComCore.Domain.DTOs.AttributeDTO;
 using EComCore.Domain.DTOs.AttributeValueDTO;
 using EComCore.Domain.DTOs.AuthDTO;
+using EComCore.Domain.DTOs.CartDTO;
 using EComCore.Domain.DTOs.CategoryDTO;
 using EComCore.Domain.DTOs.ProductDTO;
 using EComCore.Domain.DTOs.ProductToAttributeDTO;
@@ -120,5 +122,12 @@ public class MappingProfile : Profile
         //Auth
         CreateMap<User, RefreshTokenResponseDto>();
 
+        //Cart
+        CreateMap<Cart, CartDto>();
+        CreateMap<CartItem, CartItemDto>()
+            .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.Name))
+            .ForMember(dest => dest.UnitPrice, opt => opt.MapFrom(src => src.Product.Price));
+        CreateMap<AddToCartCommand, AddToCartDto>();
+        CreateMap<UpdateCartItemCommand, UpdateCartItemDto>();
     }
 }
