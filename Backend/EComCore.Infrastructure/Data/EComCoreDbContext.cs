@@ -69,36 +69,53 @@ public class EComCoreDbContext : DbContext
         {
             entity.ToTable("Orders");
             entity.HasKey(o => o.Id);
-            entity.Property(o => o.OrderDate).IsRequired();
+            entity.Property(o => o.UserId).IsRequired();
+            entity.Property(o => o.AddressId).IsRequired();
+            entity.Property(o => o.PaymentId).IsRequired();
+            entity.Property(o => o.ShipmentId).IsRequired();
             entity.Property(o => o.TotalAmount).HasColumnType("decimal(18,2)").IsRequired();
-            entity.Property(o => o.Status).HasConversion<string>().IsRequired();
-            entity.Property(o => o.PaymentStatus).HasConversion<string>().IsRequired();
+            entity.Property(o => o.OrderStatus).IsRequired().HasMaxLength(50);
+            entity.Property(o => o.CreatedAt).IsRequired();
+            entity.Property(o => o.UpdatedAt);
 
             entity.HasOne(o => o.User)
                 .WithMany()
                 .HasForeignKey(o => o.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            entity.HasOne(o => o.ShippingAddress)
+            entity.HasOne(o => o.Address)
                 .WithMany()
-                .HasForeignKey(o => o.ShippingAddressId)
+                .HasForeignKey(o => o.AddressId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            entity.HasOne(o => o.BillingAddress)
-                .WithMany()
-                .HasForeignKey(o => o.BillingAddressId)
+            entity.HasOne(o => o.Payment)
+                .WithOne()
+                .HasForeignKey<Order>(o => o.PaymentId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(o => o.Shipment)
+                .WithOne()
+                .HasForeignKey<Order>(o => o.ShipmentId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasMany(o => o.OrderItems)
+                .WithOne(oi => oi.Order)
+                .HasForeignKey(oi => oi.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<OrderItem>(entity =>
         {
             entity.ToTable("OrderItems");
             entity.HasKey(oi => oi.Id);
+            entity.Property(oi => oi.OrderId).IsRequired();
+            entity.Property(oi => oi.ProductId).IsRequired();
             entity.Property(oi => oi.Quantity).IsRequired();
-            entity.Property(oi => oi.Price).HasColumnType("decimal(18,2)").IsRequired();
+            entity.Property(oi => oi.UnitPrice).HasColumnType("decimal(18,2)").IsRequired();
+            entity.Property(oi => oi.TotalPrice).HasColumnType("decimal(18,2)").IsRequired();
 
             entity.HasOne(oi => oi.Order)
-                .WithMany(o => o.Items)
+                .WithMany(o => o.OrderItems)
                 .HasForeignKey(oi => oi.OrderId)
                 .OnDelete(DeleteBehavior.Cascade);
 

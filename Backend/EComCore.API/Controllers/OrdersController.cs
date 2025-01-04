@@ -21,7 +21,7 @@ public class OrdersController : BaseController
     [HttpPost]
     public async Task<IActionResult> CreateOrder([FromBody] CreateOrderCommand command)
     {
-        command.UserId = GetCurrentUserId();
+        command.CreateOrderDto.UserId = GetCurrentUserId();
         var result = await _mediator.Send(command);
         return Ok(result);
     }

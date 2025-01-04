@@ -20,6 +20,7 @@ using EComCore.Domain.DTOs.UserDTO;
 using EComCore.Domain.DTOs.UserRoleDTO;
 using EComCore.Domain.Entities;
 using EComCore.Domain.Extensions;
+using EComCore.Domain.DTOs.OrderDTO;
 
 namespace EComCore.Application.Mappers;
 
@@ -129,5 +130,11 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.UnitPrice, opt => opt.MapFrom(src => src.Product.Price));
         CreateMap<AddToCartCommand, AddToCartDto>();
         CreateMap<UpdateCartItemCommand, UpdateCartItemDto>();
+
+        // Order Mappings
+        CreateMap<Order, OrderDto>();
+        CreateMap<OrderItem, OrderItemDto>();
+        CreateMap<CreateOrderDto, Order>();
+        CreateMap<OrderItemDto, OrderItem>();
     }
 }

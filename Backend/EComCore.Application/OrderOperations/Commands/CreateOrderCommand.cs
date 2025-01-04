@@ -1,12 +1,15 @@
+using EComCore.Domain.DTOs.OrderDTO;
 using MediatR;
-using EComCore.Domain.DTOs.PaymentDTO;
 
-namespace EComCore.Application.OrderOperations.Commands;
-
-public class CreateOrderCommand : IRequest<int>
+namespace EComCore.Application.OrderOperations.Commands
 {
-    public int UserId { get; set; }
-    public int ShippingAddressId { get; set; }
-    public int BillingAddressId { get; set; }
-    public PaymentRequest Payment { get; set; }
+    public class CreateOrderCommand : IRequest<OrderDto>
+    {
+        public CreateOrderCommand(CreateOrderDto createOrderDto)
+        {
+            CreateOrderDto = createOrderDto;
+        }
+        public CreateOrderDto CreateOrderDto { get; set; }
+
+    }
 }
