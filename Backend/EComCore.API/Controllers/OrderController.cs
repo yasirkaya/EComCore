@@ -11,7 +11,7 @@ namespace EComCore.API.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
-    public class OrderController : ControllerBase
+    public class OrderController : BaseController
     {
         private readonly IMediator _mediator;
 
@@ -21,7 +21,7 @@ namespace EComCore.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<OrderDto>> CreateOrder([FromBody] CreateOrderDto createOrderDto)
+        public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDto createOrderDto)
         {
             var command = new CreateOrderCommand(createOrderDto);
             var result = await _mediator.Send(command);
@@ -29,7 +29,7 @@ namespace EComCore.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<OrderDto>> GetOrderById(int id)
+        public async Task<IActionResult> GetOrderById(int id)
         {
             var query = new GetOrderByIdQuery(id);
             var result = await _mediator.Send(query);
@@ -39,7 +39,7 @@ namespace EComCore.API.Controllers
         }
 
         [HttpPut("status")]
-        public async Task<ActionResult<OrderDto>> UpdateOrderStatus([FromBody] UpdateOrderStatusDto updateOrderStatusDto)
+        public async Task<IActionResult> UpdateOrderStatus([FromBody] UpdateOrderStatusDto updateOrderStatusDto)
         {
             var command = new UpdateOrderStatusCommand(updateOrderStatusDto);
             var result = await _mediator.Send(command);
@@ -47,7 +47,7 @@ namespace EComCore.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<bool>> CancelOrder(int id)
+        public async Task<IActionResult> CancelOrder(int id)
         {
             var command = new CancelOrderCommand(id);
             var result = await _mediator.Send(command);

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace EComCore.API.Controllers;
 [ApiController]
 [Route("api/[controller]")]
-public class CustomAttributeController : ControllerBase
+public class CustomAttributeController : BaseController
 {
     private readonly IMediator _mediator;
     public CustomAttributeController(IMediator mediator)
@@ -31,7 +31,7 @@ public class CustomAttributeController : ControllerBase
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> CreateCustomAttribute(CreateCustomAttributeCommand command)
+    public async Task<IActionResult> CreateCustomAttribute([FromBody] CreateCustomAttributeCommand command)
     {
         var result = await _mediator.Send(command);
         return Ok(result);

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace EComCore.API.Controllers;
 [ApiController]
 [Route("api/[controller]")]
-public class AttributeValuesController : ControllerBase
+public class AttributeValuesController : BaseController
 {
     private readonly IMediator _mediator;
     public AttributeValuesController(IMediator mediator)
@@ -52,7 +52,7 @@ public class AttributeValuesController : ControllerBase
         return Ok();
     }
 
-    [HttpDelete("id")]
+    [HttpDelete("{id}")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int id)
     {
