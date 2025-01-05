@@ -1,5 +1,9 @@
 using EComCore.Application.ProductOperations.Commands;
 using EComCore.Application.ProductOperations.Queries;
+using EComCore.Application.ProductToAttributeOperations.Commands;
+using EComCore.Application.ProductToAttributeOperations.Commands.Queries;
+using EComCore.Application.ProductToCategoryOperations.Commands;
+using EComCore.Application.ProductToCategoryOperations.Queries;
 using EComCore.Domain.Shared.RequestFeatures;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -17,6 +21,7 @@ public class ProductsController : BaseController
         _mediator = mediator;
     }
 
+    #region Product Operations
     [HttpGet]
     public async Task<IActionResult> Get([FromQuery] ProductParameters productParameters)
     {
@@ -64,4 +69,66 @@ public class ProductsController : BaseController
         var result = await _mediator.Send(command);
         return Ok(result);
     }
+    #endregion
+
+    #region Product Category Operations
+    [HttpGet("{productId}/categories")]
+    public async Task<IActionResult> GetProductCategories(int productId)
+    {
+        var result = await _mediator.Send(new GetCategoriesByProductIdQuery { ProductId = productId });
+        return Ok(result);
+    }
+
+    [HttpPost("{productId}/categories")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> AddProductToCategory(int productId, [FromBody] CreateProductToCategoryCommand command)
+    {
+        command.ProductId = productId;
+        var result = await _mediator.Send(command);
+        return Ok(result);
+    }
+
+    [HttpDelete("{productId}/categories/{categoryId}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> RemoveProductFromCategory(int productId, int categoryId)
+    {
+        await _mediator.Send(new DeleteProductFromCategoriesCommand { ProductId = productId });
+        return Ok();
+    }
+    #endregion
+
+    #region Product Attribute Operations
+    [HttpGet("{productId}/attributes")]
+    public async Task<IActionResult> GetProductAttributes(int productId)
+    {
+        var result = await _mediator.Send(new GetProductToAttributeByIdQuery { Id = productId });
+        return Ok(result);
+    }
+
+    [HttpPost("{productId}/attributes")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> AddAttributesToProduct([FromBody] AddAttributesToProductCommand command)
+    {
+        await _mediator.Send(command);
+        return Ok();
+    }
+
+    [HttpPut("{productId}/attributes/{attributeId}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> UpdateProductAttribute(int productId, int attributeId, [FromBody] UpdateProductToAttributeCommand command)
+    {
+        command.ProductId = productId;
+        command.AttributeId = attributeId;
+        await _mediator.Send(command);
+        return Ok();
+    }
+
+    [HttpDelete("{productId}/attributes")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> RemoveProductAttributes(int productId)
+    {
+        await _mediator.Send(new DeleteAttributesByProductIdCommand { ProductId = productId });
+        return Ok();
+    }
+    #endregion
 }
