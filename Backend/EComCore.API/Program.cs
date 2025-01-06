@@ -34,15 +34,17 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // CORS ayarları
+        // CORS politikasını ekle
         builder.Services.AddCors(options =>
         {
-            options.AddDefaultPolicy(policy =>
-            {
-                policy.WithOrigins("http://localhost:3001")
-                      .AllowAnyHeader()
-                      .AllowAnyMethod();
-            });
+            options.AddPolicy("AllowAll",
+                builder =>
+                {
+                    builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
         });
 
         // Add services to the container.
@@ -132,10 +134,10 @@ public class Program
             app.UseSwaggerUI();
         }
 
-        app.UseHttpsRedirection();
-
         // CORS middleware'ini ekle
-        app.UseCors();
+        app.UseCors("AllowAll");
+
+        app.UseHttpsRedirection();
 
         app.UseAuthorization();
 
