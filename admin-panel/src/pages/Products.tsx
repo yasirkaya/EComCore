@@ -7,7 +7,7 @@ const defaultFormData = {
   name: "",
   description: "",
   price: 0,
-  stock: 0,
+  stockQuantity: 0,
   categoryId: "",
 };
 
@@ -37,7 +37,7 @@ export const Products: React.FC = () => {
         name: product.name,
         description: product.description,
         price: product.price,
-        stock: product.stock,
+        stockQuantity: product.stockQuantity,
         categoryId: product.categoryId,
       });
     } else {
@@ -93,7 +93,10 @@ export const Products: React.FC = () => {
       header: "Fiyat",
       field: (product: Product) => formatPrice(product.price),
     },
-    { header: "Stok", field: (product: Product) => String(product.stock) },
+    {
+      header: "Stok",
+      field: (product: Product) => String(product.stockQuantity),
+    },
   ];
 
   const formFields = [
@@ -107,7 +110,7 @@ export const Products: React.FC = () => {
       required: true,
     },
     { name: "price", label: "Fiyat", type: "number", required: true },
-    { name: "stock", label: "Stok", type: "number", required: true },
+    { name: "stockQuantity", label: "Stok", type: "number", required: true },
     { name: "categoryId", label: "Kategori", type: "text", required: true },
   ];
 
