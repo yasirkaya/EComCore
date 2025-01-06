@@ -1,0 +1,60 @@
+/* Layout */
+.min-vh-100 {
+  min-height: 100vh;
+}
+
+/* Navbar */
+.navbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Tables */
+.table th {
+  background-color: #f8f9fa;
+}
+
+/* Forms */
+.form-control:focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Cards */
+.card {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Buttons */
+.btn {
+  font-weight: 500;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+/* Utilities */
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.text-truncate {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .table-responsive {
+    margin-bottom: 1rem;
+    border: 0;
+  }
+}

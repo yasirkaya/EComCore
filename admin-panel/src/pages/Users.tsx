@@ -1,0 +1,126 @@
+import React, { useEffect, useState } from "react";
+import { User } from "../types/models";
+import { userService } from "../services/api";
+import { DataTable, FormModal, PageHeader } from "../components/ui";
+import { Column } from "../components/ui";
+
+const defaultFormData = {
+  email: "",
+  firstName: "",
+  lastName: "",
+  password: "",
+};
+
+export const Users: React.FC = () => {
+  const [users, setUsers] = useState<User[]>([]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [formData, setFormData] = useState(defaultFormData);
+
+  useEffect(() => {
+    loadUsers();
+  }, []);
+
+  const loadUsers = async () => {
+    try {
+      const data = await userService.getAll();
+      setUsers(data);
+    } catch (error) {
+      console.error("Kullanıcılar yüklenirken hata oluştu:", error);
+    }
+  };
+
+  const handleShowModal = (user?: User) => {
+    if (user) {
+      setSelectedUser(user);
+      setFormData({
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        password: "",
+      });
+    } else {
+      setSelectedUser(null);
+      setFormData(defaultFormData);
+    }
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedUser(null);
+    setFormData(defaultFormData);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      if (selectedUser) {
+        await userService.update(selectedUser.id, formData);
+      } else {
+        await userService.create(formData);
+      }
+      handleCloseModal();
+      loadUsers();
+    } catch (error) {
+      console.error("İşlem sırasında hata oluştu:", error);
+    }
+  };
+
+  const handleDelete = async (user: User) => {
+    if (window.confirm("Bu kullanıcıyı silmek istediğinizden emin misiniz?")) {
+      try {
+        await userService.delete(user.id);
+        loadUsers();
+      } catch (error) {
+        console.error("Silme işlemi sırasında hata oluştu:", error);
+      }
+    }
+  };
+
+  const columns: Column<User>[] = [
+    { header: "Email", field: (user: User) => user.email },
+    { header: "Ad", field: (user: User) => user.firstName },
+    { header: "Soyad", field: (user: User) => user.lastName },
+  ];
+
+  const formFields = [
+    { name: "email", label: "Email", type: "email", required: true },
+    { name: "firstName", label: "Ad", type: "text", required: true },
+    { name: "lastName", label: "Soyad", type: "text", required: true },
+    {
+      name: "password",
+      label: "Şifre",
+      type: "password",
+      required: !selectedUser,
+    },
+  ];
+
+  return (
+    <div>
+      <PageHeader
+        title="Kullanıcı Yönetimi"
+        buttonText="Yeni Kullanıcı"
+        onButtonClick={() => handleShowModal()}
+      />
+
+      <DataTable
+        data={users}
+        columns={columns}
+        onEdit={handleShowModal}
+        onDelete={handleDelete}
+      />
+
+      <FormModal
+        show={showModal}
+        onHide={handleCloseModal}
+        title={selectedUser ? "Kullanıcı Düzenle" : "Yeni Kullanıcı"}
+        fields={formFields}
+        values={formData}
+        onChange={(name, value) => setFormData({ ...formData, [name]: value })}
+        onSubmit={handleSubmit}
+        isEdit={!!selectedUser}
+      />
+    </div>
+  );
+};
