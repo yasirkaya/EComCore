@@ -22,6 +22,9 @@ using EComCore.Application.CartOperations.Commands;
 using EComCore.Application.CartOperations.Queries;
 using EComCore.Domain.DTOs.CartDTO;
 using EComCore.Application.Services.Queries;
+using EComCore.Application.OrderOperations.Commands;
+using EComCore.Application.OrderOperations.Queries;
+using EComCore.Domain.DTOs.OrderDTO;
 
 namespace EComCore.API;
 
@@ -30,6 +33,17 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        // CORS ayarları
+        builder.Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(policy =>
+            {
+                policy.WithOrigins("http://localhost:3001")
+                      .AllowAnyHeader()
+                      .AllowAnyMethod();
+            });
+        });
 
         // Add services to the container.
         builder.Services.AddDbContext<EComCoreDbContext>(options =>
@@ -48,6 +62,7 @@ public class Program
         builder.Services.AddScoped<IRoleRepository, RoleRepository>();
         builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
         builder.Services.AddScoped<ICartRepository, CartRepository>();
+        builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
         // Service registrations
         builder.Services.AddScoped<ICategoryCommandService, CategoryCommandService>();
@@ -69,6 +84,8 @@ public class Program
         builder.Services.AddScoped<IUserRoleQueryService, UserRoleQueryService>();
         builder.Services.AddScoped<ICartCommandService, CartCommandService>();
         builder.Services.AddScoped<ICartQueryService, CartQueryService>();
+        builder.Services.AddScoped<IOrderCommandService, OrderCommandService>();
+        builder.Services.AddScoped<IOrderQueryService, OrderQueryService>();
 
         builder.Services.AddScoped<IJwtService, JwtService>();
         builder.Services.AddScoped<IEmailService, EmailService>();
@@ -116,6 +133,9 @@ public class Program
         }
 
         app.UseHttpsRedirection();
+
+        // CORS middleware'ini ekle
+        app.UseCors();
 
         app.UseAuthorization();
 
