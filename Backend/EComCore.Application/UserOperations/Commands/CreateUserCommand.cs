@@ -1,10 +1,10 @@
+using EComCore.Domain.DTOs.UserDTO;
 using MediatR;
 
 namespace EComCore.Application.UserOperations.Commands;
 
-public class CreateUserCommand : IRequest<int>
+public class CreateUserCommand : IRequest<UserDto>
 {
-    public string Username { get; set; }
-    public string Email { get; set; }
-    public string Password { get; set; }
+    public CreateUserDto UserDto { get; set; }
 }
+

@@ -1,58 +1,36 @@
 using AutoMapper;
-using EComCore.Domain.DTOs.AuthDTO;
 using EComCore.Domain.DTOs.UserDTO;
-using EComCore.Domain.Extensions;
 using EComCore.Domain.Repositories;
 using EComCore.Domain.Services.Queries;
 
-namespace EComCore.Application.CustomAttributeOperations.Queries;
+namespace EComCore.Application.Services.Queries;
 
 public class UserQueryService : IUserQueryService
 {
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
+
     public UserQueryService(IUserRepository userRepository, IMapper mapper)
     {
         _userRepository = userRepository;
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<UserDetailsDto>> GetAllActiveUsersAsync()
+    public async Task<List<UserDto>> GetAllUsers()
     {
-        var users = await _userRepository.GetAllActiveUsersAsync();
-        await users.EnsureNotNullOrEmptyAsync();
-
-        return _mapper.Map<IEnumerable<UserDetailsDto>>(users);
+        var users = await _userRepository.GetAllAsync();
+        return _mapper.Map<List<UserDto>>(users);
     }
 
-    public async Task<UserDetailsDto> GetByEmailAsync(string email)
-    {
-        var user = await _userRepository.GetByEmailAsync(email);
-        await user.EnsureNotNullAsync(message: $"User with Email {email} not found");
-
-        return _mapper.Map<UserDetailsDto>(user);
-    }
-
-    public async Task<UserDetailsDto> GetByIdActiveAsync(int id)
-    {
-        var user = await _userRepository.GetByIdActiveAsync(id);
-        await user.EnsureNotNullAsync(id: id);
-
-        return _mapper.Map<UserDetailsDto>(user);
-    }
-
-    public async Task<UserDetailsDto> GetByRefreshTokenAsync(string refreshToken)
-    {
-        var user = await _userRepository.GetByRefreshTokenAsync(refreshToken);
-        await user.EnsureNotNullAsync(message: $"User with RefreshToken not found");
-
-        return _mapper.Map<UserDetailsDto>(user);
-    }
-
-    public async Task<bool> IsExistsAsync(int id)
+    public async Task<UserDto> GetUserById(int id)
     {
         var user = await _userRepository.GetByIdAsync(id);
+        return _mapper.Map<UserDto>(user);
+    }
 
-        return user != null;
+    public async Task<UserDto> GetUserByEmail(string email)
+    {
+        var user = await _userRepository.GetByEmailAsync(email);
+        return _mapper.Map<UserDto>(user);
     }
 }

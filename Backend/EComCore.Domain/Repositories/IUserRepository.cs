@@ -2,12 +2,13 @@ using EComCore.Domain.Entities;
 
 namespace EComCore.Domain.Repositories;
 
-public interface IUserRepository : IRepository<User>
+public interface IUserRepository
 {
+    Task<List<User>> GetAllAsync();
+    Task<User> GetByIdAsync(int id);
     Task<User> GetByEmailAsync(string email);
-    Task<IEnumerable<User>> GetAllActiveUsersAsync();
-    Task<User> GetByIdActiveAsync(int id);
-    Task<User> GetByRefreshTokenAsync(string refreshToken);
-    Task<User> GetByEmailVerificationTokenAsync(string token);
-    Task<User> GetByPasswordResetTokenAsync(string token);
+    Task AddAsync(User user);
+    Task UpdateAsync(User user);
+    Task DeleteAsync(User user);
+    Task SaveChangesAsync();
 }
