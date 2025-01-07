@@ -12,9 +12,9 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
         _userCommandService = userCommandService;
     }
 
-    public async Task<Unit> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteUserCommand request, CancellationToken cancellationToken)
     {
         await _userCommandService.DeleteUser(request.Id);
-        return Unit.Value;
+        return;
     }
 }

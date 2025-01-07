@@ -23,10 +23,17 @@ export const Users: React.FC = () => {
 
   const loadUsers = async () => {
     try {
+      console.log("Loading users...");
       const data = await userService.getAll();
+      console.log("Users loaded:", data);
       setUsers(data);
     } catch (error) {
-      console.error("Kullanıcılar yüklenirken hata oluştu:", error);
+      console.error("Kullanıcılar yüklenirken hata detayları:", {
+        error,
+        status: (error as any)?.response?.status,
+        data: (error as any)?.response?.data,
+        config: (error as any)?.config,
+      });
     }
   };
 
