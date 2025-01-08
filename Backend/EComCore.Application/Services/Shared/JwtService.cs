@@ -56,7 +56,6 @@ public class JwtService : IJwtService
             claims.Add(new Claim(ClaimTypes.Role, role));
         }
 
-
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
@@ -72,6 +71,69 @@ public class JwtService : IJwtService
             Token = new JwtSecurityTokenHandler().WriteToken(token),
             RefreshToken = user.RefreshToken,
         };
+    }
+
+    public async Task<bool> ValidateTokenAsync(string token)
+    {
+        if (string.IsNullOrEmpty(token))
+            return false;
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.UTF8.GetBytes(_configuration["JwtSettings:Secret"]);
+
+        try
+        {
+            tokenHandler.ValidateToken(token, new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = true,
+                ValidIssuer = _configuration["JwtSettings:Issuer"],
+                ValidateAudience = true,
+                ValidAudience = _configuration["JwtSettings:Audience"],
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
+            }, out SecurityToken validatedToken);
+
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    public async Task<string> GetEmailFromTokenAsync(string token)
+    {
+        if (string.IsNullOrEmpty(token))
+            throw new Exception("Geçersiz token");
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.UTF8.GetBytes(_configuration["JwtSettings:Secret"]);
+
+        try
+        {
+            tokenHandler.ValidateToken(token, new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = true,
+                ValidIssuer = _configuration["JwtSettings:Issuer"],
+                ValidateAudience = true,
+                ValidAudience = _configuration["JwtSettings:Audience"],
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
+            }, out SecurityToken validatedToken);
+
+            var jwtToken = (JwtSecurityToken)validatedToken;
+            var email = jwtToken.Claims.First(x => x.Type == JwtRegisteredClaimNames.Email).Value;
+
+            return await Task.FromResult(email);
+        }
+        catch
+        {
+            throw new Exception("Token doğrulanamadı");
+        }
     }
 
     private async Task<string> GenerateRefreshTokenAsync()

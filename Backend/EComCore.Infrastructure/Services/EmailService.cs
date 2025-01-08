@@ -62,4 +62,9 @@ public class EmailService : IEmailService
 
         await client.SendMailAsync(mailMessage);
     }
+
+    public Task SendWelcomeEmailAsync(string email)
+    {
+        throw new NotImplementedException();
+    }
 }

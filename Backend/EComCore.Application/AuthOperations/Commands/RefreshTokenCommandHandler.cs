@@ -1,30 +1,44 @@
-using AutoMapper;
 using EComCore.Domain.DTOs.AuthDTO;
-using EComCore.Domain.DTOs.UserDTO;
-using EComCore.Domain.Services.Commands;
-using EComCore.Domain.Services.Queries;
+using EComCore.Domain.Services.Auth;
 using EComCore.Domain.Services.Shared;
 using MediatR;
 
 namespace EComCore.Application.AuthOperations.Commands;
 
-public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, AuthTokenDto>
+public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, AuthResponseDto>
 {
+    private readonly IAuthCommandService _authCommandService;
+    private readonly IAuthQueryService _authQueryService;
     private readonly IJwtService _jwtService;
-    private readonly IUserQueryService _userQueryService;
-    public RefreshTokenCommandHandler(IJwtService jwtService, IUserQueryService userQueryService)
+
+    public RefreshTokenCommandHandler(
+        IAuthCommandService authCommandService,
+        IAuthQueryService authQueryService,
+        IJwtService jwtService)
     {
+        _authCommandService = authCommandService;
+        _authQueryService = authQueryService;
         _jwtService = jwtService;
-        _userQueryService = userQueryService;
     }
 
-    public async Task<AuthTokenDto> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
+    public async Task<AuthResponseDto> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userQueryService.GetByRefreshTokenAsync(request.RefreshToken);
+        var isValidToken = await _jwtService.ValidateTokenAsync(request.Token);
+        if (!isValidToken)
+            throw new Exception("Geçersiz token");
 
-        return await _jwtService.GenerateTokenAsync(user.Email);
+        var email = await _jwtService.GetEmailFromTokenAsync(request.Token);
+        var user = await _authQueryService.GetCurrentUserAsync(email);
 
+        if (user == null)
+            throw new Exception("Kullanıcı bulunamadı");
 
-
+        var tokenResult = await _jwtService.GenerateTokenAsync(email);
+        return new AuthResponseDto
+        {
+            Token = tokenResult.Token,
+            RefreshToken = tokenResult.RefreshToken,
+            User = user
+        };
     }
 }

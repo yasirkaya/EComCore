@@ -3,7 +3,7 @@ using MediatR;
 
 namespace EComCore.Application.AuthOperations.Commands;
 
-public class RefreshTokenCommand : IRequest<AuthResponseDto>
+public class LoginCommand : IRequest<AuthResponseDto>
 {
-    public string Token { get; set; }
+    public LoginDto LoginDto { get; set; }
 }

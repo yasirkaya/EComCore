@@ -1,20 +1,19 @@
-using EComCore.Domain.Services.Commands;
+using EComCore.Domain.Services.Auth;
 using MediatR;
 
 namespace EComCore.Application.AuthOperations.Commands;
 
 public class ForgotPasswordCommandHandler : IRequestHandler<ForgotPasswordCommand>
 {
-    private readonly IUserCommandService _userCommandService;
+    private readonly IAuthCommandService _authCommandService;
 
-    public ForgotPasswordCommandHandler(IUserCommandService userCommandService)
+    public ForgotPasswordCommandHandler(IAuthCommandService authCommandService)
     {
-        _userCommandService = userCommandService;
+        _authCommandService = authCommandService;
     }
 
     public async Task Handle(ForgotPasswordCommand request, CancellationToken cancellationToken)
     {
-        await _userCommandService.ForgotPasswordAsync(request.Email);
-        return;
+        await _authCommandService.ForgotPasswordAsync(request.Email);
     }
 }

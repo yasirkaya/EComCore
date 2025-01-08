@@ -21,7 +21,6 @@ public class UserCommandService : IUserCommandService
     {
         var user = _mapper.Map<User>(createUserDto);
         await _userRepository.AddAsync(user);
-        await _userRepository.SaveChangesAsync();
         return _mapper.Map<UserDto>(user);
     }
 
@@ -32,7 +31,7 @@ public class UserCommandService : IUserCommandService
             throw new Exception($"User with id {id} not found");
 
         _mapper.Map(updateUserDto, user);
-        await _userRepository.SaveChangesAsync();
+        await _userRepository.UpdateAsync(user);
         return _mapper.Map<UserDto>(user);
     }
 
@@ -43,6 +42,5 @@ public class UserCommandService : IUserCommandService
             throw new Exception($"User with id {id} not found");
 
         await _userRepository.DeleteAsync(user);
-        await _userRepository.SaveChangesAsync();
     }
 }

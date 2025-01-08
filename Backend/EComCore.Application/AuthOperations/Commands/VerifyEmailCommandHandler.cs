@@ -1,20 +1,19 @@
-using EComCore.Domain.Services.Commands;
+using EComCore.Domain.Services.Auth;
 using MediatR;
 
 namespace EComCore.Application.AuthOperations.Commands;
 
 public class VerifyEmailCommandHandler : IRequestHandler<VerifyEmailCommand>
 {
-    private readonly IUserCommandService _userCommandService;
+    private readonly IAuthCommandService _authCommandService;
 
-    public VerifyEmailCommandHandler(IUserCommandService userCommandService)
+    public VerifyEmailCommandHandler(IAuthCommandService authCommandService)
     {
-        _userCommandService = userCommandService;
+        _authCommandService = authCommandService;
     }
 
     public async Task Handle(VerifyEmailCommand request, CancellationToken cancellationToken)
     {
-        await _userCommandService.VerifyEmailAsync(request.Email, request.Token);
-        return;
+        await _authCommandService.VerifyEmailAsync(request.Email, request.Token);
     }
 }

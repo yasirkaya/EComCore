@@ -1,20 +1,19 @@
-using EComCore.Domain.Services.Commands;
+using EComCore.Domain.Services.Auth;
 using MediatR;
 
 namespace EComCore.Application.AuthOperations.Commands;
 
 public class LogoutUserCommandHandler : IRequestHandler<LogoutUserCommand>
 {
-    private readonly IUserCommandService _userCommandService;
-    public LogoutUserCommandHandler(IUserCommandService userCommandService)
+    private readonly IAuthCommandService _authCommandService;
+
+    public LogoutUserCommandHandler(IAuthCommandService authCommandService)
     {
-        _userCommandService = userCommandService;
+        _authCommandService = authCommandService;
     }
 
     public async Task Handle(LogoutUserCommand request, CancellationToken cancellationToken)
     {
-        await _userCommandService.LogoutAsync(request.Email);
-
-        return;
+        await _authCommandService.LogoutAsync(request.Email);
     }
 }

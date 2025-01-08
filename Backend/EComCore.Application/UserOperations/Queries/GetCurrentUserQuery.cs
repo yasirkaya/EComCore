@@ -3,7 +3,7 @@ using MediatR;
 
 namespace EComCore.Application.UserOperations.Queries;
 
-public class GetCurrentUserQuery : IRequest<UserDetailsDto>
+public class GetCurrentUserQuery : IRequest<UserDto>
 {
     public string Email { get; set; }
 }

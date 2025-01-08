@@ -1,4 +1,4 @@
-namespace EComCore.Domain.DTOs.UserDTO;
+namespace EComCore.Domain.DTOs.AuthDTO;
 
 public class LoginDto
 {

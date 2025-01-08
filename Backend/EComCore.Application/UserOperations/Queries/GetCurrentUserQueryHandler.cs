@@ -1,20 +1,20 @@
 using EComCore.Domain.DTOs.UserDTO;
-using EComCore.Domain.Services.Queries;
+using EComCore.Domain.Services.Auth;
 using MediatR;
 
 namespace EComCore.Application.UserOperations.Queries;
 
-public class GetCurrentUserQueryHandler : IRequestHandler<GetCurrentUserQuery, UserDetailsDto>
+public class GetCurrentUserQueryHandler : IRequestHandler<GetCurrentUserQuery, UserDto>
 {
-    private readonly IUserQueryService _userQueryService;
-    public GetCurrentUserQueryHandler(IUserQueryService userQueryService)
+    private readonly IAuthQueryService _authQueryService;
+
+    public GetCurrentUserQueryHandler(IAuthQueryService authQueryService)
     {
-        _userQueryService = userQueryService;
+        _authQueryService = authQueryService;
     }
 
-    public async Task<UserDetailsDto> Handle(GetCurrentUserQuery request, CancellationToken cancellationToken)
+    public async Task<UserDto> Handle(GetCurrentUserQuery request, CancellationToken cancellationToken)
     {
-        var user = await _userQueryService.GetByEmailAsync(request.Email);
-        return user;
+        return await _authQueryService.GetCurrentUserAsync(request.Email);
     }
 }
