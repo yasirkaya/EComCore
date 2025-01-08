@@ -108,6 +108,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Token, opt => opt.Ignore());
         CreateMap<DeleteUserCommand, DeleteUserDto>();
         CreateMap<User, UserDetailsDto>();
+        CreateMap<User, UserDto>();
 
         //UserRole
         CreateMap<CreateUserRoleDto, UserRole>();
@@ -121,6 +122,7 @@ public class MappingProfile : Profile
 
         //Auth
         CreateMap<User, RefreshTokenResponseDto>();
+
 
         //Cart
         CreateMap<Cart, CartDto>();
