@@ -25,6 +25,9 @@ using EComCore.Application.Services.Queries;
 using EComCore.Application.OrderOperations.Commands;
 using EComCore.Application.OrderOperations.Queries;
 using EComCore.Domain.DTOs.OrderDTO;
+using EComCore.Application.AuthOperations.Commands;
+using EComCore.Application.Services.Auth;
+using EComCore.Domain.Services.Auth;
 
 namespace EComCore.API;
 
@@ -94,6 +97,10 @@ public class Program
 
         // Configure EmailService
         builder.Services.Configure<EmailConfiguration>(builder.Configuration.GetSection("EmailSettings"));
+
+        // Auth Services
+        builder.Services.AddScoped<IAuthCommandService, AuthCommandService>();
+        builder.Services.AddScoped<IAuthQueryService, AuthQueryService>();
 
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
