@@ -1,9 +1,9 @@
 export interface User {
   id: string;
+  userName: string;
   email: string;
-  firstName: string;
-  lastName: string;
-  role: string;
+  isActive: boolean;
+  isEmailVerified: boolean;
 }
 
 export interface Product {
@@ -28,11 +28,15 @@ export interface Category {
 }
 
 export interface LoginCredentials {
+  loginDto: LoginDto;
+}
+export interface LoginDto {
   email: string;
   password: string;
 }
 
 export interface AuthResponse {
   token: string;
+  refreshToken: string;
   user: User;
 }

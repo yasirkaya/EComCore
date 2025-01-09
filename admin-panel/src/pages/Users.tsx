@@ -6,9 +6,9 @@ import { Column } from "../components/ui";
 
 const defaultFormData = {
   email: "",
-  firstName: "",
-  lastName: "",
-  password: "",
+  userName: "",
+  isActive: true,
+  isEmailVerified: true,
 };
 
 export const Users: React.FC = () => {
@@ -42,9 +42,9 @@ export const Users: React.FC = () => {
       setSelectedUser(user);
       setFormData({
         email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        password: "",
+        userName: user.userName,
+        isActive: user.isActive,
+        isEmailVerified: user.isEmailVerified,
       });
     } else {
       setSelectedUser(null);
@@ -86,9 +86,10 @@ export const Users: React.FC = () => {
   };
 
   const columns: Column<User>[] = [
+    { header: "Kullanıcı Adı", field: (user: User) => user.userName },
     { header: "Email", field: (user: User) => user.email },
-    { header: "Ad", field: (user: User) => user.firstName },
-    { header: "Soyad", field: (user: User) => user.lastName },
+    { header: "Durum", field: (user: User) => user.isActive },
+    { header: "Email Doğrulama", field: (user: User) => user.isEmailVerified },
   ];
 
   const formFields = [
