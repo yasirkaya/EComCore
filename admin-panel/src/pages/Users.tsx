@@ -88,8 +88,15 @@ export const Users: React.FC = () => {
   const columns: Column<User>[] = [
     { header: "Kullanıcı Adı", field: (user: User) => user.userName },
     { header: "Email", field: (user: User) => user.email },
-    { header: "Durum", field: (user: User) => user.isActive },
-    { header: "Email Doğrulama", field: (user: User) => user.isEmailVerified },
+    {
+      header: "Durum",
+      field: (user: User) => (user.isActive ? "Aktif" : "Pasif"),
+    },
+    {
+      header: "Email Doğrulama",
+      field: (user: User) =>
+        user.isEmailVerified ? "Doğrulandı" : "Doğrulanmadı",
+    },
   ];
 
   const formFields = [
