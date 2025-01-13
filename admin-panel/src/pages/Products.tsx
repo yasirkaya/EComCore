@@ -8,7 +8,7 @@ const defaultFormData = {
   description: "",
   price: 0,
   stockQuantity: 0,
-  categoryId: "",
+  categoryIds: [] as string[],
 };
 
 export const Products: React.FC = () => {
@@ -49,7 +49,7 @@ export const Products: React.FC = () => {
         description: product.description,
         price: product.price,
         stockQuantity: product.stockQuantity,
-        categoryId: product.categoryId,
+        categoryIds: product.categoryIds,
       });
     } else {
       setSelectedProduct(null);
@@ -108,6 +108,16 @@ export const Products: React.FC = () => {
       header: "Stok",
       field: (product: Product) => String(product.stockQuantity),
     },
+    {
+      header: "Kategoriler",
+      field: (item) =>
+        item.categoryIds
+          .map((id) => {
+            const category = categories.find((c) => c.id === id);
+            return category ? category.name : "";
+          })
+          .join(", "),
+    },
   ];
 
   const formFields = [
@@ -123,12 +133,13 @@ export const Products: React.FC = () => {
     { name: "price", label: "Fiyat", type: "number", required: true },
     { name: "stockQuantity", label: "Stok", type: "number", required: true },
     {
-      name: "categoryId",
-      label: "Kategori",
+      name: "categoryIds",
+      label: "Kategoriler",
       type: "select",
       as: "select" as const,
       options: categories.map((c) => ({ value: c.id, label: c.name })),
       required: true,
+      multiple: true,
     },
   ];
 

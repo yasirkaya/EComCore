@@ -108,6 +108,7 @@ export const Categories: React.FC = () => {
       type: "select",
       as: "select" as const,
       options: categories.map((c) => ({ value: c.id, label: c.name })),
+      multiple: false,
     },
   ];
 

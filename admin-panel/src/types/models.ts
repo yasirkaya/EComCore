@@ -12,7 +12,7 @@ export interface Product {
   description: string;
   price: number;
   stockQuantity: number;
-  categoryId: string;
+  categoryIds: string[];
   imageUrl?: string;
   createdAt: Date;
   updatedAt: Date;

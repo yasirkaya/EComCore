@@ -9,6 +9,7 @@ interface FormField {
   as?: "input" | "textarea" | "select";
   rows?: number;
   options?: Array<{ value: string; label: string }>;
+  multiple?: boolean;
 }
 
 interface FormModalProps {
@@ -36,25 +37,40 @@ export const FormModal: React.FC<FormModalProps> = ({
     const commonProps = {
       type: field.type,
       value: values[field.name],
-      onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-        onChange(field.name, e.target.value),
+      onChange: (
+        e: React.ChangeEvent<
+          HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+        >
+      ) => {
+        if (field.multiple && e.target instanceof HTMLSelectElement) {
+          console.log("girdiiiii");
+          const selectedOptions = Array.from(
+            e.target.selectedOptions,
+            (option) => option.value
+          );
+          const currentValues = values[field.name] || [];
+          const newValues = [
+            ...new Set([...currentValues.map(String), ...selectedOptions]),
+          ];
+          onChange(field.name, newValues);
+          console.log("selectedOptions", newValues);
+        } else {
+          console.log("girmediiii");
+          onChange(field.name, e.target.value);
+        }
+      },
       required: field.required,
     };
 
     if (field.as === "select" && field.options) {
       return (
         <Form.Select
-          value={values[field.name]}
-          onChange={(e) => onChange(field.name, e.target.value)}
-          required={field.required}
+          {...commonProps}
+          multiple={field.multiple}
+          value={values[field.name] || []} // value prop'u burada ayarlanıyor
         >
-          <option value="">Seçiniz</option>
           {field.options.map((option) => (
-            <option
-              key={option.value}
-              value={option.value}
-              selected={values[field.name] === option.value}
-            >
+            <option key={option.value} value={option.value}>
               {option.label}
             </option>
           ))}
