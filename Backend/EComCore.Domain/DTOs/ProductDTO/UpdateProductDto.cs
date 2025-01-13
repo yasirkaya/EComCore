@@ -11,4 +11,5 @@ public class UpdateProductDto
     public int GroupId { get; set; }
     public string ImageUrl { get; set; }
     public bool IsDeleted { get; set; }
+    public List<int> CategoryIds { get; set; }
 }

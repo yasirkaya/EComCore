@@ -45,7 +45,6 @@ public class ProductsController : BaseController
     }
 
     [HttpPut("{id}")]
-    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Put(int id, [FromBody] UpdateProductCommand command)
     {
         command.Id = id;

@@ -20,6 +20,12 @@ public class ProductToCategoryRepository : Repository<ProductToCategory>, IProdu
         await _context.SaveChangesAsync();
     }
 
+    public async Task AddByProductIdAsync(IEnumerable<ProductToCategory> prodCats)
+    {
+        await _context.ProductToCategories.AddRangeAsync(prodCats);
+        await _context.SaveChangesAsync();
+    }
+
     public async Task<IEnumerable<ProductToCategory>> GetByCategoryIdAsync(int categoryId, ProductToCategoryParameters productToCategoryParameters)
     {
         return await _context.ProductToCategories

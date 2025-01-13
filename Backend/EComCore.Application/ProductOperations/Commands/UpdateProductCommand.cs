@@ -10,7 +10,8 @@ public class UpdateProductCommand : IRequest
     public decimal Price { get; set; }
     public string Sku { get; set; }
     public int StockQuantity { get; set; }
-    public int GroupId { get; set; }
-    public string ImageUrl { get; set; }
-    public bool IsDeleted { get; set; }
+    public int? GroupId { get; set; }
+    public string? ImageUrl { get; set; }
+    public bool IsDeleted { get; set; } = false;
+    public List<int> CategoryIds { get; set; }
 }

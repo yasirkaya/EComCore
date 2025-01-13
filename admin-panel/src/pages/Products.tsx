@@ -4,6 +4,7 @@ import { categoryService, productService } from "../services/api";
 import { DataTable, FormModal, PageHeader, Column } from "../components/ui";
 
 const defaultFormData = {
+  id: "",
   name: "",
   description: "",
   price: 0,
@@ -45,6 +46,7 @@ export const Products: React.FC = () => {
     if (product) {
       setSelectedProduct(product);
       setFormData({
+        id: product.id,
         name: product.name,
         description: product.description,
         price: product.price,

@@ -8,4 +8,5 @@ public interface IProductToCategoryRepository : IRepository<ProductToCategory>
     Task<IEnumerable<ProductToCategory>> GetByProductIdAsync(int productId);
     Task<IEnumerable<ProductToCategory>> GetByCategoryIdAsync(int categoryId, ProductToCategoryParameters productToCategoryParameters);
     Task DeleteByProductIdAsync(IEnumerable<ProductToCategory> prodCats);
+    Task AddByProductIdAsync(IEnumerable<ProductToCategory> productToCategories);
 }
