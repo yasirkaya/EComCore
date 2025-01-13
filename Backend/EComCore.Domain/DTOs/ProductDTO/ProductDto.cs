@@ -11,5 +11,6 @@ public class ProductDto
     public int GroupId { get; set; }
     public string ImageUrl { get; set; }
     public decimal Rating { get; set; }
+    public List<int> CategoryIds { get; set; }
 
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Product } from "../types/models";
-import { productService } from "../services/api";
+import { Category, Product } from "../types/models";
+import { categoryService, productService } from "../services/api";
 import { DataTable, FormModal, PageHeader, Column } from "../components/ui";
 
 const defaultFormData = {
@@ -13,12 +13,14 @@ const defaultFormData = {
 
 export const Products: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [formData, setFormData] = useState(defaultFormData);
 
   useEffect(() => {
     loadProducts();
+    loadCategories();
   }, []);
 
   const loadProducts = async () => {
@@ -27,6 +29,15 @@ export const Products: React.FC = () => {
       setProducts(data);
     } catch (error) {
       console.error("Ürünler yüklenirken hata oluştu:", error);
+    }
+  };
+
+  const loadCategories = async () => {
+    try {
+      const data = await categoryService.getAll();
+      setCategories(data);
+    } catch (error) {
+      console.error("Kategoriler yüklenirken hata oluştu:", error);
     }
   };
 
@@ -111,7 +122,14 @@ export const Products: React.FC = () => {
     },
     { name: "price", label: "Fiyat", type: "number", required: true },
     { name: "stockQuantity", label: "Stok", type: "number", required: true },
-    { name: "categoryId", label: "Kategori", type: "text", required: true },
+    {
+      name: "categoryId",
+      label: "Kategori",
+      type: "select",
+      as: "select" as const,
+      options: categories.map((c) => ({ value: c.id, label: c.name })),
+      required: true,
+    },
   ];
 
   return (

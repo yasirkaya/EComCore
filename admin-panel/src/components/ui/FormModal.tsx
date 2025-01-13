@@ -50,7 +50,11 @@ export const FormModal: React.FC<FormModalProps> = ({
         >
           <option value="">Seçiniz</option>
           {field.options.map((option) => (
-            <option key={option.value} value={option.value}>
+            <option
+              key={option.value}
+              value={option.value}
+              selected={values[field.name] === option.value}
+            >
               {option.label}
             </option>
           ))}

@@ -16,7 +16,17 @@ public class ProductRepository : Repository<Product>, IProductRepository
 
     public override async Task<Product> GetByIdAsync(int id)
     {
-        return await _context.Products.Where(e => !e.IsDeleted).FirstOrDefaultAsync();
+        return await _context.Products
+            .Where(e => !e.IsDeleted && e.Id == id)
+            .FirstOrDefaultAsync();
+    }
+
+    public async Task<IEnumerable<Product>> GetAllwithCategoriesAsync()
+    {
+        return await _context.Products
+            .Include(p => p.ProductToCategories)
+            .Where(e => !e.IsDeleted)
+            .ToListAsync();
     }
 
 }

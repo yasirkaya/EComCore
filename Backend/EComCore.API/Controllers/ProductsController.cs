@@ -80,7 +80,6 @@ public class ProductsController : BaseController
     }
 
     [HttpPost("{productId}/categories")]
-    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> AddProductToCategory(int productId, [FromBody] CreateProductToCategoryCommand command)
     {
         command.ProductId = productId;

@@ -84,6 +84,7 @@ public class ProductQueryService : IProductQueryService
         }
 
         var pagedProducts = await products
+            .Include(p => p.ProductToCategories)
             .OrderBy(p => p.Id)
             .Skip((productParameters.PageNumber - 1) * productParameters.PageSize)
             .Take(productParameters.PageSize)

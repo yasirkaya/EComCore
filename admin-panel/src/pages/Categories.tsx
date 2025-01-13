@@ -105,10 +105,9 @@ export const Categories: React.FC = () => {
     {
       name: "parentId",
       label: "Üst Kategori",
-      type: "select" as const,
-      options: categories
-        .filter((c) => c.id !== selectedCategory?.id)
-        .map((c) => ({ value: c.id, label: c.name })),
+      type: "select",
+      as: "select" as const,
+      options: categories.map((c) => ({ value: c.id, label: c.name })),
     },
   ];
 
