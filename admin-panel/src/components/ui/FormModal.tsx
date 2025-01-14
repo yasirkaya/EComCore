@@ -48,10 +48,16 @@ export const FormModal: React.FC<FormModalProps> = ({
             e.target.selectedOptions,
             (option) => option.value
           );
-          const currentValues = values[field.name] || [];
-          const newValues = [
-            ...new Set([...currentValues.map(String), ...selectedOptions]),
-          ];
+          const currentValues = values[field.name]
+            ? values[field.name].map(String)
+            : [];
+          const newValues: string[] = selectedOptions
+            .filter((option: string) => !currentValues.includes(option))
+            .concat(
+              currentValues.filter(
+                (value: string) => !selectedOptions.includes(value)
+              )
+            );
           onChange(field.name, newValues);
           console.log("selectedOptions", newValues);
         } else {
