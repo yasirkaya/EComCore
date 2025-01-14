@@ -234,7 +234,8 @@ public class EComCoreDbContext : DbContext
                 .IsRequired();
 
             entity.Property(p => p.ImageUrl)
-                .HasMaxLength(1000);
+                .HasMaxLength(1000)
+                .IsRequired(false);
 
             entity.Property(p => p.Rating)
                 .IsRequired()

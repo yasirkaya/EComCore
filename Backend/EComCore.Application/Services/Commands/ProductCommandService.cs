@@ -27,6 +27,14 @@ public class ProductCommandService : IProductCommandService
     {
         var product = _mapper.Map<Product>(dto);
         await _productRepository.AddAsync(product);
+        var productToCategories = dto.CategoryIds.Select(x => new ProductToCategory
+        {
+            ProductId = product.Id,
+            CategoryId = x,
+            CreatedAt = DateTime.UtcNow
+        });
+
+        await _productToCategoryRepository.AddByProductIdAsync(productToCategories);
         return product.Id;
     }
 

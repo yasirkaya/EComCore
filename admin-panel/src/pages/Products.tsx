@@ -104,6 +104,7 @@ export const Products: React.FC = () => {
   const columns: Column<Product>[] = [
     { header: "Ürün Adı", field: (product: Product) => product.name },
     { header: "Açıklama", field: (product: Product) => product.description },
+    { header: "Ürün Kodu ", field: (product: Product) => product.sku },
     {
       header: "Fiyat",
       field: (product: Product) => formatPrice(product.price),
@@ -134,6 +135,7 @@ export const Products: React.FC = () => {
       rows: 3,
       required: true,
     },
+    { name: "sku", label: "Ürün Kodu", type: "text", required: true },
     { name: "price", label: "Fiyat", type: "number", required: true },
     { name: "stockQuantity", label: "Stok", type: "number", required: true },
     {

@@ -14,7 +14,6 @@ export interface Product {
   price: number;
   stockQuantity: number;
   categoryIds: string[];
-  imageUrl?: string;
   createdAt: Date;
   updatedAt: Date;
 }

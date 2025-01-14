@@ -9,4 +9,5 @@ public class CreateProductDto
     public int StockQuantity { get; set; }
     public int GroupId { get; set; }
     public string ImageUrl { get; set; }
+    public List<int> CategoryIds { get; set; }
 }
