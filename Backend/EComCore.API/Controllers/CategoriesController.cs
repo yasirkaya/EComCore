@@ -49,6 +49,7 @@ public class CategoriesController : ControllerBase
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateCategory(int id, [FromBody] UpdateCategoryCommand command)
     {
+        command.Id = id;
         await _mediator.Send(command);
         return NoContent();
     }
