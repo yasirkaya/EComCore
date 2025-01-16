@@ -7,7 +7,7 @@ import { Column } from "../components/ui";
 const defaultFormData = {
   email: "",
   username: "",
-  isActive: true,
+  isDeleted: true,
   isEmailVerified: true,
 };
 
@@ -43,7 +43,7 @@ export const Users: React.FC = () => {
       setFormData({
         email: user.email,
         username: user.username,
-        isActive: user.isActive,
+        isDeleted: user.isDeleted,
         isEmailVerified: user.isEmailVerified,
       });
     } else {
@@ -90,7 +90,7 @@ export const Users: React.FC = () => {
     { header: "Email", field: (user: User) => user.email },
     {
       header: "Durum",
-      field: (user: User) => (user.isActive ? "Aktif" : "Pasif"),
+      field: (user: User) => (user.isDeleted ? "Aktif" : "Pasif"),
     },
     {
       header: "Email Doğrulama",

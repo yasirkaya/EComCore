@@ -2,7 +2,7 @@ export interface User {
   id: string;
   username: string;
   email: string;
-  isActive: boolean;
+  isDeleted: boolean;
   isEmailVerified: boolean;
 }
 
@@ -14,6 +14,7 @@ export interface Product {
   price: number;
   stockQuantity: number;
   categoryIds: string[];
+  isDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Category, Product } from "../types/models";
 import { categoryService, productService } from "../services/api";
 import { DataTable, FormModal, PageHeader, Column } from "../components/ui";
+import { Button } from "react-bootstrap";
 
 const defaultFormData = {
   id: "",
@@ -11,6 +12,7 @@ const defaultFormData = {
   price: 0,
   stockQuantity: 0,
   categoryIds: [] as string[],
+  isDeleted: false,
 };
 
 export const Products: React.FC = () => {
@@ -54,6 +56,7 @@ export const Products: React.FC = () => {
         price: product.price,
         stockQuantity: product.stockQuantity,
         categoryIds: product.categoryIds,
+        isDeleted: product.isDeleted,
       });
     } else {
       setSelectedProduct(null);
@@ -122,6 +125,17 @@ export const Products: React.FC = () => {
             return category ? category.name : "";
           })
           .join(", "),
+    },
+    {
+      header: "Durum",
+      field: (product) => (
+        <Button
+          variant={product.isDeleted ? "outline-danger" : "outline-success"}
+          size="sm"
+        >
+          {product.isDeleted ? "Silinmiş" : "Aktif"}
+        </Button>
+      ),
     },
   ];
 

@@ -12,5 +12,6 @@ public class ProductDto
     public string ImageUrl { get; set; }
     public decimal Rating { get; set; }
     public List<int> CategoryIds { get; set; }
+    public bool IsDeleted { get; set; }
 
 }
