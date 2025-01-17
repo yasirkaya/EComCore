@@ -7,7 +7,8 @@ import { Register } from './pages/Register';
 import { Home } from './pages/Home';
 import { Header } from './components/Header';
 import { ThemeProvider, createTheme } from '@mui/material';
-import  ProductDetail  from './pages/ProductDetail';
+import ProductDetail from './pages/ProductDetail';
+import Cart from './pages/Cart';
 
 const theme = createTheme({
   palette: {
@@ -32,6 +33,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/product/:id" element={<ProductDetail />} />
+              <Route path="/cart" element={<Cart />} />
             </Routes>
           </div>
         </Router>

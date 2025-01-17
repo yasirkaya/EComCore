@@ -3,11 +3,14 @@ import { useParams } from 'react-router-dom';
 import { productService } from '../services/product.service';
 import { Product } from '../types/product';
 import { Container, Row, Col, Image, Button } from 'react-bootstrap';
+import { addToCart } from '../store/cartSlice';
+import { useAppDispatch } from '../store/hooks';
 
 const ProductDetail: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -26,6 +29,12 @@ const ProductDetail: React.FC = () => {
         fetchProduct();
     }, [id]);
 
+    const handleAddToCart = () => {
+        if (product) {
+            dispatch(addToCart({ productId: parseInt(product.id), quantity: 1 }));
+        }
+    };
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -43,11 +52,11 @@ const ProductDetail: React.FC = () => {
                 <Col md={6}>
                     <h1>{product.name}</h1>
                     <p className="text-muted">{product.categoryId}</p>
-                    <h2 className="text-primary">${product.price}</h2>
+                    <h2 className="text-primary">{product.price} TL</h2>
                     <p>{product.description}</p>
                     <div className="d-grid gap-2">
-                        <Button variant="primary" size="lg">
-                            Add to Cart
+                        <Button variant="primary" size="lg" onClick={handleAddToCart}>
+                            Sepete Ekle
                         </Button>
                     </div>
                 </Col>

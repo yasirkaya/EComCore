@@ -29,7 +29,7 @@ public class CartCommandService : ICartCommandService
         var cart = await _cartRepository.GetByUserIdAsync(dto.UserId);
         if (cart == null)
         {
-            cart = new Cart { UserId = dto.UserId };
+            cart = new Cart { UserId = dto.UserId, CreatedAt = DateTime.UtcNow };
             await _cartRepository.AddAsync(cart);
         }
 
@@ -42,12 +42,14 @@ public class CartCommandService : ICartCommandService
                 ProductId = dto.ProductId,
                 Quantity = dto.Quantity,
                 UnitPrice = product.Price
+                created_at = DateTime.UtcNow
             };
             cart.Items.Add(cartItem);
         }
         else
         {
             cartItem.Quantity += dto.Quantity;
+            cartItem.UpdatedAt = DateTime.UtcNow;
         }
 
         await _cartRepository.UpdateAsync(cart);
@@ -63,6 +65,7 @@ public class CartCommandService : ICartCommandService
         await cartItem.EnsureNotNullAsync(message: $"Cart item not found for product {dto.ProductId}");
 
         cartItem.Quantity = dto.Quantity;
+        cartItem.UpdatedAt = DateTime.UtcNow;
         await _cartRepository.UpdateAsync(cart);
     }
 
