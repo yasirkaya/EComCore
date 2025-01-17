@@ -42,4 +42,9 @@ export const productService = {
   async removeFromFavorites(productId: string): Promise<void> {
     await api.delete(`/favorites/${productId}`);
   },
+  
+  async getProductById(productId: number): Promise<Product> {
+    const { data } = await api.get(`/products/${productId}`);
+    return data;
+  },
 };
