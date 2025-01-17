@@ -5,6 +5,8 @@ using EComCore.Domain.DTOs.OrderDTO;
 using EComCore.Domain.Entities;
 using EComCore.Domain.Repositories;
 using EComCore.Domain.Services.Commands;
+using EComCore.Domain.Enums;
+
 
 namespace EComCore.Application.Services.Commands
 {
@@ -22,7 +24,7 @@ namespace EComCore.Application.Services.Commands
         public async Task<OrderDto> CreateOrderAsync(CreateOrderDto createOrderDto)
         {
             var order = _mapper.Map<Order>(createOrderDto);
-            order.OrderStatus = "Pending";
+            order.OrderStatus = OrderStatus.Pending.ToString();
             order.CreatedAt = DateTime.UtcNow;
 
             await _orderRepository.AddAsync(order);
@@ -48,7 +50,7 @@ namespace EComCore.Application.Services.Commands
             if (order == null)
                 return false;
 
-            order.OrderStatus = "Cancelled";
+            order.OrderStatus = OrderStatus.Cancelled.ToString();
             order.UpdatedAt = DateTime.UtcNow;
 
             await _orderRepository.UpdateAsync(order);
