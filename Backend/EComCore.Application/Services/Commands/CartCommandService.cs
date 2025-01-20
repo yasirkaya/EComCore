@@ -41,8 +41,8 @@ public class CartCommandService : ICartCommandService
                 CartId = cart.Id,
                 ProductId = dto.ProductId,
                 Quantity = dto.Quantity,
-                UnitPrice = product.Price
-                created_at = DateTime.UtcNow
+                UnitPrice = product.Price,
+                CreatedAt = DateTime.UtcNow
             };
             cart.Items.Add(cartItem);
         }
