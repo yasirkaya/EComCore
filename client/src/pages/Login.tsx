@@ -1,34 +1,33 @@
-import React from 'react';
-import { useFormik } from 'formik';
-import * as yup from 'yup';
-import { Box, Button, Container, TextField, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { authService } from '../services/auth.service';
-import { setUser } from '../store/slices/authSlice';
+import React from "react";
+import { useFormik } from "formik";
+import * as yup from "yup";
+import { Box, Button, Container, TextField, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { authService } from "../services/auth.service";
 
 const validationSchema = yup.object({
-  email: yup.string().email('Geçerli bir e-posta adresi girin').required('E-posta gerekli'),
-  password: yup.string().required('Şifre gerekli'),
+  email: yup
+    .string()
+    .email("Geçerli bir e-posta adresi girin")
+    .required("E-posta gerekli"),
+  password: yup.string().required("Şifre gerekli"),
 });
 
 export const Login = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     },
     validationSchema,
     onSubmit: async (values) => {
       try {
-        const response = await authService.login(values);
-        dispatch(setUser(response.user));
-        navigate('/');
+        await authService.login(values);
+        navigate("/");
       } catch (error) {
-        console.error('Login error:', error);
+        console.error("Login error:", error);
       }
     },
   });
@@ -38,9 +37,9 @@ export const Login = () => {
       <Box
         sx={{
           marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
         <Typography component="h1" variant="h5">
@@ -84,14 +83,14 @@ export const Login = () => {
           <Button
             fullWidth
             variant="text"
-            onClick={() => navigate('/register')}
+            onClick={() => navigate("/register")}
           >
             Hesabınız yok mu? Kayıt olun
           </Button>
           <Button
             fullWidth
             variant="text"
-            onClick={() => navigate('/forgot-password')}
+            onClick={() => navigate("/forgot-password")}
           >
             Şifremi unuttum
           </Button>
