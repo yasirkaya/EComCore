@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { Cart, cartService } from '../services/cart.service';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { Cart, cartService } from "../../services/cart.service";
 
 interface CartState {
   cart: Cart | null;
@@ -13,13 +13,13 @@ const initialState: CartState = {
   error: null,
 };
 
-export const fetchCart = createAsyncThunk('cart/fetchCart', async () => {
+export const fetchCart = createAsyncThunk("cart/fetchCart", async () => {
   const cart = await cartService.getCart();
   return cart;
 });
 
 export const addToCart = createAsyncThunk(
-  'cart/addToCart',
+  "cart/addToCart",
   async ({ productId, quantity }: { productId: number; quantity: number }) => {
     const cart = await cartService.addToCart(productId, quantity);
     return cart;
@@ -27,7 +27,7 @@ export const addToCart = createAsyncThunk(
 );
 
 export const updateCartItem = createAsyncThunk(
-  'cart/updateCartItem',
+  "cart/updateCartItem",
   async ({ productId, quantity }: { productId: number; quantity: number }) => {
     const cart = await cartService.updateCartItem(productId, quantity);
     return cart;
@@ -35,7 +35,7 @@ export const updateCartItem = createAsyncThunk(
 );
 
 export const removeFromCart = createAsyncThunk(
-  'cart/removeFromCart',
+  "cart/removeFromCart",
   async (productId: number) => {
     const cart = await cartService.removeFromCart(productId);
     return cart;
@@ -43,7 +43,7 @@ export const removeFromCart = createAsyncThunk(
 );
 
 const cartSlice = createSlice({
-  name: 'cart',
+  name: "cart",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -58,7 +58,7 @@ const cartSlice = createSlice({
       })
       .addCase(fetchCart.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Bir hata oluştu';
+        state.error = action.error.message || "Bir hata oluştu";
       })
       .addCase(addToCart.fulfilled, (state, action) => {
         state.cart = action.payload;

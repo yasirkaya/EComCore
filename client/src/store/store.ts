@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // localStorage için
-import cartReducer from "./cartSlice";
+import cartReducer from "./slices/cartSlice";
 import authReducer from "./slices/authSlice"; // Auth için reducer'ınız (varsa)
 
 // Persist ayarları
