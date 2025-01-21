@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   AppBar,
   Toolbar,
@@ -8,20 +8,22 @@ import {
   Badge,
   Box,
   useTheme,
-} from '@mui/material';
+} from "@mui/material";
 import {
   ShoppingCart as ShoppingCartIcon,
   Favorite as FavoriteIcon,
   Person as PersonIcon,
-} from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store';
+} from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
 export const Header: React.FC = () => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const { isAuthenticated, user } = useSelector((state: RootState) => state.auth);
+  const token = localStorage.getItem("token");
+  const isAuthenticated = !!token;
+  // const { isAuthenticated } = useSelector((state: RootState) => state.auth);
 
   return (
     <AppBar position="sticky" sx={{ mb: 2 }}>
@@ -29,37 +31,40 @@ export const Header: React.FC = () => {
         <Typography
           variant="h6"
           component="div"
-          sx={{ flexGrow: 1, cursor: 'pointer' }}
-          onClick={() => navigate('/')}
+          sx={{ flexGrow: 1, cursor: "pointer" }}
+          onClick={() => navigate("/")}
         >
           EComCore
         </Typography>
 
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           {isAuthenticated ? (
             <>
-              <IconButton color="inherit" onClick={() => navigate('/favorites')}>
+              <IconButton
+                color="inherit"
+                onClick={() => navigate("/favorites")}
+              >
                 <Badge color="secondary">
                   <FavoriteIcon />
                 </Badge>
               </IconButton>
-              
-              <IconButton color="inherit" onClick={() => navigate('/cart')}>
+
+              <IconButton color="inherit" onClick={() => navigate("/cart")}>
                 <Badge color="secondary">
                   <ShoppingCartIcon />
                 </Badge>
               </IconButton>
 
-              <IconButton color="inherit" onClick={() => navigate('/profile')}>
+              <IconButton color="inherit" onClick={() => navigate("/profile")}>
                 <PersonIcon />
               </IconButton>
             </>
           ) : (
             <>
-              <Button color="inherit" onClick={() => navigate('/login')}>
+              <Button color="inherit" onClick={() => navigate("/login")}>
                 Giriş Yap
               </Button>
-              <Button color="inherit" onClick={() => navigate('/register')}>
+              <Button color="inherit" onClick={() => navigate("/register")}>
                 Kayıt Ol
               </Button>
             </>

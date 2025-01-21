@@ -1,19 +1,13 @@
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useAppDispatch } from '../store/hooks';
-import {
-  Container,
-  Table,
-  Button,
-  Image,
-  Form,
-} from 'react-bootstrap';
-import { RootState } from '../store/store';
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "../store/hooks";
+import { Container, Table, Button, Image, Form } from "react-bootstrap";
+import { RootState } from "../store/store";
 import {
   fetchCart,
   updateCartItem,
   removeFromCart,
-} from '../store/cartSlice';
+} from "../store/slices/cartSlice";
 
 const Cart: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -77,13 +71,16 @@ const Cart: React.FC = () => {
                 </div>
               </td>
               <td>{item.product?.price} TL</td>
-              <td style={{ width: '150px' }}>
+              <td style={{ width: "150px" }}>
                 <Form.Control
                   type="number"
                   min="1"
                   value={item.quantity}
                   onChange={(e) =>
-                    handleQuantityChange(item.productId, parseInt(e.target.value))
+                    handleQuantityChange(
+                      item.productId,
+                      parseInt(e.target.value)
+                    )
                   }
                 />
               </td>
