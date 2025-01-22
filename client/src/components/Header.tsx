@@ -15,15 +15,26 @@ import {
   Person as PersonIcon,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "../store";
+import { CartItem } from "services/cart.service";
 
 export const Header: React.FC = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const isAuthenticated = !!token;
-  // const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+
+  const getTotalQuantity = () => {
+    const cart = JSON.parse(localStorage.getItem("cart") || "{}");
+    if (cart && cart.items) {
+      return cart.items.reduce(
+        (total: number, item: CartItem) => total + item.quantity,
+        0
+      );
+    }
+    return 0;
+  };
+
+  const totalQuantity = getTotalQuantity();
 
   return (
     <AppBar position="sticky" sx={{ mb: 2 }}>
@@ -50,7 +61,7 @@ export const Header: React.FC = () => {
               </IconButton>
 
               <IconButton color="inherit" onClick={() => navigate("/cart")}>
-                <Badge color="secondary">
+                <Badge badgeContent={totalQuantity} color="secondary">
                   <ShoppingCartIcon />
                 </Badge>
               </IconButton>

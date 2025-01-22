@@ -3,14 +3,12 @@ import { useParams } from "react-router-dom";
 import { productService } from "../services/product.service";
 import { Product } from "../types/product";
 import { Container, Row, Col, Image, Button } from "react-bootstrap";
-import { addToCart } from "../store/slices/cartSlice";
-import { useAppDispatch } from "../store/hooks";
+import { cartService } from "../services/cart.service";
 
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -31,7 +29,13 @@ const ProductDetail: React.FC = () => {
 
   const handleAddToCart = () => {
     if (product) {
-      dispatch(addToCart({ productId: parseInt(product.id), quantity: 1 }));
+      try {
+        cartService.addToCart(parseInt(product.id), 1);
+
+        console.log("Ürün sepete başarıyla eklendi:", product.name);
+      } catch (error) {
+        console.error("Sepete eklerken bir hata oluştu:", error);
+      }
     }
   };
 
@@ -47,7 +51,11 @@ const ProductDetail: React.FC = () => {
     <Container className="py-5">
       <Row>
         <Col md={6}>
-          <Image src={product.imageUrl} alt={product.name} fluid />
+          <Image
+            src={process.env.PUBLIC_URL + "urun.jpeg"}
+            alt={product.name}
+            fluid
+          />
         </Col>
         <Col md={6}>
           <h1>{product.name}</h1>
