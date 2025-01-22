@@ -3,19 +3,15 @@ import { api } from "./api";
 export interface CartItem {
   productId: number;
   quantity: number;
-  product?: {
-    id: number;
-    name: string;
-    price: number;
-    imageUrl: string;
-  };
+  productName: string;
+  unitPrice: number;
+  totalPrice: number;
 }
 
 export interface Cart {
   id: number;
   userId: number;
   items: CartItem[];
-  total: number;
 }
 
 class CartService {
@@ -51,9 +47,15 @@ class CartService {
     if (existingItemIndex !== -1) {
       cart.items[existingItemIndex].quantity += quantity;
     } else {
-      cart.items.push({
-        productId,
-        quantity,
+      await cartService.getCart().then((newCart) => {
+        if (newCart && newCart.items) {
+          const newCartItem = newCart.items.find(
+            (item: CartItem) => item.productId === productId
+          );
+          cart.items.push(newCartItem);
+        } else {
+          console.error("Sepet verileri alınamadı!");
+        }
       });
     }
 

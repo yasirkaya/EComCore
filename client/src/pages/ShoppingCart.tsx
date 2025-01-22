@@ -1,37 +1,26 @@
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { useAppDispatch } from "../store/hooks";
+import React, { useEffect, useState } from "react";
 import { Container, Table, Button, Image, Form } from "react-bootstrap";
-import { RootState } from "../store/store";
-import {
-  fetchCart,
-  updateCartItem,
-  removeFromCart,
-} from "../store/slices/cartSlice";
+import { Cart, CartItem, cartService } from "services/cart.service";
 
-const Cart: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const { cart, loading } = useSelector((state: RootState) => state.cart);
+const ShoppingCart: React.FC = () => {
+  const [cart, setCart] = useState<Cart | null>(null);
 
   useEffect(() => {
-    dispatch(fetchCart());
-  }, [dispatch]);
+    const storedCart = localStorage.getItem("cart");
+    if (storedCart) {
+      setCart(JSON.parse(storedCart));
+    } else {
+      setCart(null);
+    }
+  }, []);
 
   const handleQuantityChange = (productId: number, quantity: number) => {
-    if (quantity > 0) {
-      dispatch(updateCartItem({ productId, quantity }));
-    } else {
-      dispatch(removeFromCart(productId));
-    }
+    cartService.updateCartItem(productId, quantity);
   };
 
   const handleRemoveItem = (productId: number) => {
-    dispatch(removeFromCart(productId));
+    cartService.removeFromCart(productId);
   };
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
   if (!cart || cart.items.length === 0) {
     return (
@@ -61,16 +50,16 @@ const Cart: React.FC = () => {
               <td>
                 <div className="d-flex align-items-center">
                   <Image
-                    src={item.product?.imageUrl}
-                    alt={item.product?.name}
+                    src={process.env.PUBLIC_URL + "urun.jpeg"}
+                    alt={item.productName}
                     width={50}
                     height={50}
                     className="me-3"
                   />
-                  <span>{item.product?.name}</span>
+                  <span>{item.productName}</span>
                 </div>
               </td>
-              <td>{item.product?.price} TL</td>
+              <td>{item.unitPrice} TL</td>
               <td style={{ width: "150px" }}>
                 <Form.Control
                   type="number"
@@ -84,7 +73,7 @@ const Cart: React.FC = () => {
                   }
                 />
               </td>
-              <td>{(item.product?.price || 0) * item.quantity} TL</td>
+              <td>{item.totalPrice} TL</td>
               <td>
                 <Button
                   variant="danger"
@@ -103,7 +92,7 @@ const Cart: React.FC = () => {
               <strong>Toplam:</strong>
             </td>
             <td>
-              <strong>{cart.total} TL</strong>
+              <strong>{222} TL</strong>
             </td>
             <td></td>
           </tr>
@@ -118,4 +107,4 @@ const Cart: React.FC = () => {
   );
 };
 
-export default Cart;
+export default ShoppingCart;
