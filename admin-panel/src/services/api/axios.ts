@@ -31,7 +31,6 @@ axiosInstance.interceptors.response.use(
     console.error("API Error:", error.response?.status, error.response?.data);
     if (error.response?.status === 401) {
       localStorage.removeItem("token");
-      localStorage.removeItem("cart");
       window.location.href = "/login";
     }
     return Promise.reject(error);

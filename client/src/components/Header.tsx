@@ -15,7 +15,7 @@ import {
   Person as PersonIcon,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { CartItem } from "services/cart.service";
+import { CartItem, cartService } from "services/cart.service";
 
 export const Header: React.FC = () => {
   const theme = useTheme();
@@ -23,8 +23,8 @@ export const Header: React.FC = () => {
   const token = localStorage.getItem("token");
   const isAuthenticated = !!token;
 
-  const getTotalQuantity = () => {
-    const cart = JSON.parse(localStorage.getItem("cart") || "{}");
+  const getTotalQuantity = async () => {
+    const cart = await cartService.getCart();
     if (cart && cart.items) {
       return cart.items.reduce(
         (total: number, item: CartItem) => total + item.quantity,

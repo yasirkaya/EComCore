@@ -12,8 +12,6 @@ export const authService = {
       loginDto: credentials,
     });
     localStorage.setItem("token", data.token);
-    const cart = await cartService.getCart();
-    localStorage.setItem("cart", JSON.stringify(cart));
     return data;
   },
 
@@ -36,7 +34,6 @@ export const authService = {
 
   logout() {
     localStorage.removeItem("token");
-    localStorage.removeItem("cart");
   },
 
   async getCurrentUser(): Promise<AuthResponse> {

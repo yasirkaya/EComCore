@@ -6,12 +6,16 @@ const ShoppingCart: React.FC = () => {
   const [cart, setCart] = useState<Cart | null>(null);
 
   useEffect(() => {
-    const storedCart = localStorage.getItem("cart");
-    if (storedCart) {
-      setCart(JSON.parse(storedCart));
-    } else {
-      setCart(null);
-    }
+    const fetchCart = async () => {
+      const storedCart = await cartService.getCart();
+      if (storedCart) {
+        setCart(storedCart);
+      } else {
+        setCart(null);
+      }
+    };
+
+    fetchCart();
   }, []);
 
   const handleQuantityChange = (productId: number, quantity: number) => {

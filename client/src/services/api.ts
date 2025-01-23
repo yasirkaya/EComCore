@@ -22,7 +22,6 @@ api.interceptors.response.use(
   async (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem("token");
-      localStorage.removeItem("cart");
       window.location.href = "/login";
     }
     return Promise.reject(error);
