@@ -16,25 +16,18 @@ import {
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { CartItem, cartService } from "services/cart.service";
+import { useSelector } from "react-redux";
+import { RootState } from "store/store";
 
 export const Header: React.FC = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const isAuthenticated = !!token;
-
-  const getTotalQuantity = async () => {
-    const cart = await cartService.getCart();
-    if (cart && cart.items) {
-      return cart.items.reduce(
-        (total: number, item: CartItem) => total + item.quantity,
-        0
-      );
-    }
-    return 0;
-  };
-
-  const totalQuantity = getTotalQuantity();
+  const cart = useSelector((state: RootState) => state.cart.cart);
+  const totalQuantity = cart
+    ? cart?.items?.reduce((total, item) => total + item.quantity, 0) || 0
+    : 0;
 
   return (
     <AppBar position="sticky" sx={{ mb: 2 }}>

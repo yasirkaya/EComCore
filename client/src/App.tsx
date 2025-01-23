@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
-import { store } from "./store";
+import { store, AppDispatch } from "./store/store";
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 import { Home } from "./pages/Home";
@@ -9,6 +9,8 @@ import { Header } from "./components/Header";
 import { ThemeProvider, createTheme } from "@mui/material";
 import ProductDetail from "./pages/ProductDetail";
 import ShoppingCart from "./pages/ShoppingCart";
+import { useDispatch } from "react-redux";
+import { fetchCart } from "./store/slices/cartSlice";
 
 const theme = createTheme({
   palette: {
@@ -22,6 +24,15 @@ const theme = createTheme({
 });
 
 function App() {
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      dispatch(fetchCart());
+    }
+  }, [dispatch]);
+
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>

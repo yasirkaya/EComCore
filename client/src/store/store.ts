@@ -1,24 +1,26 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // localStorage için
 import cartReducer from "./slices/cartSlice";
 import authReducer from "./slices/authSlice"; // Auth için reducer'ınız (varsa)
 
-// Persist ayarları
-const persistConfig = {
-  key: "root",
+// Persist ayarları (sadece auth için)
+const authPersistConfig = {
+  key: "auth",
   storage,
-  whitelist: ["auth"], // Sadece auth reducer'ını persist edeceğiz
+  whitelist: ["token", "user"], // Sadece token ve user state'lerini persist edeceğiz
 };
 
-// Auth reducer'ı persist etmek
-const persistedReducer = persistReducer(persistConfig, authReducer);
+// Root Reducer
+const rootReducer = combineReducers({
+  cart: cartReducer,
+  auth: persistReducer(authPersistConfig, authReducer), // Auth reducer'ını persist ettik
+});
 
+// Redux Store
 const store = configureStore({
-  reducer: {
-    cart: cartReducer,
-    auth: persistedReducer, // Auth reducer'ını persist edilen reducer ile değiştiriyoruz
-  },
+  reducer: rootReducer,
+  devTools: process.env.NODE_ENV !== "production", // Sadece geliştirme modunda DevTools
 });
 
 // `persistor` öğesini export etmeyi unutmayın

@@ -1,30 +1,76 @@
 import React, { useEffect, useState } from "react";
-import { Container, Table, Button, Image, Form } from "react-bootstrap";
+import {
+  Container,
+  Table,
+  Button,
+  Image,
+  Form,
+  Spinner,
+  Alert,
+} from "react-bootstrap";
 import { Cart, CartItem, cartService } from "services/cart.service";
 
 const ShoppingCart: React.FC = () => {
   const [cart, setCart] = useState<Cart | null>(null);
+  const [loading, setLoading] = useState<boolean>(true); // Yüklenme durumu için state
+  const [error, setError] = useState<string | null>(null); // Hata durumu için state
 
   useEffect(() => {
     const fetchCart = async () => {
-      const storedCart = await cartService.getCart();
-      if (storedCart) {
-        setCart(storedCart);
-      } else {
-        setCart(null);
+      setLoading(true); // Yükleme durumunu başlat
+      setError(null); // Hata durumunu sıfırla
+      try {
+        const storedCart = await cartService.getCart();
+        setCart(storedCart || null);
+      } catch (err) {
+        setError("Sepet verileri yüklenirken bir hata oluştu.");
+      } finally {
+        setLoading(false); // Yükleme tamamlandı
       }
     };
 
     fetchCart();
   }, []);
 
-  const handleQuantityChange = (productId: number, quantity: number) => {
-    cartService.updateCartItem(productId, quantity);
+  const handleQuantityChange = async (productId: number, quantity: number) => {
+    try {
+      const updatedCart = await cartService.updateCartItem(productId, quantity);
+      setCart(updatedCart); // Güncellenmiş sepeti ayarla
+    } catch {
+      setError("Ürün miktarı güncellenirken bir hata oluştu.");
+    }
   };
 
-  const handleRemoveItem = (productId: number) => {
-    cartService.removeFromCart(productId);
+  const handleRemoveItem = async (productId: number) => {
+    try {
+      const updatedCart = await cartService.removeFromCart(productId);
+      setCart(updatedCart); // Güncellenmiş sepeti ayarla
+    } catch {
+      setError("Ürün sepetten çıkarılırken bir hata oluştu.");
+    }
   };
+
+  const totalAmount = cart?.items.reduce(
+    (total, item) => total + item.totalPrice,
+    0
+  );
+
+  if (loading) {
+    return (
+      <Container className="py-5 text-center">
+        <Spinner animation="border" />
+        <p>Sepet yükleniyor...</p>
+      </Container>
+    );
+  }
+
+  if (error) {
+    return (
+      <Container className="py-5">
+        <Alert variant="danger">{error}</Alert>
+      </Container>
+    );
+  }
 
   if (!cart || cart.items.length === 0) {
     return (
@@ -96,7 +142,7 @@ const ShoppingCart: React.FC = () => {
               <strong>Toplam:</strong>
             </td>
             <td>
-              <strong>{222} TL</strong>
+              <strong>{totalAmount} TL</strong>
             </td>
             <td></td>
           </tr>

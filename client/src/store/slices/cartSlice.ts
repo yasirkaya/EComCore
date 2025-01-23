@@ -48,6 +48,7 @@ const cartSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      // fetchCart
       .addCase(fetchCart.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -58,16 +59,53 @@ const cartSlice = createSlice({
       })
       .addCase(fetchCart.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || "Bir hata oluştu";
+        state.error =
+          action.error.message || "Sepet verileri alınırken bir hata oluştu.";
+      })
+
+      // addToCart
+      .addCase(addToCart.pending, (state) => {
+        state.loading = true;
+        state.error = null;
       })
       .addCase(addToCart.fulfilled, (state, action) => {
+        state.loading = false;
         state.cart = action.payload;
+      })
+      .addCase(addToCart.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          action.error.message || "Ürün sepete eklenirken bir hata oluştu.";
+      })
+
+      // updateCartItem
+      .addCase(updateCartItem.pending, (state) => {
+        state.loading = true;
+        state.error = null;
       })
       .addCase(updateCartItem.fulfilled, (state, action) => {
+        state.loading = false;
         state.cart = action.payload;
       })
+      .addCase(updateCartItem.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          action.error.message || "Sepet öğesi güncellenirken bir hata oluştu.";
+      })
+
+      // removeFromCart
+      .addCase(removeFromCart.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(removeFromCart.fulfilled, (state, action) => {
+        state.loading = false;
         state.cart = action.payload;
+      })
+      .addCase(removeFromCart.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          action.error.message || "Ürün sepetten çıkarılırken bir hata oluştu.";
       });
   },
 });
