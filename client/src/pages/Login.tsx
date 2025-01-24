@@ -4,6 +4,8 @@ import * as yup from "yup";
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../services/auth.service";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../store/store";
 
 const validationSchema = yup.object({
   email: yup
@@ -14,6 +16,7 @@ const validationSchema = yup.object({
 });
 
 export const Login = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -24,7 +27,7 @@ export const Login = () => {
     validationSchema,
     onSubmit: async (values) => {
       try {
-        await authService.login(values);
+        await authService.login(values, dispatch);
         navigate("/");
       } catch (error) {
         console.error("Login error:", error);

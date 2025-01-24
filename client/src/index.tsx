@@ -5,7 +5,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
-import { store } from "store/store";
+import { store, persistor } from "./store/store";
+import { PersistGate } from "redux-persist/integration/react";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -13,7 +14,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <PersistGate loading={null} persistor={persistor}>
+        <App />
+      </PersistGate>
     </Provider>
   </React.StrictMode>
 );

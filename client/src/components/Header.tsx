@@ -25,9 +25,7 @@ export const Header: React.FC = () => {
   const token = localStorage.getItem("token");
   const isAuthenticated = !!token;
   const cart = useSelector((state: RootState) => state.cart.cart);
-  const totalQuantity = cart
-    ? cart?.items?.reduce((total, item) => total + item.quantity, 0) || 0
-    : 0;
+  const totalQuantity = cart?.items?.reduce((total, item) => total + item.quantity, 0) ?? 0;
 
   return (
     <AppBar position="sticky" sx={{ mb: 2 }}>

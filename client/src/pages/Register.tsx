@@ -1,24 +1,27 @@
-import React from 'react';
-import { useFormik } from 'formik';
-import * as yup from 'yup';
-import { Box, Button, Container, TextField, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { authService } from '../services/auth.service';
-import { setUser } from '../store/slices/authSlice';
+import React from "react";
+import { useFormik } from "formik";
+import * as yup from "yup";
+import { Box, Button, Container, TextField, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { authService } from "../services/auth.service";
+import { setUser } from "../store/slices/authSlice";
 
 const validationSchema = yup.object({
-  firstName: yup.string().required('Ad gerekli'),
-  lastName: yup.string().required('Soyad gerekli'),
-  email: yup.string().email('Geçerli bir e-posta adresi girin').required('E-posta gerekli'),
+  firstName: yup.string().required("Ad gerekli"),
+  lastName: yup.string().required("Soyad gerekli"),
+  email: yup
+    .string()
+    .email("Geçerli bir e-posta adresi girin")
+    .required("E-posta gerekli"),
   password: yup
     .string()
-    .min(6, 'Şifre en az 6 karakter olmalıdır')
-    .required('Şifre gerekli'),
+    .min(6, "Şifre en az 6 karakter olmalıdır")
+    .required("Şifre gerekli"),
   confirmPassword: yup
     .string()
-    .oneOf([yup.ref('password')], 'Şifreler eşleşmiyor')
-    .required('Şifre tekrarı gerekli'),
+    .oneOf([yup.ref("password")], "Şifreler eşleşmiyor")
+    .required("Şifre tekrarı gerekli"),
 });
 
 export const Register = () => {
@@ -27,20 +30,20 @@ export const Register = () => {
 
   const formik = useFormik({
     initialValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
     },
     validationSchema,
     onSubmit: async (values) => {
       try {
-        const response = await authService.register(values);
+        const response = await authService.register(values, dispatch);
         dispatch(setUser(response.user));
-        navigate('/');
+        navigate("/");
       } catch (error) {
-        console.error('Register error:', error);
+        console.error("Register error:", error);
       }
     },
   });
@@ -50,9 +53,9 @@ export const Register = () => {
       <Box
         sx={{
           marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
         <Typography component="h1" variant="h5">
@@ -117,8 +120,13 @@ export const Register = () => {
             id="confirmPassword"
             value={formik.values.confirmPassword}
             onChange={formik.handleChange}
-            error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
-            helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
+            error={
+              formik.touched.confirmPassword &&
+              Boolean(formik.errors.confirmPassword)
+            }
+            helperText={
+              formik.touched.confirmPassword && formik.errors.confirmPassword
+            }
           />
           <Button
             type="submit"
@@ -128,11 +136,7 @@ export const Register = () => {
           >
             Kayıt Ol
           </Button>
-          <Button
-            fullWidth
-            variant="text"
-            onClick={() => navigate('/login')}
-          >
+          <Button fullWidth variant="text" onClick={() => navigate("/login")}>
             Zaten hesabınız var mı? Giriş yapın
           </Button>
         </Box>

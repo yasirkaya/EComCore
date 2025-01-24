@@ -2,13 +2,20 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { productService } from "../services/product.service";
 import { Product } from "../types/product";
-import { Container, Row, Col, Image, Button } from "react-bootstrap";
+import { Container, Row, Col, Image, Button, Alert } from "react-bootstrap";
 import { cartService } from "../services/cart.service";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../store/store";
+import { addToCart, fetchCart } from "../store/slices/cartSlice";
 
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
+  const [addingToCart, setAddingToCart] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -19,6 +26,7 @@ const ProductDetail: React.FC = () => {
         }
       } catch (error) {
         console.error("Error fetching product:", error);
+        setErrorMessage("Ürün bilgileri yüklenirken bir hata oluştu.");
       } finally {
         setLoading(false);
       }
@@ -27,14 +35,22 @@ const ProductDetail: React.FC = () => {
     fetchProduct();
   }, [id]);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (product) {
       try {
-        cartService.addToCart(parseInt(product.id), 1);
-
-        console.log("Ürün sepete başarıyla eklendi:", product.name);
+        setAddingToCart(true);
+        setSuccessMessage(null);
+        setErrorMessage(null);
+        
+        await dispatch(addToCart({ productId: parseInt(product.id), quantity: 1 }));
+        await dispatch(fetchCart()); // Sepet durumunu güncelle
+        
+        setSuccessMessage(`${product.name} sepete başarıyla eklendi`);
       } catch (error) {
         console.error("Sepete eklerken bir hata oluştu:", error);
+        setErrorMessage("Ürün sepete eklenirken bir hata oluştu. Lütfen tekrar deneyin.");
+      } finally {
+        setAddingToCart(false);
       }
     }
   };
@@ -49,6 +65,16 @@ const ProductDetail: React.FC = () => {
 
   return (
     <Container className="py-5">
+      {successMessage && (
+        <Alert variant="success" onClose={() => setSuccessMessage(null)} dismissible>
+          {successMessage}
+        </Alert>
+      )}
+      {errorMessage && (
+        <Alert variant="danger" onClose={() => setErrorMessage(null)} dismissible>
+          {errorMessage}
+        </Alert>
+      )}
       <Row>
         <Col md={6}>
           <Image
@@ -63,8 +89,12 @@ const ProductDetail: React.FC = () => {
           <h2 className="text-primary">{product.price} TL</h2>
           <p>{product.description}</p>
           <div className="d-grid gap-2">
-            <Button variant="primary" size="lg" onClick={handleAddToCart}>
-              Sepete Ekle
+            <Button
+              variant="primary"
+              onClick={handleAddToCart}
+              disabled={addingToCart}
+            >
+              {addingToCart ? "Sepete Ekleniyor..." : "Sepete Ekle"}
             </Button>
           </div>
         </Col>

@@ -5,12 +5,14 @@ interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
   loading: boolean;
+  token: string | null;
 }
 
 const initialState: AuthState = {
   user: null,
   isAuthenticated: false,
   loading: true,
+  token: null,
 };
 
 const authSlice = createSlice({
@@ -22,16 +24,21 @@ const authSlice = createSlice({
       state.isAuthenticated = !!action.payload;
       state.loading = false;
     },
+    setToken: (state, action: PayloadAction<string | null>) => {
+      state.token = action.payload;
+      state.isAuthenticated = !!action.payload;
+    },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
     logout: (state) => {
       state.user = null;
+      state.token = null;
       state.isAuthenticated = false;
       state.loading = false;
     },
   },
 });
 
-export const { setUser, setLoading, logout } = authSlice.actions;
+export const { setUser, setLoading, logout, setToken } = authSlice.actions;
 export default authSlice.reducer;

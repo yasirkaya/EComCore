@@ -8,52 +8,40 @@ import {
   Spinner,
   Alert,
 } from "react-bootstrap";
-import { Cart, CartItem, cartService } from "services/cart.service";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../store/store";
+import {
+  fetchCart,
+  updateCartItem,
+  removeFromCart,
+} from "../store/slices/cartSlice";
+import { AppDispatch } from "../store/store";
 
 const ShoppingCart: React.FC = () => {
-  const [cart, setCart] = useState<Cart | null>(null);
-  const [loading, setLoading] = useState<boolean>(true); // Yüklenme durumu için state
-  const [error, setError] = useState<string | null>(null); // Hata durumu için state
+  const dispatch: AppDispatch = useDispatch();
+  const { cart, loading, error } = useSelector(
+    (state: RootState) => state.cart
+  );
 
   useEffect(() => {
-    const fetchCart = async () => {
-      setLoading(true); // Yükleme durumunu başlat
-      setError(null); // Hata durumunu sıfırla
-      try {
-        const storedCart = await cartService.getCart();
-        setCart(storedCart || null);
-      } catch (err) {
-        setError("Sepet verileri yüklenirken bir hata oluştu.");
-      } finally {
-        setLoading(false); // Yükleme tamamlandı
-      }
-    };
-
-    fetchCart();
-  }, []);
+    dispatch(fetchCart());
+  }, [dispatch]);
 
   const handleQuantityChange = async (productId: number, quantity: number) => {
-    try {
-      const updatedCart = await cartService.updateCartItem(productId, quantity);
-      setCart(updatedCart); // Güncellenmiş sepeti ayarla
-    } catch {
-      setError("Ürün miktarı güncellenirken bir hata oluştu.");
-    }
+    if (quantity < 1) return; // Miktar 1'den küçük olamaz
+    await dispatch(updateCartItem({ productId, quantity }));
+    dispatch(fetchCart()); // Güncel sepet durumunu al
   };
 
   const handleRemoveItem = async (productId: number) => {
-    try {
-      const updatedCart = await cartService.removeFromCart(productId);
-      setCart(updatedCart); // Güncellenmiş sepeti ayarla
-    } catch {
-      setError("Ürün sepetten çıkarılırken bir hata oluştu.");
-    }
+    await dispatch(removeFromCart(productId));
+    dispatch(fetchCart()); // Güncel sepet durumunu al
   };
 
-  const totalAmount = cart?.items.reduce(
+  const totalAmount = cart?.items?.reduce(
     (total, item) => total + item.totalPrice,
     0
-  );
+  ) ?? 0;
 
   if (loading) {
     return (
