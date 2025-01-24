@@ -34,22 +34,20 @@ function App() {
   }, [dispatch]);
 
   return (
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <Router>
-          <div className="App">
-            <Header />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/product/:id" element={<ProductDetail />} />
-              <Route path="/cart" element={<ShoppingCart />} />
-            </Routes>
-          </div>
-        </Router>
-      </ThemeProvider>
-    </Provider>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <div className="App">
+          <Header />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/product/:id" element={<ProductDetail />} />
+            <Route path="/cart" element={<ShoppingCart />} />
+          </Routes>
+        </div>
+      </Router>
+    </ThemeProvider>
   );
 }
 
