@@ -15,17 +15,18 @@ import {
   Person as PersonIcon,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { CartItem, cartService } from "services/cart.service";
 import { useSelector } from "react-redux";
-import { RootState } from "store/store";
+import { RootState } from "../store/store";
+import { store } from "../store/store";
 
 export const Header: React.FC = () => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
+  const token = store.getState().auth.token;
   const isAuthenticated = !!token;
   const cart = useSelector((state: RootState) => state.cart.cart);
-  const totalQuantity = cart?.items?.reduce((total, item) => total + item.quantity, 0) ?? 0;
+  const totalQuantity =
+    cart?.items?.reduce((total, item) => total + item.quantity, 0) ?? 0;
 
   return (
     <AppBar position="sticky" sx={{ mb: 2 }}>

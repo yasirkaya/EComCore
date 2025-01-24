@@ -1,6 +1,10 @@
 import axios, { AxiosError } from "axios";
-import { setUser, setToken, logout as logoutAction } from "../store/slices/authSlice";
-import { store } from '../store/store';
+import {
+  setUser,
+  setToken,
+  logout as logoutAction,
+} from "../store/slices/authSlice";
+import { store } from "../store/store";
 
 const BASE_URL = "http://localhost:5292/api";
 
@@ -37,11 +41,7 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       // Store üzerinden logout action'ı dispatch et
       store.dispatch(logoutAction());
-      
-      // Local storage'ı temizle
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      
+
       // Login sayfasına yönlendir
       if (window.location.pathname !== "/login") {
         window.location.href = "/login";
@@ -90,7 +90,7 @@ export const handleApiError = (error: any): string => {
         return "Bir hata oluştu";
     }
   }
-  
+
   return "Beklenmeyen bir hata oluştu";
 };
 

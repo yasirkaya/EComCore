@@ -27,7 +27,7 @@ function App() {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = store.getState().auth.token;
     if (token) {
       dispatch(fetchCart());
     }

@@ -20,7 +20,6 @@ export const authService = {
     const { data } = await api.post<AuthResponse>("/Auths/login", {
       loginDto: credentials,
     });
-    localStorage.setItem("token", data.token);
     dispatch(setToken(data.token));
     console.log(data.token);
     dispatch(setUser(data.user));
@@ -35,7 +34,6 @@ export const authService = {
       "/auths/register",
       credentials
     );
-    localStorage.setItem("token", data.token);
     dispatch(setToken(data.token));
     dispatch(setUser(data.user));
     return data;
@@ -50,7 +48,6 @@ export const authService = {
   },
 
   logout(dispatch: AppDispatch) {
-    localStorage.removeItem("token");
     dispatch(logoutAction());
   },
 
