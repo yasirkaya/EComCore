@@ -21,6 +21,8 @@ using EComCore.Domain.DTOs.UserRoleDTO;
 using EComCore.Domain.Entities;
 using EComCore.Domain.Extensions;
 using EComCore.Domain.DTOs.OrderDTO;
+using EComCore.Domain.DTOs.AddressDTO;
+using EComCore.Application.AddressOperations.Commands;
 
 namespace EComCore.Application.Mappers;
 
@@ -139,5 +141,15 @@ public class MappingProfile : Profile
         CreateMap<OrderItem, OrderItemDto>();
         CreateMap<CreateOrderDto, Order>();
         CreateMap<OrderItemDto, OrderItem>();
+
+        // Address Mappings
+        CreateMap<CreateAddressDto, Address>();
+        CreateMap<Address, AddressDto>();
+        CreateMap<UpdateAddressDto, Address>()
+            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
+            .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+        CreateMap<UpdateAddressCommand, UpdateAddressDto>();
+        CreateMap<DeleteAddressCommand, DeleteAddressDto>();
+        CreateMap<CreateAddressCommand, CreateAddressDto>();
     }
 }

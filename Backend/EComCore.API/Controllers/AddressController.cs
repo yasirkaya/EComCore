@@ -1,12 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using EComCore.Application.AddressOperations.Queries;
+using EComCore.Application.AddressOperations.Commands;
 
 
 namespace EComCore.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AddressController : ControllerBase
+    public class AddressController : BaseController
     {
         private readonly IMediator _mediator;
 
@@ -17,32 +20,51 @@ namespace EComCore.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAddresses()
         {
-            return Ok();
+            var result = await _mediator.Send(new GetAddressesQuery());
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        [Authorize]
+        public async Task<IActionResult> GetById(int id)
         {
-            return Ok();
+            var result = await _mediator.Send(new GetAddressByIdQuery { Id = id });
+            return Ok(result);
+        }
+
+        [HttpGet("user/{userId}")]
+        [Authorize]
+        public async Task<IActionResult> GetByUserId(int id)
+        {
+            var result = await _mediator.Send(new GetAddressByIdQuery { Id = id });
+            return Ok(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post()
+        [Authorize]
+        public async Task<IActionResult> Post(CreateAddressCommand command)
         {
-            return Ok();
+            command.UserId = GetCurrentUserId();
+            var result = await _mediator.Send(command);
+            return Ok(result);
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put()
+        [Authorize]
+        public async Task<IActionResult> Put(UpdateAddressCommand command)
         {
+            await _mediator.Send(command);
             return Ok();
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
+            await _mediator.Send(new DeleteAddressCommand { Id = id });
             return Ok();
         }
     }
