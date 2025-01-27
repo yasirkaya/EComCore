@@ -17,12 +17,9 @@ public class User : BaseEntity
    public string? PasswordResetToken { get; set; }
    public DateTime? PasswordResetTokenExpiry { get; set; }
    public bool IsActive { get; set; } = true;
-   public int? BillingAddressId { get; set; }
-   public int? ShippingAddressId { get; set; }
-   public Address BillingAddress { get; set; }
-   public Address ShippingAddress { get; set; }
    public List<Order> Orders { get; set; }
    public List<Review> Reviews { get; set; }
    public Cart Cart { get; set; }
    public List<UserRole> UserRoles { get; set; } = new List<UserRole>();
+   public List<Address> Addresses { get; set; }
 }

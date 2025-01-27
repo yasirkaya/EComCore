@@ -8,6 +8,8 @@ public class Address
     public string? AddressLine2 { get; set; }
     public string City { get; set; }
     public string PostalCode { get; set; }
+    public int UserId { get; set; }
+    public User User { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     public bool IsDeleted { get; set; }

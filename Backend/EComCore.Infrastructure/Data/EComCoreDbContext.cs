@@ -151,6 +151,11 @@ public class EComCoreDbContext : DbContext
 
             entity.Property(a => a.CreatedAt)
                 .IsRequired();
+
+            entity.HasOne(a => a.User)
+                .WithMany(u => u.Addresses)
+                .HasForeignKey(a => a.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<CustomAttribute>(entity =>
@@ -318,18 +323,6 @@ public class EComCoreDbContext : DbContext
             entity.Property(u => u.CreatedAt)
                 .IsRequired();
 
-            entity.HasOne(u => u.BillingAddress)
-                .WithMany()
-                .HasForeignKey(u => u.BillingAddressId)
-                .OnDelete(DeleteBehavior.Restrict)
-                .IsRequired(false);
-
-            entity.HasOne(u => u.ShippingAddress)
-                .WithMany()
-                .HasForeignKey(u => u.ShippingAddressId)
-                .OnDelete(DeleteBehavior.Restrict)
-                .IsRequired(false);
-
             entity.HasMany(u => u.Orders)
                 .WithOne(o => o.User)
                 .HasForeignKey(o => o.UserId)
@@ -338,12 +331,12 @@ public class EComCoreDbContext : DbContext
             entity.HasMany(u => u.Reviews)
                 .WithOne(r => r.User)
                 .HasForeignKey(r => r.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             entity.HasOne(u => u.Cart)
                 .WithOne()
                 .HasForeignKey<Cart>(c => c.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<Role>(entity =>
