@@ -18,7 +18,7 @@ public class AddressQueryService : IAddressQueryService
 
     public async Task<IEnumerable<AddressDto>> GetAllAsync()
     {
-        var addresses = _repository.GetAllAsync();
+        var addresses = await _repository.GetAllAsync();
         return _mapper.Map<IEnumerable<AddressDto>>(addresses);
     }
 

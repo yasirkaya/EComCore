@@ -23,49 +23,92 @@ namespace EComCore.API.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAddresses()
         {
-            var result = await _mediator.Send(new GetAddressesQuery());
-            return Ok(result);
+            try
+            {
+                var result = await _mediator.Send(new GetAddressesQuery());
+                return Ok(new { data = result, message = "Addresses retrieved successfully." });
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { error = "Addresses not found.", message = ex.Message });
+            }
         }
 
         [HttpGet("{id}")]
         [Authorize]
         public async Task<IActionResult> GetById(int id)
         {
-            var result = await _mediator.Send(new GetAddressByIdQuery { Id = id });
-            return Ok(result);
+            try
+            {
+                var result = await _mediator.Send(new GetAddressByIdQuery { Id = id });
+                return Ok(new { data = result, message = "Address retrieved successfully." });
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { error = "Address not found.", message = ex.Message });
+            }
+
         }
 
         [HttpGet("user/{userId}")]
         [Authorize]
-        public async Task<IActionResult> GetByUserId(int id)
+        public async Task<IActionResult> GetByUserId(int userId)
         {
-            var result = await _mediator.Send(new GetAddressByIdQuery { Id = id });
-            return Ok(result);
+            try
+            {
+                var result = await _mediator.Send(new GetAddressesByUserIdQuery { UserId = userId });
+                return Ok(new { data = result, message = "Addresses retrieved successfully." });
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { error = "User not found.", message = ex.Message });
+            }
         }
 
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Post(CreateAddressCommand command)
         {
-            command.UserId = GetCurrentUserId();
-            var result = await _mediator.Send(command);
-            return Ok(result);
+            try
+            {
+                await _mediator.Send(command);
+                return Ok(new { message = "Address created successfully." });
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { error = "User not found.", message = ex.Message });
+            }
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> Put(UpdateAddressCommand command)
+        public async Task<IActionResult> Put(UpdateAddressCommand command, int id)
         {
-            await _mediator.Send(command);
-            return Ok();
+            try
+            {
+                command.Id = id;
+                await _mediator.Send(command);
+                return Ok(new { message = "Address updated successfully." });
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { error = "Address not found.", message = ex.Message });
+            }
         }
 
         [HttpDelete("{id}")]
         [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
-            await _mediator.Send(new DeleteAddressCommand { Id = id });
-            return Ok();
+            try
+            {
+                await _mediator.Send(new DeleteAddressCommand { Id = id });
+                return Ok(new { message = "Address deleted successfully." });
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { error = "Address not found.", message = ex.Message });
+            }
         }
     }
 }
