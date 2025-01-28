@@ -68,6 +68,7 @@ public class Program
         builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
         builder.Services.AddScoped<ICartRepository, CartRepository>();
         builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+        builder.Services.AddScoped<IAddressRepository, AddressRepository>();
 
         // Service registrations
         builder.Services.AddScoped<ICategoryCommandService, CategoryCommandService>();
@@ -91,6 +92,8 @@ public class Program
         builder.Services.AddScoped<ICartQueryService, CartQueryService>();
         builder.Services.AddScoped<IOrderCommandService, OrderCommandService>();
         builder.Services.AddScoped<IOrderQueryService, OrderQueryService>();
+        builder.Services.AddScoped<IAddressCommandService, AddressCommandService>();
+        builder.Services.AddScoped<IAddressQueryService, AddressQueryService>();
 
         builder.Services.AddScoped<IJwtService, JwtService>();
         builder.Services.AddScoped<IEmailService, EmailService>();
