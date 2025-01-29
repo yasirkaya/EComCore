@@ -71,8 +71,8 @@ namespace EComCore.API.Controllers
         {
             try
             {
-                await _mediator.Send(command);
-                return Ok(new { message = "Address created successfully." });
+                var result = await _mediator.Send(command);
+                return Ok(new { data = result, message = "Address created successfully." });
             }
             catch (Exception ex)
             {

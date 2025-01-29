@@ -10,8 +10,9 @@ import {
 } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { addressService } from "services/address.service";
+import { orderService } from "services/order.service";
 import { RootState } from "store/store";
-import { Address } from "types/address";
+import { Address, CreateAddress } from "types/address";
 
 // Removed duplicate Address interface
 
@@ -30,14 +31,14 @@ const CheckoutSteps: React.FC<CheckoutStepsProps> = ({
   const [addresses, setAddresses] = useState<Address[]>([]);
   const { user } = useSelector((state: RootState) => state.auth);
 
-  const [newAddress, setNewAddress] = useState<Address>({
-    id: "",
+  const cities = ["İstanbul", "Ankara", "İzmir", "Bursa", "Antalya"];
+  const [newAddress, setNewAddress] = useState<CreateAddress>({
     name: "",
     addressLine1: "",
     addressLine2: "",
     city: "",
     postalCode: "",
-    isDeleted: "",
+    userId: parseInt(user?.id || "0"),
   });
 
   useEffect(() => {
@@ -55,11 +56,16 @@ const CheckoutSteps: React.FC<CheckoutStepsProps> = ({
     setSelectedAddress(address);
   };
 
-  const handleNewAddressSubmit = (e: React.FormEvent) => {
+  const handleOrderCreate = async () => {
+    if (selectedAddress) {
+    }
+  };
+
+  const handleNewAddressSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Burada normalde API'ye yeni adres kaydedilecek
+    await addressService.createAddress(newAddress);
     setShowAddNewAddress(false);
-    setSelectedAddress(newAddress);
+    fetchAddresses();
   };
 
   const handlePaymentSubmit = () => {
@@ -115,7 +121,7 @@ const CheckoutSteps: React.FC<CheckoutStepsProps> = ({
           <Row>
             <Col md={6}>
               <Form.Group className="mb-3">
-                <Form.Label>Adres Başlığı</Form.Label>
+                <Form.Label>Ad Soyad</Form.Label>
                 <Form.Control
                   type="text"
                   value={newAddress.name}
@@ -128,7 +134,7 @@ const CheckoutSteps: React.FC<CheckoutStepsProps> = ({
             </Col>
             <Col md={6}>
               <Form.Group className="mb-3">
-                <Form.Label>Ad Soyad</Form.Label>
+                <Form.Label>Adres Satırı 1</Form.Label>
                 <Form.Control
                   type="text"
                   value={newAddress.addressLine1}
@@ -145,7 +151,7 @@ const CheckoutSteps: React.FC<CheckoutStepsProps> = ({
           </Row>
 
           <Form.Group className="mb-3">
-            <Form.Label>Adres</Form.Label>
+            <Form.Label>Adres Satırı 2</Form.Label>
             <Form.Control
               as="textarea"
               rows={3}
@@ -161,32 +167,23 @@ const CheckoutSteps: React.FC<CheckoutStepsProps> = ({
             <Col md={6}>
               <Form.Group className="mb-3">
                 <Form.Label>İl</Form.Label>
-                <Form.Control
-                  type="text"
+                <Form.Select
                   value={newAddress.city}
                   onChange={(e) =>
                     setNewAddress({ ...newAddress, city: e.target.value })
                   }
                   required
-                />
+                >
+                  <option value="">Şehir Seçiniz</option>
+                  {cities.map((city, index) => (
+                    <option key={index} value={city}>
+                      {city}
+                    </option>
+                  ))}
+                </Form.Select>
               </Form.Group>
             </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>Şehir</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={newAddress.city}
-                  onChange={(e) =>
-                    setNewAddress({ ...newAddress, city: e.target.value })
-                  }
-                  required
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-
-          <Row>
+            ;
             <Col md={6}>
               <Form.Group className="mb-3">
                 <Form.Label>Posta Kodu</Form.Label>
