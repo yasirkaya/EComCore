@@ -19,6 +19,7 @@ import { AppDispatch } from "../store/store";
 import { useNavigate } from "react-router-dom";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { orderService } from "../services/order.service";
+import { cartService } from "services/cart.service";
 
 const ShoppingCart: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -60,15 +61,14 @@ const ShoppingCart: React.FC = () => {
         userId: parseInt(user?.id || "0"),
         shipmentId: 0,
       });
+      console.log("Sipariş oluşturuldu:", response);
 
-      if (response.success) {
-        // Sepeti temizle ve ana sayfaya yönlendir
+      if (response) {
+        await cartService.clearCart();
         dispatch(fetchCart());
         navigate("/");
       } else {
-        throw new Error(
-          response.message || "Sipariş oluşturulurken bir hata oluştu"
-        );
+        throw new Error("Sipariş oluşturulurken bir hata oluştu");
       }
     } catch (error) {
       console.error("Sipariş oluşturma hatası:", error);

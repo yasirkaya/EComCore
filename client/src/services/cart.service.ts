@@ -44,6 +44,12 @@ class CartService {
 
     return response.data;
   }
+
+  async clearCart(): Promise<Cart> {
+    const responce = await api.delete<Cart>("/cart/clear");
+
+    return responce.data;
+  }
 }
 
 export const cartService = new CartService();

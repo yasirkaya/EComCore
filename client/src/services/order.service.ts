@@ -38,14 +38,9 @@ export interface Order {
 class OrderService {
   private readonly baseUrl = "/Order";
 
-  async createOrder(
-    orderData: CreateOrderRequest
-  ): Promise<ApiResponse<Order>> {
+  async createOrder(orderData: CreateOrderRequest) {
     try {
-      const response = await api.post<ApiResponse<Order>>(
-        this.baseUrl,
-        orderData
-      );
+      const response = await api.post<Order>(this.baseUrl, orderData);
       return response.data;
     } catch (error) {
       throw error;

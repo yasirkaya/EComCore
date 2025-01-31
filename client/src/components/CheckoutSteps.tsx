@@ -10,7 +10,6 @@ import {
 } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { addressService } from "services/address.service";
-import { orderService } from "services/order.service";
 import { RootState } from "store/store";
 import { Address, CreateAddress } from "types/address";
 
