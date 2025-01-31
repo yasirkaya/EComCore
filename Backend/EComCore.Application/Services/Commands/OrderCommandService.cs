@@ -52,7 +52,7 @@ namespace EComCore.Application.Services.Commands
                     ProductId = item.ProductId,
                     Quantity = item.Quantity,
                     UnitPrice = product.Price,
-                    TotalPrice = item.TotalPrice,
+                    TotalPrice = item.Quantity * product.Price,
                     CreatedAt = DateTime.UtcNow
                 };
                 order.OrderItems.Add(orderItem);

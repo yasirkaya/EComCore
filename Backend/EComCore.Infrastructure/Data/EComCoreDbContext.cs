@@ -71,7 +71,6 @@ public class EComCoreDbContext : DbContext
             entity.HasKey(o => o.Id);
             entity.Property(o => o.UserId).IsRequired();
             entity.Property(o => o.AddressId).IsRequired();
-            entity.Property(o => o.ShipmentId).IsRequired();
             entity.Property(o => o.TotalAmount).HasColumnType("decimal(18,2)").IsRequired();
             entity.Property(o => o.OrderStatus).IsRequired().HasMaxLength(50);
             entity.Property(o => o.CreatedAt).IsRequired();
@@ -85,11 +84,6 @@ public class EComCoreDbContext : DbContext
             entity.HasOne(o => o.Address)
                 .WithMany()
                 .HasForeignKey(o => o.AddressId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            entity.HasOne(o => o.Shipment)
-                .WithOne()
-                .HasForeignKey<Order>(o => o.ShipmentId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             entity.HasMany(o => o.OrderItems)
