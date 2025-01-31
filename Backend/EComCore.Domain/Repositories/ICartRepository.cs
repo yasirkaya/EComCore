@@ -6,5 +6,6 @@ namespace EComCore.Domain.Repositories
     public interface ICartRepository : IRepository<Cart>
     {
         Task<Cart> GetByUserIdAsync(int userId);
+        Task ClearCartAsync(int userId);
     }
 }

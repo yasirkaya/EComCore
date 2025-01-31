@@ -49,4 +49,12 @@ public class CartController : BaseController
         await _mediator.Send(command);
         return Ok();
     }
+
+    [HttpDelete("clear")]
+    public async Task<IActionResult> ClearCart()
+    {
+        var command = new ClearCartCommand { UserId = GetCurrentUserId() };
+        await _mediator.Send(command);
+        return Ok();
+    }
 }

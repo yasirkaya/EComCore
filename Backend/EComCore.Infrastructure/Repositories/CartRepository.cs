@@ -11,11 +11,17 @@ namespace EComCore.Infrastructure.Repositories
 {
     public class CartRepository : Repository<Cart>, ICartRepository
     {
-        private readonly EComCoreDbContext _context;
-
         public CartRepository(EComCoreDbContext context) : base(context)
         {
-            _context = context;
+        }
+
+        public async Task ClearCartAsync(int userId)
+        {
+            await _context.CartItems
+                .Where(ci => ci.Cart.UserId == userId)
+                .ForEachAsync(ci => _context.CartItems.Remove(ci));
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task<Cart> GetByUserIdAsync(int userId)

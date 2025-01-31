@@ -7,4 +7,5 @@ public interface ICartCommandService
     Task<int> AddToCartAsync(AddToCartDto dto);
     Task UpdateCartItemAsync(UpdateCartItemDto dto);
     Task RemoveFromCartAsync(int userId, int productId);
+    Task ClearCartAsync(int userId);
 }

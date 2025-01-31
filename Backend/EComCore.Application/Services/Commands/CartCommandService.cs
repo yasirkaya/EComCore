@@ -80,4 +80,13 @@ public class CartCommandService : ICartCommandService
         cart.Items.Remove(cartItem);
         await _cartRepository.UpdateAsync(cart);
     }
+
+    public async Task ClearCartAsync(int userId)
+    {
+        var cart = _cartRepository.GetByUserIdAsync(userId);
+        if (cart != null)
+        {
+            await _cartRepository.ClearCartAsync(userId);
+        }
+    }
 }
