@@ -69,6 +69,7 @@ public class Program
         builder.Services.AddScoped<ICartRepository, CartRepository>();
         builder.Services.AddScoped<IOrderRepository, OrderRepository>();
         builder.Services.AddScoped<IAddressRepository, AddressRepository>();
+        builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 
         // Service registrations
         builder.Services.AddScoped<ICategoryCommandService, CategoryCommandService>();
@@ -94,6 +95,7 @@ public class Program
         builder.Services.AddScoped<IOrderQueryService, OrderQueryService>();
         builder.Services.AddScoped<IAddressCommandService, AddressCommandService>();
         builder.Services.AddScoped<IAddressQueryService, AddressQueryService>();
+        builder.Services.AddScoped<IPaymentCommandService, PaymentCommandService>();
 
         builder.Services.AddScoped<IJwtService, JwtService>();
         builder.Services.AddScoped<IEmailService, EmailService>();
