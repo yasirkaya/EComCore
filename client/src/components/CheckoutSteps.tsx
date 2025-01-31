@@ -19,11 +19,13 @@ import { Address, CreateAddress } from "types/address";
 interface CheckoutStepsProps {
   onComplete: (address: Address) => void;
   onCancel: () => void;
+  totalAmount: number;
 }
 
 const CheckoutSteps: React.FC<CheckoutStepsProps> = ({
   onComplete,
   onCancel,
+  totalAmount,
 }) => {
   const [step, setStep] = useState<"address" | "payment">("address");
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
@@ -54,11 +56,6 @@ const CheckoutSteps: React.FC<CheckoutStepsProps> = ({
 
   const handleAddressSelect = (address: Address) => {
     setSelectedAddress(address);
-  };
-
-  const handleOrderCreate = async () => {
-    if (selectedAddress) {
-    }
   };
 
   const handleNewAddressSubmit = async (e: React.FormEvent) => {

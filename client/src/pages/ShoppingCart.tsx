@@ -27,6 +27,7 @@ const ShoppingCart: React.FC = () => {
     (state: RootState) => state.cart
   );
   const [showCheckout, setShowCheckout] = useState(false);
+  const { user } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     dispatch(fetchCart());
@@ -43,30 +44,34 @@ const ShoppingCart: React.FC = () => {
     dispatch(fetchCart()); // Güncel sepet durumunu al
   };
 
-  const totalAmount = cart?.items?.reduce(
-    (total, item) => total + item.totalPrice,
-    0
-  ) ?? 0;
+  const totalAmount =
+    cart?.items?.reduce((total, item) => total + item.totalPrice, 0) ?? 0;
 
   const handleCheckoutComplete = async (address: any) => {
     try {
       const response = await orderService.createOrder({
-        address,
-        items: cart?.items.map(item => ({
-          productId: item.productId,
-          quantity: item.quantity
-        })) || []
+        addressId: address.id,
+        items:
+          cart?.items.map((item) => ({
+            productId: item.productId,
+            quantity: item.quantity,
+          })) || [],
+        totalAmount: totalAmount,
+        userId: parseInt(user?.id || "0"),
+        shipmentId: 0,
       });
 
       if (response.success) {
         // Sepeti temizle ve ana sayfaya yönlendir
         dispatch(fetchCart());
-        navigate('/');
+        navigate("/");
       } else {
-        throw new Error(response.message || 'Sipariş oluşturulurken bir hata oluştu');
+        throw new Error(
+          response.message || "Sipariş oluşturulurken bir hata oluştu"
+        );
       }
     } catch (error) {
-      console.error('Sipariş oluşturma hatası:', error);
+      console.error("Sipariş oluşturma hatası:", error);
       // Hata durumunda kullanıcıya bilgi verilebilir
     }
   };
@@ -169,8 +174,8 @@ const ShoppingCart: React.FC = () => {
           <div className="d-flex justify-content-end mt-3">
             <div className="text-end">
               <h4>Toplam: {totalAmount} TL</h4>
-              <Button 
-                variant="primary" 
+              <Button
+                variant="primary"
                 onClick={() => setShowCheckout(true)}
                 disabled={cart.items.length === 0}
               >
@@ -183,6 +188,7 @@ const ShoppingCart: React.FC = () => {
         <CheckoutSteps
           onComplete={handleCheckoutComplete}
           onCancel={() => setShowCheckout(false)}
+          totalAmount={totalAmount}
         />
       )}
     </Container>
