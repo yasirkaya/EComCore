@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using EComCore.Domain.DTOs.OrderDTO;
+using EComCore.Domain.Enums;
 
 namespace EComCore.Domain.Services.Queries
 {
@@ -8,7 +9,7 @@ namespace EComCore.Domain.Services.Queries
     {
         Task<OrderDto> GetOrderByIdAsync(int orderId);
         Task<List<OrderDto>> GetUserOrdersAsync(int userId);
-        Task<List<OrderDto>> GetOrdersByStatusAsync(string status);
+        Task<List<OrderDto>> GetOrdersByStatusAsync(OrderStatus status);
         Task<List<OrderDto>> GetAllOrdersAsync();
     }
 }

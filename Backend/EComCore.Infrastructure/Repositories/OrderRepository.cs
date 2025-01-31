@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EComCore.Domain.Entities;
+using EComCore.Domain.Enums;
 using EComCore.Domain.Repositories;
 using EComCore.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -39,7 +40,7 @@ namespace EComCore.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<List<Order>> GetByStatusAsync(string status)
+        public async Task<List<Order>> GetByStatusAsync(OrderStatus status)
         {
             return await _dbSet
                 .Include(o => o.OrderItems)

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using EComCore.Domain.DTOs.OrderDTO;
+using EComCore.Domain.Enums;
 using EComCore.Domain.Repositories;
 using EComCore.Domain.Services.Queries;
 
@@ -30,7 +31,7 @@ namespace EComCore.Application.Services.Queries
             return _mapper.Map<List<OrderDto>>(orders);
         }
 
-        public async Task<List<OrderDto>> GetOrdersByStatusAsync(string status)
+        public async Task<List<OrderDto>> GetOrdersByStatusAsync(OrderStatus status)
         {
             var orders = await _orderRepository.GetByStatusAsync(status);
             return _mapper.Map<List<OrderDto>>(orders);

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using EComCore.Domain.Enums;
 
 namespace EComCore.Domain.DTOs.OrderDTO
 {
@@ -10,7 +11,7 @@ namespace EComCore.Domain.DTOs.OrderDTO
         public int AddressId { get; set; }
         public int PaymentId { get; set; }
         public int ShipmentId { get; set; }
-        public string OrderStatus { get; set; }
+        public OrderStatus OrderStatus { get; set; }
         public decimal TotalAmount { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
