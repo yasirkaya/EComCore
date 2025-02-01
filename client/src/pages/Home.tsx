@@ -75,11 +75,16 @@ export const Home: React.FC = () => {
     newValue: number | number[]
   ) => {
     setPriceRange(newValue as [number, number]);
-    setFilter({
-      ...filter,
-      minPrice: (newValue as [number, number])[0],
-      maxPrice: (newValue as [number, number])[1],
-    });
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      setFilter({
+        ...filter,
+        minPrice: priceRange[0],
+        maxPrice: priceRange[1],
+      });
+    }
   };
 
   return (
@@ -126,6 +131,7 @@ export const Home: React.FC = () => {
                       priceRange[1],
                     ])
                   }
+                  onKeyDown={handleKeyDown}
                 />
               </FormControl>
 
@@ -140,6 +146,7 @@ export const Home: React.FC = () => {
                       Number(e.target.value),
                     ])
                   }
+                  onKeyDown={handleKeyDown}
                 />
               </FormControl>
 
