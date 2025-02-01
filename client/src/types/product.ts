@@ -23,12 +23,16 @@ export interface Review {
 }
 
 export interface ProductFilter {
-  page?: number;
-  limit?: number;
+  pageNumber?: number;
+  pageSize?: number;
   sortBy?: string;
-  sortOrder?: 'asc' | 'desc';
+  sortOrder?: "asc" | "desc";
   categoryId?: string;
   minPrice?: number;
   maxPrice?: number;
   search?: string;
+  minRating?: number;
+  createdFrom?: string;
+  createdTo?: string;
+  includeDeleted?: boolean;
 }

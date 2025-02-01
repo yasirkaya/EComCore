@@ -63,9 +63,12 @@ public class ProductQueryService : IProductQueryService
             products = products.Where(p => p.Rating >= productParameters.MinRating.Value);
         }
 
-        if (productParameters.GroupId.HasValue)
+        if (productParameters.CategoryId.HasValue)
         {
-            products = products.Where(p => p.GroupId == productParameters.GroupId.Value);
+            products = products.Where(p =>
+                p.ProductToCategories.Any(pc =>
+                    pc.CategoryId == productParameters.CategoryId.Value
+            ));
         }
 
         if (productParameters.CreatedFrom.HasValue)

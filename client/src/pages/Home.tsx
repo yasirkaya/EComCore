@@ -24,10 +24,10 @@ export const Home: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<ProductFilter>({
-    page: 1,
-    limit: 12,
-    sortBy: "newest",
-    sortOrder: "desc",
+    pageNumber: 1,
+    pageSize: 12,
+    categoryId: "",
+    includeDeleted: false,
   });
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
 
@@ -71,7 +71,7 @@ export const Home: React.FC = () => {
   };
 
   const handlePriceRangeChange = (
-    event: Event,
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     newValue: number | number[]
   ) => {
     setPriceRange(newValue as [number, number]);
@@ -121,7 +121,10 @@ export const Home: React.FC = () => {
                   type="number"
                   value={priceRange[0]}
                   onChange={(e) =>
-                    setPriceRange([Number(e.target.value), priceRange[1]])
+                    handlePriceRangeChange(e, [
+                      Number(e.target.value),
+                      priceRange[1],
+                    ])
                   }
                 />
               </FormControl>
@@ -132,7 +135,10 @@ export const Home: React.FC = () => {
                   type="number"
                   value={priceRange[1]}
                   onChange={(e) =>
-                    setPriceRange([priceRange[0], Number(e.target.value)])
+                    handlePriceRangeChange(e, [
+                      priceRange[0],
+                      Number(e.target.value),
+                    ])
                   }
                 />
               </FormControl>
