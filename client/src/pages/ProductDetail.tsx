@@ -115,23 +115,21 @@ const ProductDetail: React.FC = () => {
 
   // Yıldızları render eden yardımcı fonksiyon
   const renderStars = (rating: number) => {
-    const totalStars = 5;
-    const stars = [];
-    for (let i = 0; i < rating; i++) {
-      stars.push(
-        <span key={"filled-" + i} className="text-warning">
-          &#9733;
-        </span>
-      );
-    }
-    for (let i = 0; i < totalStars - rating; i++) {
-      stars.push(
-        <span key={"empty-" + i} className="text-muted">
-          &#9733;
-        </span>
-      );
-    }
-    return stars;
+    const fullStars = Math.floor(rating);
+    const halfStar = rating % 1 !== 0;
+    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+    return (
+      <>
+        {[...Array(fullStars)].map((_, index) => (
+          <i key={index} className="fas fa-star text-warning"></i>
+        ))}
+        {halfStar && <i className="fas fa-star-half-alt text-warning"></i>}
+        {[...Array(emptyStars)].map((_, index) => (
+          <i key={index} className="far fa-star text-warning"></i>
+        ))}
+      </>
+    );
   };
 
   if (loading) {
