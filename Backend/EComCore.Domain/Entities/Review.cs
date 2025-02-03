@@ -10,6 +10,7 @@ public class Review
     public int Rating { get; set; }
     public string Comment { get; set; }
     public string Status { get; set; }
+    public string ModerationReason { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     public bool IsDeleted { get; set; }
