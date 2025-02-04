@@ -12,12 +12,31 @@ public class ReviewRepository : Repository<Review>, IReviewRepository
     {
     }
 
+    public override async Task<IEnumerable<Review>> GetAllAsync()
+    {
+        return await _dbSet
+            .Include(r => r.User)
+            .Include(r => r.Product)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+    public override async Task<Review> GetByIdAsync(int id)
+    {
+        return await _dbSet
+            .Include(r => r.User)
+            .Include(r => r.Product)
+            .Where(r => r.Id == id)
+            .AsNoTracking()
+            .FirstOrDefaultAsync();
+    }
+
     public async Task<IEnumerable<Review>> GetByProductIdAsync(int productId)
     {
         return await _dbSet
             .Include(r => r.User)
             .Where(r => r.ProductId == productId && !r.IsDeleted)
             .OrderByDescending(r => r.CreatedAt)
+            .AsNoTracking()
             .ToListAsync();
     }
 
@@ -25,6 +44,7 @@ public class ReviewRepository : Repository<Review>, IReviewRepository
     {
         return await _dbSet
         .Where(r => r.Status == status)
+        .AsNoTracking()
         .ToListAsync();
     }
 
@@ -34,6 +54,7 @@ public class ReviewRepository : Repository<Review>, IReviewRepository
             .Include(r => r.Product)
             .Where(r => r.UserId == userId && !r.IsDeleted)
             .OrderByDescending(r => r.CreatedAt)
+            .AsNoTracking()
             .ToListAsync();
     }
 

@@ -24,6 +24,7 @@ using EComCore.Domain.DTOs.OrderDTO;
 using EComCore.Domain.DTOs.AddressDTO;
 using EComCore.Application.AddressOperations.Commands;
 using EComCore.Domain.DTOs.ReviewDTO;
+using EComCore.Application.ReviewOperations.Commands;
 
 namespace EComCore.Application.Mappers;
 
@@ -166,6 +167,5 @@ public class MappingProfile : Profile
         CreateMap<UpdateReviewDto, Review>()
             .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
             .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
-        CreateMap<DeleteReviewCommand, DeleteReviewDto>();
     }
 }
