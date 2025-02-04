@@ -40,9 +40,9 @@ public class ReviewQueryService : IReviewQueryService
         return _mapper.Map<IEnumerable<ReviewDto>>(reviews);
     }
 
-    public async Task<IEnumerable<ReviewDto>> GetPeddingReviewsAsync(string status)
+    public async Task<IEnumerable<ReviewDto>> GetPendingReviewsAsync()
     {
-        var reviews = await _repository.GetByStatusAsync(status);
+        var reviews = await _repository.GetByStatusAsync("Pending");
         return _mapper.Map<IEnumerable<ReviewDto>>(reviews);
     }
 }
