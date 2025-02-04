@@ -4,6 +4,7 @@ using EComCore.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EComCore.Infrastructure.Migrations
 {
     [DbContext(typeof(EComCoreDbContext))]
-    partial class EComCoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250204135436_AddModerationReasoninReview")]
+    partial class AddModerationReasoninReview
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -500,6 +503,7 @@ namespace EComCore.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("ModerationReason")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProductId")
