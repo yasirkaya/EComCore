@@ -1,9 +1,9 @@
 using EComCore.Domain.DTOs.ReviewDTO;
 using MediatR;
-using System.Collections.Generic;
 
 namespace EComCore.Application.ReviewOperations.Queries;
 
-public class GetReviewsQuery : IRequest<IEnumerable<ReviewDto>>
+public class GetReviewByIdQuery : IRequest<ReviewDto>
 {
+    public int Id { get; set; }
 }
