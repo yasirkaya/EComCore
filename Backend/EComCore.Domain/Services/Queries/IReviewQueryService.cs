@@ -8,5 +8,5 @@ public interface IReviewQueryService
     Task<ReviewDto> GetByIdAsync(int id);
     Task<IEnumerable<ReviewDto>> GetByProductIdAsync(int productId);
     Task<IEnumerable<ReviewDto>> GetByUserIdAsync(int userId);
-    Task<IEnumerable<ReviewDto>> GetPeddingReviewsAsync();
+    Task<IEnumerable<ReviewDto>> GetPendingReviewsAsync();
 }
