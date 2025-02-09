@@ -101,8 +101,12 @@ public class Program
         builder.Services.AddScoped<IReviewCommandService, ReviewCommandService>();
         builder.Services.AddScoped<IReviewQueryService, ReviewQueryService>();
 
+
         builder.Services.AddScoped<IJwtService, JwtService>();
         builder.Services.AddScoped<IEmailService, EmailService>();
+        builder.Services.AddScoped<IReviewAnalysisService, ReviewAnalysisService>();
+
+        builder.Services.AddHttpClient();
 
         // Configure EmailService
         builder.Services.Configure<EmailConfiguration>(builder.Configuration.GetSection("EmailSettings"));
