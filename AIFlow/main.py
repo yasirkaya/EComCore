@@ -1,10 +1,14 @@
 from fastapi import FastAPI
-from api.review import router as review_router
+from services.review_analysis import analyze_review
+from pydantic import BaseModel
 
 app = FastAPI()
 
-app.include_router(review_router, prefix="/review")
+class ReviewRequest(BaseModel):
+    review_text: str
 
-@app.get("/")
-def read_root():
-    return {"message": "AIFlow API is running!"}
+@app.post("/analyze_review")
+async def analyze_review_endpoint(review: ReviewRequest):
+
+    result = analyze_review(review.review_text)
+    return {"result": result}
