@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { productService } from "../services/product.service";
+import { reviewService } from "../services/review.service";
 import { Product } from "../types/product";
+import { Review } from "../types/review";
 import {
   Container,
   Row,
@@ -14,39 +16,6 @@ import {
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
 import { addToCart, fetchCart } from "../store/slices/cartSlice";
-
-// Örnek yorum verisi
-interface Review {
-  id: number;
-  userName: string;
-  rating: number;
-  comment: string;
-  date: string;
-}
-
-const sampleReviews: Review[] = [
-  {
-    id: 1,
-    userName: "Ali Veli",
-    rating: 4,
-    comment: "Ürün gayet başarılı, tavsiye ederim.",
-    date: "2025-01-25",
-  },
-  {
-    id: 2,
-    userName: "Ayşe Yılmaz",
-    rating: 5,
-    comment: "Beklentilerimi tamamen karşıladı, mükemmel!",
-    date: "2025-01-20",
-  },
-  {
-    id: 3,
-    userName: "Mehmet Demir",
-    rating: 3,
-    comment: "Fiyatına göre iyiydi ama biraz daha kaliteli olabilirdi.",
-    date: "2025-01-18",
-  },
-];
 
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -74,11 +43,20 @@ const ProductDetail: React.FC = () => {
       }
     };
 
-    // Ürün verisini çek
-    fetchProduct();
+    const fetchReviews = async () => {
+      try {
+        if (id) {
+          const data = await reviewService.getReviewsByProductId(parseInt(id));
+          setReviews(data);
+        }
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+        setErrorMessage("Yorumlar yüklenirken bir hata oluştu.");
+      }
+    };
 
-    // Örnek yorumları ayarla (API'den çekilecekse burası değiştirilebilir)
-    setReviews(sampleReviews);
+    fetchProduct();
+    fetchReviews();
   }, [id]);
 
   useEffect(() => {
@@ -86,6 +64,7 @@ const ProductDetail: React.FC = () => {
       const total = reviews.reduce((sum, review) => sum + review.rating, 0);
       setAverageRating(Number((total / reviews.length).toFixed(1)));
     }
+    console.log("Reviews updated:", reviews);
   }, [reviews]);
 
   const handleAddToCart = async () => {
@@ -190,7 +169,7 @@ const ProductDetail: React.FC = () => {
       <Row className="mt-5">
         <Col>
           <h3>Ürün Yorumları</h3>
-          {reviews.length > 0 ? (
+          {reviews && reviews.length > 0 ? (
             <ListGroup variant="flush">
               {reviews.map((review) => (
                 <ListGroup.Item key={review.id} className="border-0 mb-3">
@@ -217,7 +196,11 @@ const ProductDetail: React.FC = () => {
                     <div className="flex-grow-1">
                       <div className="mb-2 d-flex align-items-center">
                         <div className="me-2">{renderStars(review.rating)}</div>
-                        <small className="text-muted">{review.date}</small>
+                        <small className="text-muted">
+                          {new Date(review.createdAt).toLocaleDateString(
+                            "tr-TR"
+                          )}
+                        </small>
                       </div>
                       <div
                         className="p-3"
