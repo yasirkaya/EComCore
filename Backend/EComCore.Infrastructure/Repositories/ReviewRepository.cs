@@ -1,4 +1,5 @@
 using EComCore.Domain.Entities;
+using EComCore.Domain.Enums;
 using EComCore.Domain.Repositories;
 using EComCore.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -40,7 +41,7 @@ public class ReviewRepository : Repository<Review>, IReviewRepository
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<Review>> GetByStatusAsync(string status)
+    public async Task<IEnumerable<Review>> GetByStatusAsync(ReviewStatus status)
     {
         return await _dbSet
         .Where(r => r.Status == status)

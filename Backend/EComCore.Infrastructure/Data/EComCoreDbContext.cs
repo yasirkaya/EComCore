@@ -435,8 +435,7 @@ public class EComCoreDbContext : DbContext
                 .HasMaxLength(1000);
 
             entity.Property(r => r.Status)
-                .IsRequired()
-                .HasMaxLength(50);
+                .IsRequired();
 
             entity.Property(r => r.CreatedAt)
                 .IsRequired();

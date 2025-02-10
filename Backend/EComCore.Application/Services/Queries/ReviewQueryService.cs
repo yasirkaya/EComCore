@@ -1,5 +1,7 @@
 using AutoMapper;
 using EComCore.Domain.DTOs.ReviewDTO;
+using EComCore.Domain.Entities;
+using EComCore.Domain.Enums;
 using EComCore.Domain.Extensions;
 using EComCore.Domain.Repositories;
 using EComCore.Domain.Services.Queries;
@@ -42,7 +44,7 @@ public class ReviewQueryService : IReviewQueryService
 
     public async Task<IEnumerable<ReviewDto>> GetPendingReviewsAsync()
     {
-        var reviews = await _repository.GetByStatusAsync("Pending");
+        var reviews = await _repository.GetByStatusAsync(ReviewStatus.Pending);
         return _mapper.Map<IEnumerable<ReviewDto>>(reviews);
     }
 }

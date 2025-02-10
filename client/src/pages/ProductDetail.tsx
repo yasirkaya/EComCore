@@ -11,7 +11,6 @@ import {
   Alert,
   ListGroup,
 } from "react-bootstrap";
-import { cartService } from "../services/cart.service";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
 import { addToCart, fetchCart } from "../store/slices/cartSlice";

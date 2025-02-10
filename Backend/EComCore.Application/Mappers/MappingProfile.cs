@@ -25,6 +25,7 @@ using EComCore.Domain.DTOs.AddressDTO;
 using EComCore.Application.AddressOperations.Commands;
 using EComCore.Domain.DTOs.ReviewDTO;
 using EComCore.Application.ReviewOperations.Commands;
+using EComCore.Domain.Enums;
 
 namespace EComCore.Application.Mappers;
 
@@ -157,11 +158,12 @@ public class MappingProfile : Profile
         //Review Mappings
         CreateMap<Review, ReviewDto>()
             .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.Name))
-            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.Username));
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.Username))
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
         CreateMap<CreateReviewCommand, CreateReviewDto>();
         CreateMap<CreateReviewDto, Review>()
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
-            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => "Pending"))
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => ReviewStatus.Pending))
             .ForMember(dest => dest.IsDeleted, opt => opt.MapFrom(src => false));
         CreateMap<UpdateReviewCommand, UpdateReviewDto>();
         CreateMap<UpdateReviewDto, Review>()

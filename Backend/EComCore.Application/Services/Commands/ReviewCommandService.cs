@@ -1,6 +1,7 @@
 using AutoMapper;
 using EComCore.Domain.DTOs.ReviewDTO;
 using EComCore.Domain.Entities;
+using EComCore.Domain.Enums;
 using EComCore.Domain.Extensions;
 using EComCore.Domain.Repositories;
 using EComCore.Domain.Services.Commands;
@@ -27,7 +28,7 @@ public class ReviewCommandService : IReviewCommandService
 
         var analysisResult = await _reviewAnalysisService.AnalyzeReviewAsync(review.Comment);
 
-        review.Status = analysisResult;
+        review.Status = Enum.Parse<ReviewStatus>(analysisResult);
         await _repository.UpdateAsync(review);
         return review.Id;
     }
