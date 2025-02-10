@@ -10,19 +10,19 @@ GEMINI_API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemin
 
 def analyze_review(review_text: str) -> str:
     """
-    Kullanıcı yorumunu analiz ederek "Onaylandı", "Onaylanmadı" veya "Kontrol Edilmeli" sonucunu döndürür.
+    Kullanıcı yorumunu analiz ederek "Approved", "Rejected" veya "Pending" sonucunu döndürür.
     Hakaret, küfür, spam içeriyorsa onaylanmaz.
     """
     prompt = f"""
     Aşağıdaki kullanıcı yorumunu analiz et ve uygun bir şekilde sınıflandır:
     
-     **Onaylandı:** Yorumda herhangi bir hakaret, küfür, spam veya kötü niyetli içerik yoksa.
-     **Onaylanmadı:** Yorumda hakaret, küfür, spam veya kötü niyetli içerik varsa.
-     **Kontrol Edilmeli:** Yorum anlam açısından belirsizse veya insan onayına ihtiyaç duyuyorsa.
+     **Approved:** Yorumda herhangi bir hakaret, küfür, spam veya kötü niyetli içerik yoksa.
+     **Rejected:** Yorumda hakaret, küfür, spam veya kötü niyetli içerik varsa.
+     **Pending:** Yorum anlam açısından belirsizse veya insan onayına ihtiyaç duyuyorsa.
     
     **Kullanıcı Yorumu:** {review_text}
     
-    Sadece **Onaylandı**, **Onaylanmadı** veya **Kontrol Edilmeli** şeklinde bir çıktı döndür.
+    Sadece **Approved**, **Rejected** veya **Pending** şeklinde bir çıktı döndür.
     """
 
     headers = {"Content-Type": "application/json"}
@@ -37,6 +37,6 @@ def analyze_review(review_text: str) -> str:
             result = response.json()
             return result["candidates"][0]["content"]["parts"][0]["text"].strip()
         except (KeyError, IndexError):
-            return "Kontrol Edilmeli"
+            return "Pending"
     else:
-        return "Kontrol Edilmeli"
+        return "Pending"
