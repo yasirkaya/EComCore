@@ -35,7 +35,7 @@ public class ReviewRepository : Repository<Review>, IReviewRepository
     {
         return await _dbSet
             .Include(r => r.User)
-            .Where(r => r.ProductId == productId && !r.IsDeleted)
+            .Where(r => r.ProductId == productId && !r.IsDeleted && r.Status == ReviewStatus.Approved)
             .OrderByDescending(r => r.CreatedAt)
             .AsNoTracking()
             .ToListAsync();
@@ -53,7 +53,7 @@ public class ReviewRepository : Repository<Review>, IReviewRepository
     {
         return await _dbSet
             .Include(r => r.Product)
-            .Where(r => r.UserId == userId && !r.IsDeleted)
+            .Where(r => r.UserId == userId && !r.IsDeleted && r.Status == ReviewStatus.Approved)
             .OrderByDescending(r => r.CreatedAt)
             .AsNoTracking()
             .ToListAsync();
