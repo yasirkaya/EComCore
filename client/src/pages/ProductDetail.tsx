@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { productService } from "../services/product.service";
 import { reviewService } from "../services/review.service";
@@ -12,10 +12,13 @@ import {
   Button,
   Alert,
   ListGroup,
+  Form,
+  Modal,
 } from "react-bootstrap";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../store/store";
 import { addToCart, fetchCart } from "../store/slices/cartSlice";
+import ReactStars from "react-rating-stars-component";
 
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -26,38 +29,42 @@ const ProductDetail: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [averageRating, setAverageRating] = useState<number>(0);
+  const [newReview, setNewReview] = useState<string>("");
+  const [newRating, setNewRating] = useState<number>(5);
+  const [showModal, setShowModal] = useState(false);
+  const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch<AppDispatch>();
 
+  const fetchProduct = useCallback(async () => {
+    try {
+      if (id) {
+        const data = await productService.getProductById(parseInt(id));
+        setProduct(data);
+      }
+    } catch (error) {
+      console.error("Error fetching product:", error);
+      setErrorMessage("Ürün bilgileri yüklenirken bir hata oluştu.");
+    } finally {
+      setLoading(false);
+    }
+  }, [id]);
+
+  const fetchReviews = useCallback(async () => {
+    try {
+      if (id) {
+        const data = await reviewService.getReviewsByProductId(parseInt(id));
+        setReviews(data);
+      }
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+      setErrorMessage("Yorumlar yüklenirken bir hata oluştu.");
+    }
+  }, [id]);
+
   useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        if (id) {
-          const data = await productService.getProductById(parseInt(id));
-          setProduct(data);
-        }
-      } catch (error) {
-        console.error("Error fetching product:", error);
-        setErrorMessage("Ürün bilgileri yüklenirken bir hata oluştu.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    const fetchReviews = async () => {
-      try {
-        if (id) {
-          const data = await reviewService.getReviewsByProductId(parseInt(id));
-          setReviews(data);
-        }
-      } catch (error) {
-        console.error("Error fetching reviews:", error);
-        setErrorMessage("Yorumlar yüklenirken bir hata oluştu.");
-      }
-    };
-
     fetchProduct();
     fetchReviews();
-  }, [id]);
+  }, [id, fetchProduct, fetchReviews]);
 
   useEffect(() => {
     if (reviews.length > 0) {
@@ -91,8 +98,40 @@ const ProductDetail: React.FC = () => {
     }
   };
 
+  const handleReviewSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (id) {
+      try {
+        const newReviewData = {
+          productId: parseInt(id),
+          userId: parseInt(user?.id || "0"),
+          comment: newReview,
+          rating: newRating,
+        };
+        await reviewService.createReview(newReviewData);
+        fetchReviews();
+        setNewReview("");
+        setNewRating(5);
+        setSuccessMessage("Yorum başarıyla eklendi.");
+        setShowModal(false);
+      } catch (error) {
+        console.error("Error creating review:", error);
+        setErrorMessage("Yorum eklenirken bir hata oluştu.");
+        setShowModal(false);
+      }
+    }
+  };
+
+  const handleRatingChange = (newRating: number) => {
+    setNewRating(newRating);
+  };
+
   // Yıldızları render eden yardımcı fonksiyon
   const renderStars = (rating: number) => {
+    if (isNaN(rating) || rating < 0 || rating > 5) {
+      return null; // Geçersiz rating değeri için null döndür
+    }
+
     const fullStars = Math.floor(rating);
     const halfStar = rating % 1 !== 0;
     const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
@@ -169,8 +208,46 @@ const ProductDetail: React.FC = () => {
       <Row className="mt-5">
         <Col>
           <h3>Ürün Yorumları</h3>
-          {reviews && reviews.length > 0 ? (
-            <ListGroup variant="flush">
+          <Button variant="primary" onClick={() => setShowModal(true)}>
+            Değerlendir
+          </Button>
+          <Modal
+            show={showModal}
+            onHide={() => setShowModal(false)}
+            style={{ marginTop: "100px" }}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Değerlendirme Yap</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form onSubmit={handleReviewSubmit}>
+                <Form.Group controlId="reviewRating">
+                  <Form.Label>Değerlendirme</Form.Label>
+                  <ReactStars
+                    count={5}
+                    onChange={handleRatingChange}
+                    size={24}
+                    activeColor="#ffd700"
+                    value={newRating}
+                  />
+                </Form.Group>
+                <Form.Group controlId="reviewComment" className="mt-3">
+                  <Form.Label>Yorum</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={3}
+                    value={newReview}
+                    onChange={(e) => setNewReview(e.target.value)}
+                  />
+                </Form.Group>
+                <Button variant="primary" type="submit" className="mt-3">
+                  Yorum Yap
+                </Button>
+              </Form>
+            </Modal.Body>
+          </Modal>
+          {reviews.length > 0 ? (
+            <ListGroup variant="flush" className="mt-4">
               {reviews.map((review) => (
                 <ListGroup.Item key={review.id} className="border-0 mb-3">
                   <div className="d-flex">
@@ -189,7 +266,9 @@ const ProductDetail: React.FC = () => {
                           fontSize: "20px",
                         }}
                       >
-                        {review.userName.charAt(0).toUpperCase()}
+                        {review.userName
+                          ? review.userName.charAt(0).toUpperCase()
+                          : "?"}
                       </div>
                     </div>
                     {/* Sağ: Yorum İçeriği */}
