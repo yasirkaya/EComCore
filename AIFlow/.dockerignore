@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+*.pyo
+*.log
+.git/
+*.db
+*.sqlite3
+*.bak
+*.swp

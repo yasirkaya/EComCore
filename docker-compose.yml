@@ -1,0 +1,51 @@
+services:
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: EComCore.API/Dockerfile
+    container_name: ecomcore-backend
+    ports:
+      - "5292:5292"
+      - "7265:7265"
+    env_file:
+      - .env
+    networks:
+      - ecomcore-network
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: ecomcore-client
+    ports:
+      - "3001:3000"
+    networks:
+      - ecomcore-network
+    depends_on:
+      - backend
+
+  admin-panel:
+    build:
+      context: ./admin-panel
+      dockerfile: Dockerfile
+    container_name: ecomcore-admin
+    ports:
+      - "3000:3000"
+    networks:
+      - ecomcore-network
+    depends_on:
+      - backend
+
+  aiflow:
+    build:
+      context: ./AIFlow
+      dockerfile: Dockerfile
+    container_name: aiflow-service
+    ports:
+      - "8000:8000"
+    networks:
+      - ecomcore-network
+
+networks:
+  ecomcore-network:
+    driver: bridge
