@@ -37,6 +37,9 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        // Ortam değişkenlerini yükle
+        builder.Configuration.AddEnvironmentVariables();
+
         // CORS politikasını ekle
         builder.Services.AddCors(options =>
         {

@@ -1,0 +1,23 @@
+# .NET SDK kullanarak build işlemi
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+WORKDIR /app
+EXPOSE 5292 7265  
+
+# Build için .NET SDK kullan
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+COPY ["EComCore.API/EComCore.API.csproj", "EComCore.API/"]
+RUN dotnet restore "EComCore.API/EComCore.API.csproj"
+COPY . .
+WORKDIR "/src/EComCore.API"
+RUN dotnet build -c Release -o /app/build
+
+# Yayına hazır hale getir
+FROM build AS publish
+RUN dotnet publish -c Release -o /app/publish
+
+# Çalıştırma aşaması
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "EComCore.API.dll"]

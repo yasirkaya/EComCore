@@ -1,0 +1,27 @@
+# .git klasörü ve ilgili dosyalar
+.git
+.gitignore
+
+.env
+
+# Kullanıcı bazlı konfigürasyon dosyaları
+*.swp
+*.suo
+*.user
+*.vs
+.vscode/
+
+# Derlenmiş dosyalar ve bağımlılıklar
+bin/
+obj/
+out/
+*.dll
+*.pdb
+
+# .NET bağımlılık klasörleri
+node_modules/
+packages/
+
+# Docker'ın oluşturduğu ekstra dosyalar
+Dockerfile
+docker-compose.yml
