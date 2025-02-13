@@ -8,9 +8,7 @@ services:
       - "5292:5292"
       - "7265:7265"
     environment:
-      - ASPNETCORE_URLS=http://localhost:5292
-    env_file:
-      - .env
+      - ASPNETCORE_URLS=http://+:5292
     networks:
       - ecomcore-network
 
