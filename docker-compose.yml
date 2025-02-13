@@ -7,6 +7,8 @@ services:
     ports:
       - "5292:5292"
       - "7265:7265"
+    environment:
+      - ASPNETCORE_URLS=http://localhost:5292
     env_file:
       - .env
     networks:
@@ -18,7 +20,7 @@ services:
       dockerfile: Dockerfile
     container_name: ecomcore-client
     ports:
-      - "3001:3000"
+      - "3001:3001"
     networks:
       - ecomcore-network
     depends_on:
