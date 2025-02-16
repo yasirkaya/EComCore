@@ -166,6 +166,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => ReviewStatus.Pending))
             .ForMember(dest => dest.IsDeleted, opt => opt.MapFrom(src => false));
         CreateMap<UpdateReviewCommand, UpdateReviewDto>();
+        CreateMap<UpdateReviewStatusCommand, UpdateStatusDto>();
         CreateMap<UpdateReviewDto, Review>()
             .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
             .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));

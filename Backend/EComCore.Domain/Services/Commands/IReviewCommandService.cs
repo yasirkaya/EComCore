@@ -7,4 +7,5 @@ public interface IReviewCommandService
     Task<int> CreateAsync(CreateReviewDto reviewDto);
     Task<bool> UpdateAsync(UpdateReviewDto reviewDto);
     Task<bool> DeleteAsync(int id);
+    Task<bool> UpdateStatusAsync(UpdateStatusDto dto);
 }

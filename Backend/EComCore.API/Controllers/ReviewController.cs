@@ -107,6 +107,22 @@ namespace EComCore.API.Controllers
             }
         }
 
+        [HttpPut("{id}/status")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateStatus(int id, [FromBody] UpdateReviewStatusCommand command)
+        {
+            try
+            {
+                command.Id = id;
+                await _mediator.Send(command);
+                return Ok(new { message = "Review status updated successfully." });
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { error = "Review not found.", message = ex.Message });
+            }
+        }
+
         [HttpDelete("{id}")]
         [Authorize]
         public async Task<IActionResult> Delete(int id)

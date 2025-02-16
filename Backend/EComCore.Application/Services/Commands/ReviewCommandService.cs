@@ -1,3 +1,4 @@
+using System.Data;
 using AutoMapper;
 using EComCore.Domain.DTOs.ReviewDTO;
 using EComCore.Domain.Entities;
@@ -51,4 +52,16 @@ public class ReviewCommandService : IReviewCommandService
         await _repository.DeleteAsync(review);
         return true;
     }
+
+    public async Task<bool> UpdateStatusAsync(UpdateStatusDto dto)
+    {
+        var review = await _repository.GetByIdAsync(dto.Id);
+        await review.EnsureNotNullAsync(id: dto.Id);
+
+        review.Status = dto.Status;
+        review.ModerationReason = dto.ModerationReason;
+        await _repository.UpdateAsync(review);
+        return true;
+    }
+
 }
