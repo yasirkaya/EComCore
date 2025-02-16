@@ -12,6 +12,7 @@ import { Users } from "./pages/Users";
 import { Products } from "./pages/Products";
 import { Categories } from "./pages/Categories";
 import { useAuth } from "./hooks/useAuth";
+import { Reviews } from "./pages/Reviews";
 
 // Styles
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -47,6 +48,10 @@ const App: React.FC = () => {
           <Route
             path="/categories"
             element={<PrivateRoute element={<Categories />} />}
+          />
+          <Route
+            path="/reviews"
+            element={<PrivateRoute element={<Reviews />} />}
           />
           <Route path="/" element={<Navigate to="/dashboard" />} />
         </Routes>

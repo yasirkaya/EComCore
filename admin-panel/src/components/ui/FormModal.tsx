@@ -43,7 +43,6 @@ export const FormModal: React.FC<FormModalProps> = ({
         >
       ) => {
         if (field.multiple && e.target instanceof HTMLSelectElement) {
-          console.log("girdiiiii");
           const selectedOptions = Array.from(
             e.target.selectedOptions,
             (option) => option.value
@@ -59,9 +58,7 @@ export const FormModal: React.FC<FormModalProps> = ({
               )
             );
           onChange(field.name, newValues);
-          console.log("selectedOptions", newValues);
         } else {
-          console.log("girmediiii");
           onChange(field.name, e.target.value);
         }
       },

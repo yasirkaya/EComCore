@@ -28,6 +28,39 @@ export interface Category {
   updatedAt: Date;
 }
 
+export interface Review {
+  id: string;
+  productId: string;
+  productName: string;
+  userId: string;
+  userName: string;
+  rating: number;
+  comment: string;
+  status: string;
+  moderationReason?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateReview {
+  productId: string;
+  userId: string;
+  comment: string;
+  rating: number;
+}
+
+export interface UpdateReview {
+  rating?: number;
+  comment?: string;
+  status?: string;
+  moderationReason?: string;
+}
+
+export interface UpdateReviewStatus {
+  status?: string;
+  moderationReason?: string;
+}
+
 export interface LoginCredentials {
   loginDto: LoginDto;
 }
