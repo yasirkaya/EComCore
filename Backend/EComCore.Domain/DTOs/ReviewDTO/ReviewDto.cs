@@ -1,3 +1,5 @@
+using EComCore.Domain.Enums;
+
 namespace EComCore.Domain.DTOs.ReviewDTO
 {
     public class ReviewDto
@@ -9,7 +11,7 @@ namespace EComCore.Domain.DTOs.ReviewDTO
         public string UserName { get; set; }
         public int Rating { get; set; }
         public string Comment { get; set; }
-        public string Status { get; set; }
+        public ReviewStatus Status { get; set; }
         public string ModerationReason { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

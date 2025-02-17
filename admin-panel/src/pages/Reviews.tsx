@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Review } from "../types/models";
+import { Review, ReviewStatus } from "../types/models";
 import { reviewService } from "../services/api";
 import { DataTable, FormModal, PageHeader, Column } from "../components/ui";
 import { Button, Form, InputGroup, Pagination } from "react-bootstrap";
 
 const defaultFormData = {
-  id: "",
-  status: "",
+  id: "0",
+  status: ReviewStatus.Pending as number, 
   moderationReason: "",
 };
 
@@ -17,7 +17,7 @@ export const Reviews: React.FC = () => {
   const [selectedReview, setSelectedReview] = useState<Review | null>(null);
   const [formData, setFormData] = useState(defaultFormData);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterStatus, setFilterStatus] = useState("");
+  const [filterStatus, setFilterStatus] = useState<ReviewStatus | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [reviewsPerPage] = useState(10);
 
@@ -52,7 +52,7 @@ export const Reviews: React.FC = () => {
       );
     }
     if (filterStatus) {
-      filtered = filtered.filter((review) => review.status === filterStatus);
+      filtered = filtered.filter((review) => review.status === Number(filterStatus));
     }
     setFilteredReviews(filtered);
   };
@@ -62,7 +62,7 @@ export const Reviews: React.FC = () => {
       setSelectedReview(review);
       setFormData({
         id: review.id,
-        status: review.status,
+        status: review.status as number,
         moderationReason: review.moderationReason || "",
       });
     } else {
@@ -82,9 +82,10 @@ export const Reviews: React.FC = () => {
     e.preventDefault();
     try {
       if (selectedReview) {
+        console.log("Güncelleme işlemi yapılacak:", formData);
         await reviewService.updateStatus(
           selectedReview.id,
-          formData.status,
+          formData.status as ReviewStatus,
           formData.moderationReason
         );
       }
@@ -115,17 +116,17 @@ export const Reviews: React.FC = () => {
       header: "Durum",
       field: (review: Review) => {
         let statusVariant, statusText;
-
+  
         switch (review.status) {
-          case "Approved":
+          case ReviewStatus.Approved:
             statusVariant = "success"; // Yeşil
             statusText = "✅ Onaylandı";
             break;
-          case "Rejected":
+          case ReviewStatus.Rejected:
             statusVariant = "danger"; // Kırmızı
             statusText = "❌ Reddedildi";
             break;
-          case "Pending":
+          case ReviewStatus.Pending:
             statusVariant = "warning"; // Sarı
             statusText = "⏳ Beklemede";
             break;
@@ -160,9 +161,9 @@ export const Reviews: React.FC = () => {
       type: "select",
       as: "select" as const,
       options: [
-        { value: "Onaylandı", label: "Onaylandı" },
-        { value: "Reddedildi", label: "Reddedildi" },
-        { value: "Beklemede", label: "Beklemede" },
+        { value: ReviewStatus.Approved.toString(), label: "Onaylandı" },
+        { value: ReviewStatus.Rejected.toString(), label: "Reddedildi" },
+        { value: ReviewStatus.Pending.toString(), label: "Beklemede" },
       ],
       required: true,
     },
@@ -197,16 +198,19 @@ export const Reviews: React.FC = () => {
       style={{ border: "1px solid #ccc", borderRadius: "8px" }}
     />
     <Form.Select
-      value={filterStatus}
-      onChange={(e) => setFilterStatus(e.target.value)}
-      className="p-2 rounded"
-      style={{ minWidth: "180px", border: "1px solid #ccc", borderRadius: "8px" }}
-    >
-      <option value="">Tüm Durumlar</option>
-      <option value="Approved">✅ Onaylandı</option>
-      <option value="Rejected">❌ Reddedildi</option>
-      <option value="Pending">⏳ Beklemede</option>
-    </Form.Select>
+  value={filterStatus === null ? "" : filterStatus} // filterStatus null ise boş string göster
+  onChange={(e) => {
+    const value = e.target.value;
+    setFilterStatus(value === "" ? null : (value as unknown as ReviewStatus));
+  }}
+  className="p-2 rounded"
+  style={{ minWidth: "180px", border: "1px solid #ccc", borderRadius: "8px" }}
+>
+  <option value="">Tüm Durumlar</option>
+  <option value={ReviewStatus.Pending}>⏳ Beklemede</option>
+  <option value={ReviewStatus.Approved}>✅ Onaylandı</option>
+  <option value={ReviewStatus.Rejected}>❌ Reddedildi</option>
+</Form.Select>
   </div>
 </div>
 

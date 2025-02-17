@@ -36,11 +36,19 @@ export interface Review {
   userName: string;
   rating: number;
   comment: string;
-  status: string;
+  status: ReviewStatus;
   moderationReason?: string;
   createdAt: string;
   updatedAt: string;
 }
+
+export const ReviewStatus = {
+  Pending: 0,
+  Approved: 1,
+  Rejected: 2,
+} as const;
+
+export type ReviewStatus = typeof ReviewStatus[keyof typeof ReviewStatus];
 
 export interface CreateReview {
   productId: string;

@@ -1,5 +1,7 @@
 import api from "./axios";
-import { Review, CreateReview, UpdateReview } from "../../types/models";
+import { Review, CreateReview, ReviewStatus } from "../../types/models";
+
+
 
 class ReviewService {
   private endpoint = "Review";
@@ -31,18 +33,10 @@ class ReviewService {
     return response.data;
   }
 
-  async update(id: string, review: UpdateReview): Promise<Review> {
-    const response = await api.put<Review>(`${this.endpoint}/${id}`, review);
-    return response.data;
-  }
-
-  async updateStatus(
-    id: string,
-    status: string,
-    moderationReason?: string
-  ): Promise<void> {
+  async updateStatus(id: string, status: ReviewStatus, moderationReason?: string) {
     await api.put(`${this.endpoint}/${id}/status`, {
-      status,
+      id: id,
+      status: status, 
       moderationReason,
     });
   }

@@ -158,8 +158,7 @@ public class MappingProfile : Profile
         //Review Mappings
         CreateMap<Review, ReviewDto>()
             .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.Name))
-            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.Username))
-            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.Username));
         CreateMap<CreateReviewCommand, CreateReviewDto>();
         CreateMap<CreateReviewDto, Review>()
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
