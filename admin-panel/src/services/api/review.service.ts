@@ -4,9 +4,9 @@ import { Review, CreateReview, UpdateReview } from "../../types/models";
 class ReviewService {
   private endpoint = "Review";
 
-  async getAll(): Promise<Review[]> {
-    const response = await api.get<Review[]>(this.endpoint);
-    return response.data;
+  async getAll() {
+    const response = await api.get<{data: Review[]}>(this.endpoint);
+    return response.data.data;
   }
 
   async getById(id: string): Promise<Review> {
