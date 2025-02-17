@@ -58,14 +58,16 @@ export interface CreateReview {
 }
 
 export interface UpdateReview {
+  id: string;
   rating?: number;
   comment?: string;
-  status?: string;
+  status?: ReviewStatus;
   moderationReason?: string;
 }
 
 export interface UpdateReviewStatus {
-  status?: string;
+  id: string
+  status?: ReviewStatus;
   moderationReason?: string;
 }
 

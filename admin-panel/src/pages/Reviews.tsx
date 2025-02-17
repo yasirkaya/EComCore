@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Review, ReviewStatus } from "../types/models";
+import { Review, ReviewStatus, UpdateReviewStatus } from "../types/models";
 import { reviewService } from "../services/api";
 import { DataTable, FormModal, PageHeader, Column } from "../components/ui";
 import { Button, Form, InputGroup, Pagination } from "react-bootstrap";
 
-const defaultFormData = {
+const defaultFormData: UpdateReviewStatus = {
   id: "0",
-  status: ReviewStatus.Pending as number, 
+  status: ReviewStatus.Pending, 
   moderationReason: "",
 };
 
@@ -62,7 +62,7 @@ export const Reviews: React.FC = () => {
       setSelectedReview(review);
       setFormData({
         id: review.id,
-        status: review.status as number,
+        status: review.status ,
         moderationReason: review.moderationReason || "",
       });
     } else {
@@ -83,11 +83,7 @@ export const Reviews: React.FC = () => {
     try {
       if (selectedReview) {
         console.log("Güncelleme işlemi yapılacak:", formData);
-        await reviewService.updateStatus(
-          selectedReview.id,
-          formData.status as ReviewStatus,
-          formData.moderationReason
-        );
+        await reviewService.updateStatus(formData);
       }
       handleCloseModal();
       loadReviews();
