@@ -1,16 +1,31 @@
 services:
   backend:
     build:
-      context: ./Backend
-      dockerfile: EComCore.API/Dockerfile
+      context: .
+      dockerfile: Backend/EComCore.API/Dockerfile
     container_name: ecomcore-backend
     ports:
       - "5292:5292"
       - "7265:7265"
     environment:
-      - ASPNETCORE_URLS=http://+:5292
+      - ASPNETCORE_URLS=http://+:5292;http://+:7265
     networks:
       - ecomcore-network
+    depends_on:
+      - db
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: ecomcore-db
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=yourStrongPassword
+    ports:
+      - "1433:1433"
+    networks:
+      - ecomcore-network
+    volumes:
+      - ecomcore-db-data:/var/opt/mssql
 
   client:
     build:
@@ -22,7 +37,8 @@ services:
     networks:
       - ecomcore-network
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
 
   admin-panel:
     build:
@@ -34,7 +50,8 @@ services:
     networks:
       - ecomcore-network
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
 
   aiflow:
     build:
@@ -49,3 +66,6 @@ services:
 networks:
   ecomcore-network:
     driver: bridge
+
+volumes:
+  ecomcore-db-data:

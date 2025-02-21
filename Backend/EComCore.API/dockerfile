@@ -6,9 +6,19 @@ EXPOSE 5292 7265
 # Build için .NET SDK kullan
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY ["EComCore.API/EComCore.API.csproj", "EComCore.API/"]
+
+# Proje dosyalarını kopyala
+COPY ["Backend/EComCore.API/EComCore.API.csproj", "EComCore.API/"]
+COPY ["Backend/EComCore.Application/EComCore.Application.csproj", "EComCore.Application/"]
+COPY ["Backend/EComCore.Domain/EComCore.Domain.csproj", "EComCore.Domain/"]
+COPY ["Backend/EComCore.Infrastructure/EComCore.Infrastructure.csproj", "EComCore.Infrastructure/"]
+
+# Bağımlılıkları yükle
 RUN dotnet restore "EComCore.API/EComCore.API.csproj"
-COPY . .
+
+# Tüm kod dosyalarını kopyala
+COPY Backend/ .
+
 WORKDIR "/src/EComCore.API"
 RUN dotnet build -c Release -o /app/build
 
@@ -21,3 +31,5 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "EComCore.API.dll"]
+EXPOSE 5292 7265
+
