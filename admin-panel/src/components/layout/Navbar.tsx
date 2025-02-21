@@ -30,6 +30,9 @@ export const Navbar: React.FC = () => {
             <Nav.Link as={Link} to="/reviews">
               Yorumlar
             </Nav.Link>
+            <Nav.Link as={Link} to="/roles">
+              Roller
+            </Nav.Link>
           </Nav>
           <Nav>
             <Nav.Item className="text-light d-flex align-items-center me-3">

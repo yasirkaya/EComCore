@@ -17,6 +17,7 @@ import { Reviews } from "./pages/Reviews";
 // Styles
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
+import Roles from "./pages/Roles";
 
 const PrivateRoute: React.FC<{ element: React.ReactElement }> = ({
   element,
@@ -53,6 +54,7 @@ const App: React.FC = () => {
             path="/reviews"
             element={<PrivateRoute element={<Reviews />} />}
           />
+          <Route path="/roles" element={<PrivateRoute element={<Roles />} />} />
           <Route path="/" element={<Navigate to="/dashboard" />} />
         </Routes>
       </MainLayout>
