@@ -7,10 +7,8 @@ namespace EComCore.Infrastructure.Repositories;
 
 public class ProductToAttributeRepository : Repository<ProductToAttribute>, IProductToAttributeRepository
 {
-    private readonly EComCoreDbContext _context;
     public ProductToAttributeRepository(EComCoreDbContext context) : base(context)
     {
-        _context = context;
     }
 
     public async Task AddRangeAsync(IEnumerable<ProductToAttribute> productToAttributes)
