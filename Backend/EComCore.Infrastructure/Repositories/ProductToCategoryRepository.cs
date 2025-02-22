@@ -8,10 +8,8 @@ namespace EComCore.Infrastructure.Repositories;
 
 public class ProductToCategoryRepository : Repository<ProductToCategory>, IProductToCategoryRepository
 {
-    private readonly EComCoreDbContext _context;
     public ProductToCategoryRepository(EComCoreDbContext context) : base(context)
     {
-        _context = context;
     }
 
     public async Task DeleteByProductIdAsync(IEnumerable<ProductToCategory> prodCats)

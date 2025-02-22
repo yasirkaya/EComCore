@@ -7,10 +7,8 @@ namespace EComCore.Infrastructure.Repositories;
 
 public class UserRoleRepository : Repository<UserRole>, IUserRoleRepository
 {
-    private readonly EComCoreDbContext _context;
     public UserRoleRepository(EComCoreDbContext context) : base(context)
     {
-        _context = context;
     }
 
     public async Task<IEnumerable<UserRole>> GetByRoleIdAsync(int roleId)

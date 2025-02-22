@@ -8,10 +8,8 @@ namespace EComCore.Infrastructure.Repositories;
 
 public class ProductRepository : Repository<Product>, IProductRepository
 {
-    private readonly EComCoreDbContext _context;
     public ProductRepository(EComCoreDbContext context) : base(context)
     {
-        _context = context;
     }
 
     public override async Task<Product> GetByIdAsync(int id)

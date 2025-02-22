@@ -7,10 +7,8 @@ namespace EComCore.Infrastructure.Repositories;
 
 public class AttributeValueRepository : Repository<AttributeValue>, IAttributeValueRepository
 {
-    private readonly EComCoreDbContext _context;
     public AttributeValueRepository(EComCoreDbContext context) : base(context)
     {
-        _context = context;
     }
 
     public async Task<IEnumerable<AttributeValue>> GetValuesByAttributeIdAsync(int attributeId)

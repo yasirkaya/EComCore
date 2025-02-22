@@ -6,9 +6,7 @@ namespace EComCore.Infrastructure.Repositories;
 
 public class AttributeRepository : Repository<CustomAttribute>, IAttributeRepository
 {
-    private readonly EComCoreDbContext _context;
     public AttributeRepository(EComCoreDbContext context) : base(context)
     {
-        _context = context;
     }
 }
