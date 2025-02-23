@@ -1,9 +1,6 @@
 using EComCore.Domain.Entities;
 using EComCore.Domain.Services.Queries;
 using MediatR;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace EComCore.Application.RolePermissionOperations.Queries
 {

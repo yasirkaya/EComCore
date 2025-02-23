@@ -1,8 +1,5 @@
-using EComCore.Domain.Entities;
 using EComCore.Domain.Services.Commands;
 using MediatR;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace EComCore.Application.PermissionOperations.Commands
 {

@@ -1,11 +1,5 @@
-using EComCore.Application.Interfaces;
 using EComCore.Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Linq;
 using EComCore.Domain.Services.Queries;
 
 namespace EComCore.Application.RolePermissionOperations.Queries

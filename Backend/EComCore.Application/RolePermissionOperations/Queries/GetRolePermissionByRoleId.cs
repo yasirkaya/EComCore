@@ -1,6 +1,5 @@
 using MediatR;
 using EComCore.Domain.Entities;
-using System.Collections.Generic;
 
 namespace EComCore.Application.RolePermissionOperations.Queries
 {

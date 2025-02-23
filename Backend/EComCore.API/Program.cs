@@ -28,6 +28,7 @@ using EComCore.Domain.DTOs.OrderDTO;
 using EComCore.Application.AuthOperations.Commands;
 using EComCore.Application.Services.Auth;
 using EComCore.Domain.Services.Auth;
+using EComCore.ınfrastructure.Repositories;
 
 namespace EComCore.API;
 
@@ -74,6 +75,8 @@ public class Program
         builder.Services.AddScoped<IAddressRepository, AddressRepository>();
         builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
         builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+        builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
+        builder.Services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
 
 
         // Service registrations
@@ -103,6 +106,10 @@ public class Program
         builder.Services.AddScoped<IPaymentCommandService, PaymentCommandService>();
         builder.Services.AddScoped<IReviewCommandService, ReviewCommandService>();
         builder.Services.AddScoped<IReviewQueryService, ReviewQueryService>();
+        builder.Services.AddScoped<IPermissionCommandService, PermissionCommandService>();
+        builder.Services.AddScoped<IPermissionQueryService, PermissionQueryService>();
+        builder.Services.AddScoped<IRolePermissionCommandService, RolePermissionCommandService>();
+        builder.Services.AddScoped<IRolePermissionQueryService, RolePermissionQueryService>();
 
 
         builder.Services.AddScoped<IJwtService, JwtService>();
