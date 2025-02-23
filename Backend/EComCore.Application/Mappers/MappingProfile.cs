@@ -26,6 +26,8 @@ using EComCore.Application.AddressOperations.Commands;
 using EComCore.Domain.DTOs.ReviewDTO;
 using EComCore.Application.ReviewOperations.Commands;
 using EComCore.Domain.Enums;
+using EComCore.Application.PermissionOperations.Commands;
+using EComCore.Application.RolePermissionOperations.Commands;
 
 namespace EComCore.Application.Mappers;
 
@@ -169,5 +171,14 @@ public class MappingProfile : Profile
         CreateMap<UpdateReviewDto, Review>()
             .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
             .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
+        //Permission Mappings
+        CreateMap<CreatePermissionCommand, Permission>();
+        CreateMap<UpdatePermissionCommand, Permission>();
+
+        //RolePermission Mappings
+        CreateMap<CreateRolePermissionCommand, RolePermission>();
+        CreateMap<UpdateRolePermissionCommand, RolePermission>();
+
     }
 }
