@@ -1,10 +1,11 @@
+using EComCore.Domain.DTOs;
 using EComCore.Domain.Entities;
 using EComCore.Domain.Services.Queries;
 using MediatR;
 
 namespace EComCore.Application.RolePermissionOperations.Queries
 {
-    public class GetRolePermissionByIdQueryHandler : IRequestHandler<GetRolePermissionByIdQuery, RolePermission>
+    public class GetRolePermissionByIdQueryHandler : IRequestHandler<GetRolePermissionByIdQuery, RolePermissionDto>
     {
         private readonly IRolePermissionQueryService _rolePermissionQueryService;
 
@@ -13,7 +14,7 @@ namespace EComCore.Application.RolePermissionOperations.Queries
             _rolePermissionQueryService = rolePermissionQueryService;
         }
 
-        public async Task<RolePermission> Handle(GetRolePermissionByIdQuery request, CancellationToken cancellationToken)
+        public async Task<RolePermissionDto> Handle(GetRolePermissionByIdQuery request, CancellationToken cancellationToken)
         {
             return await _rolePermissionQueryService.GetByIdAsync(request.Id);
         }

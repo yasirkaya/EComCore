@@ -1,9 +1,9 @@
-using EComCore.Domain.Entities;
+using EComCore.Domain.DTOs;
 using MediatR;
 
 namespace EComCore.Application.RolePermissionOperations.Queries
 {
-    public class GetRolePermissionByIdQuery : IRequest<RolePermission>
+    public class GetRolePermissionByIdQuery : IRequest<RolePermissionDto>
     {
         public int Id { get; set; }
     }

@@ -36,6 +36,9 @@ namespace EComCore.Application.Services.Commands
             var rolePer = await _rolePermissionRepository.GetByIdAsync(rolePermission.Id);
             await rolePer.EnsureNotNullAsync(id: rolePermission.Id);
 
+            rolePer.RoleId = rolePermission.RoleId;
+            rolePer.PermissionId = rolePermission.PermissionId;
+
             await _rolePermissionRepository.UpdateAsync(rolePer);
         }
     }

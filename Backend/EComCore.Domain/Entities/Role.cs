@@ -6,6 +6,6 @@ public class Role
     public string Name { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
-    public IEnumerable<RolePermission> RolePermissions { get; set; } = new List<RolePermission>();
+    public IEnumerable<RolePermission> RolePermissions { get; set; }
 
 }

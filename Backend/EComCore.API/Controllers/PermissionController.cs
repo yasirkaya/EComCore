@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EComCore.API.Controllers;
 
-public class PermissionController : ControllerBase
+[Route("api/[controller]")]
+[ApiController]
+public class PermissionController : BaseController
 {
     private readonly IMediator _mediator;
 

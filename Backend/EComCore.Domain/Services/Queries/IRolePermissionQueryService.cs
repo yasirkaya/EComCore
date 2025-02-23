@@ -1,12 +1,12 @@
-using EComCore.Domain.Entities;
+using EComCore.Domain.DTOs;
 
 namespace EComCore.Domain.Services.Queries;
 
 public interface IRolePermissionQueryService
 {
-    Task<IEnumerable<RolePermission>> GetAllAsync();
-    Task<RolePermission> GetByIdAsync(int id);
-    Task<IEnumerable<RolePermission>> GetByRoleIdAsync(int roleId);
-    Task<IEnumerable<RolePermission>> GetByPermissionIdAsync(int permissionId);
+    Task<IEnumerable<RolePermissionDto>> GetAllAsync();
+    Task<RolePermissionDto> GetByIdAsync(int id);
+    Task<IEnumerable<RolePermissionDto>> GetByRoleIdAsync(int roleId);
+    Task<IEnumerable<RolePermissionDto>> GetByPermissionIdAsync(int permissionId);
     Task<bool> IsExistAsync(int roleId, int permissionId);
 }

@@ -1,4 +1,7 @@
+using AutoMapper;
+using EComCore.Domain.DTOs;
 using EComCore.Domain.Entities;
+using EComCore.Domain.Extensions;
 using EComCore.Domain.Repositories;
 using EComCore.Domain.Services.Queries;
 
@@ -7,30 +10,43 @@ namespace EComCore.Application.Services.Queries
     public class RolePermissionQueryService : IRolePermissionQueryService
     {
         private readonly IRolePermissionRepository _rolePermissionRepository;
+        private readonly IMapper _mapper;
 
-        public RolePermissionQueryService(IRolePermissionRepository rolePermissionRepository)
+        public RolePermissionQueryService(IRolePermissionRepository rolePermissionRepository, IMapper mapper)
         {
             _rolePermissionRepository = rolePermissionRepository;
+            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<RolePermission>> GetAllAsync()
+        public async Task<IEnumerable<RolePermissionDto>> GetAllAsync()
         {
-            return await _rolePermissionRepository.GetAllAsync();
+            var rolePermissions = await _rolePermissionRepository.GetAllAsync();
+
+            return _mapper.Map<IEnumerable<RolePermissionDto>>(rolePermissions);
         }
 
-        public async Task<RolePermission> GetByIdAsync(int id)
+        public async Task<RolePermissionDto> GetByIdAsync(int id)
         {
-            return await _rolePermissionRepository.GetByIdAsync(id);
+            var rolePermission = await _rolePermissionRepository.GetByIdAsync(id);
+            await rolePermission.EnsureNotNullAsync(id: id);
+
+            return _mapper.Map<RolePermissionDto>(rolePermission);
         }
 
-        public async Task<IEnumerable<RolePermission>> GetByRoleIdAsync(int roleId)
+        public async Task<IEnumerable<RolePermissionDto>> GetByRoleIdAsync(int roleId)
         {
-            return await _rolePermissionRepository.GetByRoleIdAsync(roleId);
+            var rolePermissions = await _rolePermissionRepository.GetByRoleIdAsync(roleId);
+            await rolePermissions.EnsureNotNullAsync(id: roleId);
+
+            return _mapper.Map<IEnumerable<RolePermissionDto>>(rolePermissions);
         }
 
-        public async Task<IEnumerable<RolePermission>> GetByPermissionIdAsync(int permissionId)
+        public async Task<IEnumerable<RolePermissionDto>> GetByPermissionIdAsync(int permissionId)
         {
-            return await _rolePermissionRepository.GetByPermissionIdAsync(permissionId);
+            var rolePermissions = await _rolePermissionRepository.GetByPermissionIdAsync(permissionId);
+            await rolePermissions.EnsureNotNullAsync(id: permissionId);
+
+            return _mapper.Map<IEnumerable<RolePermissionDto>>(rolePermissions);
         }
 
         public Task<bool> IsExistAsync(int roleId, int permissionId)

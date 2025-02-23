@@ -1,20 +1,20 @@
-using EComCore.Domain.Entities;
-using EComCore.Domain.Repositories;
+using EComCore.Domain.DTOs;
+using EComCore.Domain.Services.Queries;
 using MediatR;
 
 namespace EComCore.Application.RolePermissionOperations.Queries;
 
-public class GetRolePermissionByPermissionIdHandler : IRequestHandler<GetRolePermissionByPermissionId, IEnumerable<RolePermission>>
+public class GetRolePermissionByPermissionIdHandler : IRequestHandler<GetRolePermissionByPermissionId, IEnumerable<RolePermissionDto>>
 {
-    private readonly IRolePermissionRepository _repository;
+    private readonly IRolePermissionQueryService _rolePermissionQueryService;
 
-    public GetRolePermissionByPermissionIdHandler(IRolePermissionRepository repository)
+    public GetRolePermissionByPermissionIdHandler(IRolePermissionQueryService rolePermissionQueryService)
     {
-        _repository = repository;
+        _rolePermissionQueryService = rolePermissionQueryService;
     }
 
-    public async Task<IEnumerable<RolePermission>> Handle(GetRolePermissionByPermissionId request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<RolePermissionDto>> Handle(GetRolePermissionByPermissionId request, CancellationToken cancellationToken)
     {
-        return await _repository.GetByPermissionIdAsync(request.PermissionId);
+        return await _rolePermissionQueryService.GetByPermissionIdAsync(request.PermissionId);
     }
 }

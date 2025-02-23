@@ -12,16 +12,38 @@ namespace EComCore.ınfrastructure.Repositories
         {
         }
 
+        public override async Task<IEnumerable<RolePermission>> GetAllAsync()
+        {
+            return await _dbSet
+                .Include(x => x.Role)
+                .Include(x => x.Permission)
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
+        public override async Task<RolePermission> GetByIdAsync(int id)
+        {
+            return await _dbSet
+                .Include(x => x.Role)
+                .Include(x => x.Permission)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
         public async Task<IEnumerable<RolePermission>> GetByPermissionIdAsync(int permissionId)
         {
-            return await _context.RolePermissions
+            return await _dbSet
+                .Include(x => x.Role)
+                .Include(x => x.Permission)
                 .Where(x => x.PermissionId == permissionId)
                 .ToListAsync();
         }
 
         public async Task<IEnumerable<RolePermission>> GetByRoleIdAsync(int roleId)
         {
-            return await _context.RolePermissions
+            return await _dbSet
+                .Include(x => x.Role)
+                .Include(x => x.Permission)
                 .Where(x => x.RoleId == roleId)
                 .ToListAsync();
         }
