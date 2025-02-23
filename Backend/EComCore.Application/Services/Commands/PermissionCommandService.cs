@@ -27,9 +27,9 @@ namespace EComCore.Application.Services.Commands
             await _permissionRepository.UpdateAsync(permission);
         }
 
-        public async Task DeleteAsync(Permission permission)
+        public async Task DeleteAsync(int id)
         {
-            var per = await _permissionRepository.GetByIdAsync(permission.Id);
+            var per = await _permissionRepository.GetByIdAsync(id);
             await per.EnsureNotNullAsync(id: per.Id);
 
             await _permissionRepository.DeleteAsync(per);

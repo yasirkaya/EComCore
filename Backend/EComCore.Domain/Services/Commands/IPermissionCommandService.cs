@@ -6,6 +6,6 @@ namespace EComCore.Domain.Services.Commands
     {
         Task CreateAsync(Permission permission);
         Task UpdateAsync(Permission permission);
-        Task DeleteAsync(Permission permission);
+        Task DeleteAsync(int id);
     }
 }
