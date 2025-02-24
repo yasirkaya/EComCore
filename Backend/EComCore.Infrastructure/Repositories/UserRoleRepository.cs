@@ -11,6 +11,24 @@ public class UserRoleRepository : Repository<UserRole>, IUserRoleRepository
     {
     }
 
+    public override async Task<IEnumerable<UserRole>> GetAllAsync()
+    {
+        return await _dbSet
+            .Include(x => x.Role)
+            .Include(x => x.User)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    public override async Task<UserRole> GetByIdAsync(int id)
+    {
+        return await _dbSet
+            .Include(x => x.Role)
+            .Include(x => x.User)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
     public async Task<IEnumerable<UserRole>> GetByRoleIdAsync(int roleId)
     {
         return await _context.UserRoles

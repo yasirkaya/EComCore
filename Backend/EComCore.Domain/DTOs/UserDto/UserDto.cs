@@ -7,4 +7,5 @@ public class UserDto
     public string Email { get; set; }
     public bool IsActive { get; set; }
     public bool IsEmailVerified { get; set; }
+    public IEnumerable<RoleDto> Roles { get; set; }
 }

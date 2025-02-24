@@ -90,7 +90,7 @@ export const Users: React.FC = () => {
     { header: "Email", field: (user: User) => user.email },
     {
       header: "Durum",
-      field: (user: User) => (user.isDeleted ? "Aktif" : "Pasif"),
+      field: (user: User) => (user.isDeleted ? "Pasif" : "Aktif"),
     },
     {
       header: "Email Doğrulama",
