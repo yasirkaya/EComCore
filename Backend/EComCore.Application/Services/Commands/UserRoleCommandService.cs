@@ -38,4 +38,13 @@ public class UserRoleCommandService : IUserRoleCommandService
 
         await _userRoleRepository.DeleteAsync(userRole);
     }
+
+    public async Task UpdateAsync(UpdateUserRoleDto dto)
+    {
+        var userRole = await _userRoleRepository.GetByIdAsync(dto.Id);
+        await userRole.EnsureNotNullAsync(id: dto.Id);
+
+        _mapper.Map(dto, userRole);
+        await _userRoleRepository.UpdateAsync(userRole);
+    }
 }
