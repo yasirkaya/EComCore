@@ -1,13 +1,8 @@
-using EComCore.Domain.DTOs.UserDTO;
-
 namespace EComCore.Domain.DTOs.UserRoleDTO;
 
-public class UserRoleDetailsDto
+public class UpdateUserRoleDto
 {
     public int Id { get; set; }
-    public UserDto User { get; set; }
     public int UserId { get; set; }
     public int RoleId { get; set; }
-    public RoleDto Role { get; set; }
-
 }

@@ -19,25 +19,39 @@ public class UserRoleQueryService : IUserRoleQueryService
         _roleRepository = roleRepository;
     }
 
-    public async Task<IEnumerable<UserRoleDetailsDto>> GetUserRolesAsync(int userId)
+    public async Task<IEnumerable<UserRoleDetailsDto>> GetAllAsync()
+    {
+        var userRoles = await _userRoleRepository.GetAllAsync();
+        await userRoles.EnsureNotNullOrEmptyAsync();
+        return _mapper.Map<IEnumerable<UserRoleDetailsDto>>(userRoles);
+    }
+
+    public async Task<UserRoleDetailsDto> GetByIdAsync(int id)
+    {
+        var userRole = _userRoleRepository.GetByIdAsync(id);
+        await userRole.EnsureNotNullAsync(id: id);
+        return _mapper.Map<UserRoleDetailsDto>(userRole);
+    }
+
+    public async Task<IEnumerable<UserRoleDetailsDto>> GetByUserIdAsync(int userId)
     {
         var userRoles = await _userRoleRepository.GetByUserIdAsync(userId);
         await userRoles.EnsureNotNullOrEmptyAsync(id: userId);
         return _mapper.Map<IEnumerable<UserRoleDetailsDto>>(userRoles);
     }
 
-    public async Task<IEnumerable<UserDetailsDto>> GetUsersInRoleAsync(string roleName)
+    public async Task<IEnumerable<UserRoleDetailsDto>> GetByRoleIdAsync(int roleId)
     {
-        var users = await _userRoleRepository.GetByRoleNameAsync(roleName);
-        await users.EnsureNotNullOrEmptyAsync(message: $"Role with Name {roleName} not found or is empty");
+        var users = await _userRoleRepository.GetByRoleIdAsync(roleId);
+        await users.EnsureNotNullOrEmptyAsync(message: $"Role with ID {roleId} not found or is empty");
 
-        return _mapper.Map<IEnumerable<UserDetailsDto>>(users);
+        return _mapper.Map<IEnumerable<UserRoleDetailsDto>>(users);
     }
 
-    public async Task<bool> IsUserInRoleAsync(int userId, string roleName)
+    public async Task<bool> IsUserInRoleAsync(int userId, int roleId)
     {
-        var role = await _roleRepository.GetByNameAsync(roleName);
-        await role.EnsureNotNullAsync(message: $"Role with Name {roleName} not found");
+        var role = await _roleRepository.GetByIdAsync(roleId);
+        await role.EnsureNotNullAsync(message: $"Role with ID {roleId} not found");
 
         return await _userRoleRepository.IsExistAsync(userId, role.Id);
     }

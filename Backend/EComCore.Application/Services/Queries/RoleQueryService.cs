@@ -12,6 +12,13 @@ public class RoleQueryService : IRoleQueryService
     {
         _roleRepository = roleRepository;
     }
+    public async Task<IEnumerable<Role>> GetAllAsync()
+    {
+        var roles = await _roleRepository.GetAllAsync();
+        await roles.EnsureNotNullOrEmptyAsync();
+
+        return roles;
+    }
 
     public async Task<Role> GetByIdAsync(int id)
     {
