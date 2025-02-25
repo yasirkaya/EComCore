@@ -122,10 +122,7 @@ public class MappingProfile : Profile
 
         //UserRole
         CreateMap<CreateUserRoleDto, UserRole>();
-        CreateMap<UserRole, UserRoleDetailsDto>()
-            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.Username))
-            .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.Name))
-            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email));
+        CreateMap<UserRole, UserRoleDetailsDto>();
         CreateMap<UserRole, UserDetailsDto>()
             .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username))
             .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email));
@@ -186,7 +183,6 @@ public class MappingProfile : Profile
 
         //Role Mappings
         CreateMap<Role, RoleDto>();
-
 
     }
 }

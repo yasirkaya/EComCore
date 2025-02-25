@@ -95,6 +95,7 @@ public class Program
         builder.Services.AddScoped<IUserCommandService, UserCommandService>();
         builder.Services.AddScoped<IUserQueryService, UserQueryService>();
         builder.Services.AddScoped<IRoleQueryService, RoleQueryService>();
+        builder.Services.AddScoped<IRoleCommandService, RoleCommandService>();
         builder.Services.AddScoped<IUserRoleCommandService, UserRoleCommandService>();
         builder.Services.AddScoped<IUserRoleQueryService, UserRoleQueryService>();
         builder.Services.AddScoped<ICartCommandService, CartCommandService>();
