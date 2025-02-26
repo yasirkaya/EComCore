@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { User } from "../types/models";
+import { User, Role } from "../types/models";
 import { userService } from "../services/api";
 import { DataTable, FormModal, PageHeader } from "../components/ui";
 import { Column } from "../components/ui";
+import { stat } from "fs";
 
 const defaultFormData = {
   email: "",
   username: "",
   isDeleted: true,
   isEmailVerified: true,
+  roles: [] as Role[],
 };
 
 export const Users: React.FC = () => {
@@ -45,6 +47,7 @@ export const Users: React.FC = () => {
         username: user.username,
         isDeleted: user.isDeleted,
         isEmailVerified: user.isEmailVerified,
+        roles: user.roles,
       });
     } else {
       setSelectedUser(null);
@@ -96,6 +99,42 @@ export const Users: React.FC = () => {
       header: "Email Doğrulama",
       field: (user: User) =>
         user.isEmailVerified ? "Doğrulandı" : "Doğrulanmadı",
+    },
+    {
+      header: "Roller",
+      field: (user: User) => (
+        <div className="flex flex-wrap gap-2">
+          {user.roles.map((role) => {
+            let statusVariant, statusText;
+
+            switch (role.name) {
+              case "Admin":
+                statusVariant = "primary";
+                statusText = "🔒 Admin";
+                break;
+              case "Customer":
+                statusVariant = "secondary";
+                statusText = "🛒 Müşteri";
+                break;
+              case "Manager":
+                statusVariant = "success";
+                statusText = "👔 Yönetici";
+                break;
+              default:
+                statusVariant = "warning";
+                statusText = "❓ Bilinmiyor";
+            }
+            return (
+              <span
+                key={role.name}
+                className={`badge text-bg-${statusVariant} ms-2 p-2 `}
+              >
+                {statusText}
+              </span>
+            );
+          })}
+        </div>
+      ),
     },
   ];
 

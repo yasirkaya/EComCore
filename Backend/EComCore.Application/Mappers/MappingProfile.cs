@@ -118,7 +118,9 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Token, opt => opt.Ignore());
         CreateMap<DeleteUserCommand, DeleteUserDto>();
         CreateMap<User, UserDetailsDto>();
-        CreateMap<User, UserDto>();
+        CreateMap<User, UserDto>()
+            .ForMember(dest => dest.Roles, opt => opt.MapFrom(src =>
+                src.UserRoles.Select(ur => ur.Role).ToList()));
 
         //UserRole
         CreateMap<CreateUserRoleDto, UserRole>();

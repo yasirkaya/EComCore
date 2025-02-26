@@ -4,6 +4,11 @@ export interface User {
   email: string;
   isDeleted: boolean;
   isEmailVerified: boolean;
+  roles: Role[];
+}
+export interface Role {
+  id: string;
+  name: string;
 }
 
 export interface Product {
@@ -48,7 +53,7 @@ export const ReviewStatus = {
   Rejected: 2,
 } as const;
 
-export type ReviewStatus = typeof ReviewStatus[keyof typeof ReviewStatus];
+export type ReviewStatus = (typeof ReviewStatus)[keyof typeof ReviewStatus];
 
 export interface CreateReview {
   productId: string;
@@ -66,7 +71,7 @@ export interface UpdateReview {
 }
 
 export interface UpdateReviewStatus {
-  id: string
+  id: string;
   status?: ReviewStatus;
   moderationReason?: string;
 }
