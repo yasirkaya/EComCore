@@ -29,6 +29,7 @@ using EComCore.Domain.Enums;
 using EComCore.Application.PermissionOperations.Commands;
 using EComCore.Application.RolePermissionOperations.Commands;
 using EComCore.Domain.DTOs;
+using EComCore.Application.RoleOperations.Commands;
 
 namespace EComCore.Application.Mappers;
 
@@ -185,8 +186,17 @@ public class MappingProfile : Profile
 
         //Role Mappings
         CreateMap<Role, RoleDto>()
-        .ForMember(dest => dest.Permissions, opt => opt.MapFrom(src =>
-            src.RolePermissions.Select(rp => rp.Permission).ToList()));
+            .ForMember(dest => dest.Permissions, opt => opt.MapFrom(src =>
+                src.RolePermissions.Select(rp => rp.Permission).ToList()));
+        CreateMap<CreateRoleCommand, CreateRoleDto>();
+        CreateMap<CreateRoleDto, Role>()
+            .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow));
+        CreateMap<UpdateRoleCommand, UpdateRoleDto>();
+        CreateMap<UpdateRoleDto, Role>()
+            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
+            .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
+
 
     }
 }
