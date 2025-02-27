@@ -12,6 +12,18 @@ namespace EComCore.ınfrastructure.Repositories
         {
         }
 
+        public async Task AddRangeAsync(IEnumerable<RolePermission> rolePermissions)
+        {
+            await _dbSet.AddRangeAsync(rolePermissions);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteRangeAsync(IEnumerable<RolePermission> rolePermissions)
+        {
+            _dbSet.RemoveRange(rolePermissions);
+            await _context.SaveChangesAsync();
+        }
+
         public override async Task<IEnumerable<RolePermission>> GetAllAsync()
         {
             return await _dbSet
