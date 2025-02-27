@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using EComCore.Domain.Repositories;
 using EComCore.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace EComCore.Infrastructure.Repositories
 {
@@ -49,6 +50,39 @@ namespace EComCore.Infrastructure.Repositories
         public virtual IQueryable<T> GetQueryable()
         {
             return _dbSet.AsQueryable();
+        }
+
+        public virtual async Task RunInTransactionAsync(Func<Task> action)
+        {
+            using (var transaction = await _context.Database.BeginTransactionAsync())
+            {
+                try
+                {
+                    await action();
+
+                    await transaction.CommitAsync();
+                }
+                catch (Exception ex)
+                {
+                    await transaction.RollbackAsync();
+                    throw new Exception("Transaction failed. See inner exception for details.", ex);
+                }
+            }
+        }
+
+        public virtual async Task BeginTransactionAsync()
+        {
+            await _context.Database.BeginTransactionAsync();
+        }
+
+        public virtual async Task CommitTransactionAsync()
+        {
+            await _context.Database.CommitTransactionAsync();
+        }
+
+        public virtual async Task RollbackTransactionAsync()
+        {
+            await _context.Database.RollbackTransactionAsync();
         }
     }
 }

@@ -8,4 +8,8 @@ public interface IRepository<TEntity> where TEntity : class
     Task<IEnumerable<TEntity>> GetAllAsync();
     Task<TEntity> GetByIdAsync(int id);
     IQueryable<TEntity> GetQueryable();
+    Task BeginTransactionAsync();
+    Task CommitTransactionAsync();
+    Task RollbackTransactionAsync();
+    Task RunInTransactionAsync(Func<Task> action);
 }
