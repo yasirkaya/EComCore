@@ -372,7 +372,7 @@ public class EComCoreDbContext : DbContext
             entity.HasOne(rp => rp.Role)
             .WithMany(r => r.RolePermissions)
             .HasForeignKey(rp => rp.RoleId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
             entity.HasOne(rp => rp.Permission)
             .WithMany()
