@@ -184,7 +184,9 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.Name));
 
         //Role Mappings
-        CreateMap<Role, RoleDto>();
+        CreateMap<Role, RoleDto>()
+        .ForMember(dest => dest.Permissions, opt => opt.MapFrom(src =>
+            src.RolePermissions.Select(rp => rp.Permission).ToList()));
 
     }
 }
