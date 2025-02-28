@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EComCore.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/[controller]s")]
 [ApiController]
 public class PermissionController : BaseController
 {

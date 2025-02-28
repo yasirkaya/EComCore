@@ -1,6 +1,7 @@
 using EComCore.Application.RolePermissionOperations.Commands;
 using EComCore.Application.RolePermissionOperations.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EComCore.API.Controllers;
@@ -17,6 +18,7 @@ public class RolePermissionController : BaseController
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetRolePermissions()
     {
         try
@@ -31,6 +33,7 @@ public class RolePermissionController : BaseController
     }
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetRolePermissionById(int id)
     {
         try
@@ -45,6 +48,7 @@ public class RolePermissionController : BaseController
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateRolePermission([FromBody] CreateRolePermissionCommand command)
     {
         try
@@ -60,6 +64,7 @@ public class RolePermissionController : BaseController
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateRolePermission(int id, [FromBody] UpdateRolePermissionCommand command)
     {
         try
@@ -75,6 +80,7 @@ public class RolePermissionController : BaseController
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteRolePermission(int id)
     {
         try

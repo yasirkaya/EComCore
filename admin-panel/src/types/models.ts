@@ -9,6 +9,28 @@ export interface User {
 export interface Role {
   id: string;
   name: string;
+  permissions: Permission[];
+}
+
+export interface CreateRole {
+  name: string;
+  permissionIds: number[];
+}
+
+export interface UpdateRole {
+  id: number;
+  name: string;
+  permissionIds: number[];
+}
+
+export interface RolePermission {
+  roleId: string;
+  permissionId: string;
+}
+
+export interface Permission {
+  id: string;
+  name: string;
 }
 
 export interface Product {

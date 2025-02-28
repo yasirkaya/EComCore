@@ -3,7 +3,6 @@ import { User, Role } from "../types/models";
 import { userService } from "../services/api";
 import { DataTable, FormModal, PageHeader } from "../components/ui";
 import { Column } from "../components/ui";
-import { stat } from "fs";
 
 const defaultFormData = {
   email: "",

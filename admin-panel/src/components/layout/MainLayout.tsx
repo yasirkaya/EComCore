@@ -17,9 +17,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   return (
     <div className="d-flex flex-column min-vh-100">
       <Navbar />
-      <Container fluid className="flex-grow-1 py-4">
-        {children}
-      </Container>
+      <Container className="flex-grow-1 py-4">{children}</Container>
     </div>
   );
 };
