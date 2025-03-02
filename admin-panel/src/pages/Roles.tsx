@@ -142,7 +142,6 @@ const Roles: React.FC = () => {
                 permissionIds: formData.permissions.map((p) => Number(p)),
               } as UpdateRole);
             } else {
-              console.log(formData.permissions);
               await roleService.createRole({
                 name: formData.name,
                 permissionIds: formData.permissions.map((p) => Number(p)),

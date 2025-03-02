@@ -3,6 +3,7 @@ import { User, Role } from "../types/models";
 import { userService } from "../services/api";
 import { DataTable, FormModal, PageHeader } from "../components/ui";
 import { Column } from "../components/ui";
+import { Button, Form, Modal } from "react-bootstrap";
 
 const defaultFormData = {
   email: "",
@@ -153,7 +154,7 @@ export const Users: React.FC = () => {
     <div>
       <PageHeader
         title="Kullanıcı Yönetimi"
-        buttonText="Yeni Kullanıcı"
+        buttonText="Davet Gönder"
         onButtonClick={() => handleShowModal()}
       />
 
@@ -164,16 +165,41 @@ export const Users: React.FC = () => {
         onDelete={handleDelete}
       />
 
-      <FormModal
+      {/* <FormModal
         show={showModal}
         onHide={handleCloseModal}
-        title={selectedUser ? "Kullanıcı Düzenle" : "Yeni Kullanıcı"}
+        title={selectedUser ? "Kullanıcı Düzenle" : "Davet Gönder"}
         fields={formFields}
         values={formData}
         onChange={(name, value) => setFormData({ ...formData, [name]: value })}
         onSubmit={handleSubmit}
         isEdit={!!selectedUser}
-      />
+      /> */}
+
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            {selectedUser ? "Kullanıcı Düzenle" : "Davet Gönder"}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="email"
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
+              />
+            </Form.Group>
+            <Button variant="primary" type="submit">
+              {!!selectedUser ? "Güncelle" : "Ekle"}
+            </Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };
