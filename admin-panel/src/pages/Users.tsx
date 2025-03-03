@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { User, Role } from "../types/models";
-import { userService } from "../services/api";
+import { roleService, userService } from "../services/api";
 import { DataTable, FormModal, PageHeader } from "../components/ui";
 import { Column } from "../components/ui";
 import { Button, Form, Modal } from "react-bootstrap";
 
 const defaultFormData = {
-  email: "",
-  username: "",
-  isDeleted: true,
-  isEmailVerified: true,
   roles: [] as Role[],
 };
 
@@ -17,10 +13,12 @@ export const Users: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [formData, setFormData] = useState(defaultFormData);
+  const [formData, setFormData] = useState<{ roles: Role[] }>(defaultFormData);
+  const [roles, setRoles] = useState<Role[]>([]);
 
   useEffect(() => {
     loadUsers();
+    loadRoles();
   }, []);
 
   const loadUsers = async () => {
@@ -39,14 +37,19 @@ export const Users: React.FC = () => {
     }
   };
 
+  const loadRoles = async () => {
+    try {
+      const data = await roleService.getAll(); // Roller için ayrı bir endpoint varsa
+      setRoles(data);
+    } catch (error) {
+      console.error("Roller yüklenirken hata oluştu:", error);
+    }
+  };
+
   const handleShowModal = (user?: User) => {
     if (user) {
       setSelectedUser(user);
       setFormData({
-        email: user.email,
-        username: user.username,
-        isDeleted: user.isDeleted,
-        isEmailVerified: user.isEmailVerified,
         roles: user.roles,
       });
     } else {
@@ -138,17 +141,15 @@ export const Users: React.FC = () => {
     },
   ];
 
-  const formFields = [
-    { name: "email", label: "Email", type: "email", required: true },
-    { name: "firstName", label: "Ad", type: "text", required: true },
-    { name: "lastName", label: "Soyad", type: "text", required: true },
-    {
-      name: "password",
-      label: "Şifre",
-      type: "password",
-      required: !selectedUser,
-    },
-  ];
+  const formField = {
+    name: "roles",
+    label: "Roller",
+    type: "select",
+    as: "select" as const,
+    options: roles.map((role) => ({ value: role.id, label: role.name })),
+    required: true,
+    multiple: true,
+  };
 
   return (
     <div>
@@ -185,14 +186,56 @@ export const Users: React.FC = () => {
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="email"
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
-              />
+              <Form.Label>Roller</Form.Label>
+              <Form.Select
+                multiple
+                required
+                value={formData.roles.map((role) => role.id)}
+                onChange={(e) => {
+                  const selectedRoleIds = Array.from(
+                    e.target.selectedOptions,
+                    (option) => Number(option.value) // String yerine Number'a çeviriyoruz
+                  );
+
+                  console.log("Seçilen rollerin ID'leri:", selectedRoleIds);
+
+                  setFormData((prevData) => {
+                    // Mevcut rollerin ID'lerini al
+                    const currentRoleIds = prevData.roles.map(
+                      (role) => role.id
+                    );
+
+                    // Yeni rollerin ID'lerini belirle (Eklenecekler + Mevcut olanlar arasındaki fark)
+                    const updatedRoleIds = currentRoleIds.includes(
+                      selectedRoleIds[0].toString()
+                    )
+                      ? currentRoleIds.filter(
+                          (id) => Number(id) !== selectedRoleIds[0]
+                        ) // Çıkar
+                      : [...currentRoleIds, selectedRoleIds[0]]; // Ekle
+
+                    console.log(
+                      "Güncellenmiş rollerin ID'leri:",
+                      updatedRoleIds
+                    );
+
+                    // Güncellenmiş ID'lere karşılık gelen rollerin nesnelerini bul
+                    const updatedRoles = roles.filter((role) =>
+                      updatedRoleIds.includes(role.id)
+                    );
+
+                    console.log("Güncellenmiş roller:", updatedRoles);
+
+                    return { ...prevData, roles: updatedRoles };
+                  });
+                }}
+              >
+                {roles.map((option) => (
+                  <option key={option.id} value={option.id}>
+                    {option.name}
+                  </option>
+                ))}
+              </Form.Select>
             </Form.Group>
             <Button variant="primary" type="submit">
               {!!selectedUser ? "Güncelle" : "Ekle"}
