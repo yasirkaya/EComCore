@@ -24,9 +24,7 @@ export const Users: React.FC = () => {
 
   const loadUsers = async () => {
     try {
-      console.log("Loading users...");
       const data = await userService.getAll();
-      console.log("Users loaded:", data);
       setUsers(data);
     } catch (error) {
       console.error("Kullanıcılar yüklenirken hata detayları:", {
@@ -83,14 +81,10 @@ export const Users: React.FC = () => {
           (id) => !selectedroleIds.includes(id)
         );
 
-        console.log("Eklenecek roller:", rolesToAdd);
-        console.log("Kaldırılacak roller:", rolesToRemove);
-
         for (const roleId of rolesToAdd) {
           await userRoleService.create({ userId, roleId } as UserRole);
         }
 
-        // **Kaldırılan roller siliniyor**
         for (const roleId of rolesToRemove) {
           await userRoleService.deleteByUserIdAndRoleId(userId, roleId);
         }
@@ -180,17 +174,6 @@ export const Users: React.FC = () => {
         onDelete={handleDelete}
       />
 
-      {/* <FormModal
-        show={showModal}
-        onHide={handleCloseModal}
-        title={selectedUser ? "Kullanıcı Düzenle" : "Davet Gönder"}
-        fields={formFields}
-        values={formData}
-        onChange={(name, value) => setFormData({ ...formData, [name]: value })}
-        onSubmit={handleSubmit}
-        isEdit={!!selectedUser}
-      /> */}
-
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
           <Modal.Title>
@@ -211,31 +194,23 @@ export const Users: React.FC = () => {
                     (option) => Number(option.value)
                   );
 
-                  console.log("Seçilen rollerin ID'leri:", selectedRoleIds);
-
                   setFormData((prevData) => {
-                    const currentRoleIds = prevData.roles.map(
-                      (role) => role.id
+                    const currentRoleIds = prevData.roles.map((role) =>
+                      Number(role.id)
                     );
 
-                    const updatedRoleIds = currentRoleIds.includes(
-                      selectedRoleIds[0].toString()
-                    )
-                      ? currentRoleIds.filter(
-                          (id) => Number(id) !== selectedRoleIds[0]
-                        ) // Çıkar
-                      : [...currentRoleIds, selectedRoleIds[0]]; // Ekle
-
-                    console.log(
-                      "Güncellenmiş rollerin ID'leri:",
-                      updatedRoleIds
-                    );
+                    let updatedRoleIds: number[];
+                    if (currentRoleIds.includes(selectedRoleIds[0])) {
+                      updatedRoleIds = currentRoleIds.filter(
+                        (id) => Number(id) !== selectedRoleIds[0]
+                      );
+                    } else {
+                      updatedRoleIds = [...currentRoleIds, selectedRoleIds[0]];
+                    }
 
                     const updatedRoles = roles.filter((role) =>
-                      updatedRoleIds.includes(role.id)
+                      updatedRoleIds.includes(Number(role.id))
                     );
-
-                    console.log("Güncellenmiş roller:", updatedRoles);
 
                     return { ...prevData, roles: updatedRoles };
                   });
