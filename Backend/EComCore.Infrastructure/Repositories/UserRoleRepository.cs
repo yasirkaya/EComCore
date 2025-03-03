@@ -72,4 +72,10 @@ public class UserRoleRepository : Repository<UserRole>, IUserRoleRepository
 
     }
 
+    public async Task<UserRole> GetByUserIdAndRoleIdAsync(int userId, int roleId)
+    {
+        return await _dbSet
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.UserId == userId && x.RoleId == roleId);
+    }
 }

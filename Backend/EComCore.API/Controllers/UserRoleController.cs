@@ -113,4 +113,18 @@ public class UserRoleController : BaseController
             return BadRequest(ex.Message);
         }
     }
+
+    [HttpDelete("user/{userId}/role/{roleId}")]
+    public async Task<IActionResult> DeleteUserRoleByUserIdAndRoleId(int userId, int roleId)
+    {
+        try
+        {
+            await _mediator.Send(new DeleteUserRoleByUserIdAndRoleIdCommand() { UserId = userId, RoleId = roleId });
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
 }

@@ -39,6 +39,14 @@ public class UserRoleCommandService : IUserRoleCommandService
         await _userRoleRepository.DeleteAsync(userRole);
     }
 
+    public async Task DeleteUserRoleByUserIdAndRoleId(int userId, int roleId)
+    {
+        var userRole = await _userRoleRepository.GetByUserIdAndRoleIdAsync(userId, roleId);
+        await userRole.EnsureNotNullAsync(message: "UserRole not found.");
+
+        await _userRoleRepository.DeleteAsync(userRole);
+    }
+
     public async Task UpdateAsync(UpdateUserRoleDto dto)
     {
         var userRole = await _userRoleRepository.GetByIdAsync(dto.Id);
