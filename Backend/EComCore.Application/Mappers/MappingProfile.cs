@@ -30,6 +30,7 @@ using EComCore.Application.PermissionOperations.Commands;
 using EComCore.Application.RolePermissionOperations.Commands;
 using EComCore.Domain.DTOs;
 using EComCore.Application.RoleOperations.Commands;
+using EComCore.Application.UserRoleOperations.Commands;
 
 namespace EComCore.Application.Mappers;
 
@@ -125,6 +126,8 @@ public class MappingProfile : Profile
 
         //UserRole
         CreateMap<CreateUserRoleDto, UserRole>();
+        CreateMap<CreateUserRoleCommand, CreateUserRoleDto>();
+        CreateMap<UpdateUserRoleCommand, UpdateUserRoleDto>();
         CreateMap<UserRole, UserRoleDetailsDto>();
         CreateMap<UserRole, UserDetailsDto>()
             .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username))

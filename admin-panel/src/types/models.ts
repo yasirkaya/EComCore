@@ -12,6 +12,11 @@ export interface Role {
   permissions: Permission[];
 }
 
+export interface UserRole {
+  userId: string;
+  roleId: string;
+}
+
 export interface CreateRole {
   name: string;
   permissionIds: number[];

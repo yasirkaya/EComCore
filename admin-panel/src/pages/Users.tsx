@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { User, Role } from "../types/models";
+import { User, Role, UserRole } from "../types/models";
 import { roleService, userService } from "../services/api";
 import { DataTable, FormModal, PageHeader } from "../components/ui";
 import { Column } from "../components/ui";
 import { Button, Form, Modal } from "react-bootstrap";
+import userRoleService from "../services/api/userRole.sevice";
 
 const defaultFormData = {
   roles: [] as Role[],
@@ -69,7 +70,30 @@ export const Users: React.FC = () => {
     e.preventDefault();
     try {
       if (selectedUser) {
-        await userService.update(selectedUser.id, formData);
+        const userId = selectedUser.id;
+        const selectedroleIds = formData.roles.map((role) => role.id);
+        const currentRoleIds =
+          users
+            .find((user) => user.id === userId)
+            ?.roles.map((role) => role.id) || [];
+        const rolesToAdd = selectedroleIds.filter(
+          (id) => !currentRoleIds.includes(id)
+        );
+        const rolesToRemove = currentRoleIds.filter(
+          (id) => !selectedroleIds.includes(id)
+        );
+
+        console.log("Eklenecek roller:", rolesToAdd);
+        console.log("Kaldırılacak roller:", rolesToRemove);
+
+        for (const roleId of rolesToAdd) {
+          await userRoleService.create({ userId, roleId } as UserRole);
+        }
+
+        // **Kaldırılan roller siliniyor**
+        for (const roleId of rolesToRemove) {
+          await userRoleService.deleteByUserIdAndRoleId(userId, roleId);
+        }
       } else {
         await userService.create(formData);
       }
@@ -141,16 +165,6 @@ export const Users: React.FC = () => {
     },
   ];
 
-  const formField = {
-    name: "roles",
-    label: "Roller",
-    type: "select",
-    as: "select" as const,
-    options: roles.map((role) => ({ value: role.id, label: role.name })),
-    required: true,
-    multiple: true,
-  };
-
   return (
     <div>
       <PageHeader
@@ -194,18 +208,16 @@ export const Users: React.FC = () => {
                 onChange={(e) => {
                   const selectedRoleIds = Array.from(
                     e.target.selectedOptions,
-                    (option) => Number(option.value) // String yerine Number'a çeviriyoruz
+                    (option) => Number(option.value)
                   );
 
                   console.log("Seçilen rollerin ID'leri:", selectedRoleIds);
 
                   setFormData((prevData) => {
-                    // Mevcut rollerin ID'lerini al
                     const currentRoleIds = prevData.roles.map(
                       (role) => role.id
                     );
 
-                    // Yeni rollerin ID'lerini belirle (Eklenecekler + Mevcut olanlar arasındaki fark)
                     const updatedRoleIds = currentRoleIds.includes(
                       selectedRoleIds[0].toString()
                     )
@@ -219,7 +231,6 @@ export const Users: React.FC = () => {
                       updatedRoleIds
                     );
 
-                    // Güncellenmiş ID'lere karşılık gelen rollerin nesnelerini bul
                     const updatedRoles = roles.filter((role) =>
                       updatedRoleIds.includes(role.id)
                     );
