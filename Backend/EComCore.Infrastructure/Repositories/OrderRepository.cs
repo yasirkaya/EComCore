@@ -48,5 +48,54 @@ namespace EComCore.Infrastructure.Repositories
                 .Where(o => o.OrderStatus == status)
                 .ToListAsync();
         }
+
+        public async Task<int> GetTotalCountAsync()
+        {
+            return await _context.Orders.CountAsync(o => !o.IsDeleted);
+        }
+
+        public async Task<decimal> GetTotalRevenueAsync()
+        {
+            return await _context.Orders
+                .Where(o => !o.IsDeleted && o.OrderStatus == OrderStatus.Completed)
+                .SumAsync(o => o.TotalAmount);
+        }
+
+        public async Task<int> GetPendingOrdersCountAsync()
+        {
+            return await _context.Orders
+                .CountAsync(o => !o.IsDeleted && o.OrderStatus == OrderStatus.Pending);
+        }
+
+        public async Task<decimal> GetAverageOrderValueAsync()
+        {
+            var completedOrders = await _context.Orders
+                .Where(o => !o.IsDeleted && o.OrderStatus == OrderStatus.Completed)
+                .ToListAsync();
+
+            if (!completedOrders.Any()) return 0;
+
+            return completedOrders.Average(o => o.TotalAmount);
+        }
+
+        public async Task<decimal> GetRevenueByDateRangeAsync(DateTime startDate, DateTime endDate)
+        {
+            return await _context.Orders
+                .Where(o => !o.IsDeleted &&
+                           o.OrderStatus == OrderStatus.Completed &&
+                           o.CreatedAt >= startDate &&
+                           o.CreatedAt <= endDate)
+                .SumAsync(o => o.TotalAmount);
+        }
+
+        public async Task<IEnumerable<Order>> GetRecentOrdersAsync(int count)
+        {
+            return await _context.Orders
+                .Include(o => o.User)
+                .Where(o => !o.IsDeleted)
+                .OrderByDescending(o => o.CreatedAt)
+                .Take(count)
+                .ToListAsync();
+        }
     }
 }

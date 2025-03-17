@@ -2,9 +2,10 @@ namespace EComCore.Domain.Enums;
 
 public enum OrderStatus
 {
-    Pending,
-    Processing,
-    Shipped,
-    Delivered,
-    Cancelled
+    Pending = 0,
+    Processing = 1,
+    Shipped = 2,
+    Delivered = 3,
+    Completed = 4,
+    Cancelled = 5
 }

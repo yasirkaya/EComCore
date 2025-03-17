@@ -16,6 +16,7 @@ namespace EComCore.Domain.Entities
         public Address Address { get; set; }
         public Payment? Payment { get; set; }
         public Shipment? Shipment { get; set; }
+        public bool IsDeleted { get; set; }
         public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 
 

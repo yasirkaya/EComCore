@@ -17,6 +17,7 @@ public class User : BaseEntity
    public string? PasswordResetToken { get; set; }
    public DateTime? PasswordResetTokenExpiry { get; set; }
    public bool IsActive { get; set; } = true;
+   public bool IsDeleted { get; set; }
    public List<Order> Orders { get; set; }
    public List<Review> Reviews { get; set; }
    public Cart Cart { get; set; }

@@ -9,4 +9,6 @@ public interface IUserRepository : IRepository<User>
     Task<User> GetByPasswordResetTokenAsync(string resetToken);
     Task<User> GetByEmailVerificationTokenAsync(string verificationToken);
     Task<IEnumerable<User>> GetAllActiveUsersAsync();
+    Task<int> GetTotalCountAsync();
+    Task<int> GetTotalVisitorsAsync();
 }

@@ -64,4 +64,15 @@ public class UserRepository : Repository<User>, IUserRepository
     {
         return await _dbSet.FirstOrDefaultAsync(u => u.PasswordResetToken == token && u.PasswordResetTokenExpiry > DateTime.UtcNow);
     }
+
+    public async Task<int> GetTotalCountAsync()
+    {
+        return await _context.Users.CountAsync(u => !u.IsDeleted);
+    }
+
+    public async Task<int> GetTotalVisitorsAsync()
+    {
+        // Bu metod için ayrı bir tablo oluşturulabilir veya analytics servisi kullanılabilir
+        return await _context.Users.CountAsync(u => !u.IsDeleted);
+    }
 }

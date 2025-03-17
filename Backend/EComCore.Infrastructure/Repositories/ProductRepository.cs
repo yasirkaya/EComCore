@@ -27,4 +27,23 @@ public class ProductRepository : Repository<Product>, IProductRepository
             .ToListAsync();
     }
 
+    public async Task<int> GetTotalCountAsync()
+    {
+        return await _context.Products.CountAsync(p => !p.IsDeleted);
+    }
+
+    public async Task<int> GetLowStockProductsCountAsync()
+    {
+        return await _context.Products.CountAsync(p => !p.IsDeleted && p.StockQuantity <= 10);
+    }
+
+    public async Task<IEnumerable<Product>> GetTopSellingProductsAsync(int count)
+    {
+        return await _context.Products
+            .Include(p => p.OrderItems)
+            .Where(p => !p.IsDeleted)
+            .OrderByDescending(p => p.OrderItems.Sum(oi => oi.Quantity))
+            .Take(count)
+            .ToListAsync();
+    }
 }
