@@ -29,6 +29,8 @@ using EComCore.Application.AuthOperations.Commands;
 using EComCore.Application.Services.Auth;
 using EComCore.Domain.Services.Auth;
 using EComCore.ınfrastructure.Repositories;
+using EComCore.Infrastructure.Data.Seed;
+using EComCore.Application.Services.Dashboard;
 
 namespace EComCore.API;
 
@@ -57,6 +59,24 @@ public class Program
         // Add services to the container.
         builder.Services.AddDbContext<EComCoreDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("EComCoreDatabase")));
+
+        // Veritabanını oluştur ve seed verilerini ekle
+        using (var scope = builder.Services.BuildServiceProvider().CreateScope())
+        {
+            var services = scope.ServiceProvider;
+            try
+            {
+                var context = services.GetRequiredService<EComCoreDbContext>();
+                context.Database.Migrate();
+                DataSeeder.SeedData(context).Wait();
+            }
+            catch (Exception ex)
+            {
+                var logger = services.GetRequiredService<ILogger<Program>>();
+                logger.LogError(ex, "Veritabanı oluşturulurken bir hata oluştu.");
+            }
+        }
+
         builder.Services.AddAutoMapper(typeof(MappingProfile));
         builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateCategoryCommand).Assembly));
 
@@ -111,7 +131,7 @@ public class Program
         builder.Services.AddScoped<IPermissionQueryService, PermissionQueryService>();
         builder.Services.AddScoped<IRolePermissionCommandService, RolePermissionCommandService>();
         builder.Services.AddScoped<IRolePermissionQueryService, RolePermissionQueryService>();
-
+        builder.Services.AddScoped<IDashboardQueryService, DashboardQueryService>();
 
         builder.Services.AddScoped<IJwtService, JwtService>();
         builder.Services.AddScoped<IEmailService, EmailService>();
