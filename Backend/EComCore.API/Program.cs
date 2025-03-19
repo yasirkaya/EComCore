@@ -30,6 +30,7 @@ using EComCore.Application.Services.Auth;
 using EComCore.Domain.Services.Auth;
 using EComCore.ınfrastructure.Repositories;
 using EComCore.Application.Services.Dashboard;
+using EComCore.Infrastructure.Data.Seed;
 
 namespace EComCore.API;
 
@@ -177,6 +178,20 @@ public class Program
         app.UseAuthorization();
 
         app.MapControllers();
+
+        using (var scope = app.Services.CreateScope())
+        {
+            var context = scope.ServiceProvider.GetRequiredService<EComCoreDbContext>();
+            try
+            {
+                DataSeeder.SeedDataAsync(context).Wait();
+            }
+            catch (Exception ex)
+            {
+                var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+                logger.LogError(ex, "Veri eklenirken bir hata oluştu.");
+            }
+        }
 
         app.Run();
     }
