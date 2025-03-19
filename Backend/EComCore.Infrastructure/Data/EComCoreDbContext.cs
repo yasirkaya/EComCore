@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using EComCore.Domain.Entities;
 
-
 namespace EComCore.Infrastructure.Data;
 
 public class EComCoreDbContext : DbContext
@@ -29,6 +28,8 @@ public class EComCoreDbContext : DbContext
     public DbSet<Payment> Payments { get; set; }
     public DbSet<Shipment> Shipments { get; set; }
     public DbSet<Review> Reviews { get; set; }
+    public DbSet<ProductVariant> ProductVariants { get; set; }
+    public DbSet<ProductVariantAttribute> ProductVariantAttributes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -52,17 +53,16 @@ public class EComCoreDbContext : DbContext
             entity.ToTable("ShoppingCartItems");
             entity.HasKey(ci => ci.Id);
             entity.Property(ci => ci.Quantity).IsRequired();
-            entity.Property(ci => ci.UnitPrice).HasColumnType("decimal(18,2)").IsRequired();
 
             entity.HasOne(ci => ci.Cart)
                 .WithMany(c => c.Items)
                 .HasForeignKey(ci => ci.CartId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            entity.HasOne(ci => ci.Product)
-                .WithMany()
-                .HasForeignKey(ci => ci.ProductId)
-                .OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(e => e.ProductVariant)
+                  .WithMany(e => e.CartItems)
+                  .HasForeignKey(e => e.ProductVariantId)
+                  .OnDelete(DeleteBehavior.Restrict);
         });
 
         modelBuilder.Entity<Order>(entity =>
@@ -98,7 +98,6 @@ public class EComCoreDbContext : DbContext
             entity.ToTable("OrderItems");
             entity.HasKey(oi => oi.Id);
             entity.Property(oi => oi.OrderId).IsRequired();
-            entity.Property(oi => oi.ProductId).IsRequired();
             entity.Property(oi => oi.Quantity).IsRequired();
             entity.Property(oi => oi.UnitPrice).HasColumnType("decimal(18,2)").IsRequired();
             entity.Property(oi => oi.TotalPrice).HasColumnType("decimal(18,2)").IsRequired();
@@ -108,10 +107,10 @@ public class EComCoreDbContext : DbContext
                 .HasForeignKey(oi => oi.OrderId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            entity.HasOne(oi => oi.Product)
-                .WithMany()
-                .HasForeignKey(oi => oi.ProductId)
-                .OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(e => e.ProductVariant)
+                  .WithMany(e => e.OrderItems)
+                  .HasForeignKey(e => e.ProductVariantId)
+                  .OnDelete(DeleteBehavior.Restrict);
         });
 
         modelBuilder.Entity<Address>(entity =>
@@ -217,7 +216,7 @@ public class EComCoreDbContext : DbContext
                 .IsRequired()
                 .HasColumnType("decimal(18,2)");
 
-            entity.Property(p => p.Sku)
+            entity.Property(p => p.SKU)
                 .IsRequired()
                 .HasMaxLength(100);
 
@@ -451,5 +450,39 @@ public class EComCoreDbContext : DbContext
                 .HasForeignKey(r => r.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
+
+        modelBuilder.Entity<ProductVariant>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.SKU).IsRequired();
+            entity.Property(e => e.Price).HasPrecision(18, 2);
+
+            entity.HasOne(e => e.Product)
+                  .WithMany(e => e.ProductVariants)
+                  .HasForeignKey(e => e.ProductId)
+                  .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<ProductVariantAttribute>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+
+            entity.HasOne(e => e.ProductVariant)
+                  .WithMany(e => e.ProductVariantAttributes)
+                  .HasForeignKey(e => e.ProductVariantId)
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(e => e.Attribute)
+                  .WithMany()
+                  .HasForeignKey(e => e.AttributeId)
+                  .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(e => e.AttributeValue)
+                  .WithMany()
+                  .HasForeignKey(e => e.AttributeValueId)
+                  .OnDelete(DeleteBehavior.Restrict);
+        });
+
+
     }
 }
