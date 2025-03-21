@@ -23,7 +23,6 @@ public class EComCoreDbContext : DbContext
     public DbSet<CartItem> CartItems { get; set; }
     public DbSet<CustomAttribute> Attributes { get; set; }
     public DbSet<AttributeValue> AttributeValues { get; set; }
-    public DbSet<ProductToAttribute> ProductToAttributes { get; set; }
     public DbSet<ProductToCategory> ProductToCategories { get; set; }
     public DbSet<Payment> Payments { get; set; }
     public DbSet<Shipment> Shipments { get; set; }
@@ -55,7 +54,7 @@ public class EComCoreDbContext : DbContext
             entity.Property(ci => ci.Quantity).IsRequired();
 
             entity.HasOne(ci => ci.Cart)
-                .WithMany(c => c.Items)
+                .WithMany(c => c.CartItems)
                 .HasForeignKey(ci => ci.CartId)
                 .OnDelete(DeleteBehavior.Cascade);
 
@@ -236,41 +235,6 @@ public class EComCoreDbContext : DbContext
 
             entity.Property(p => p.CreatedAt)
                 .IsRequired();
-
-            entity.HasMany(p => p.ProductToAttributes)
-                .WithOne(pa => pa.Product)
-                .HasForeignKey(pa => pa.ProductId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-        });
-
-        modelBuilder.Entity<ProductToAttribute>(entity =>
-        {
-            entity.ToTable("ProductToAttributes");
-
-            entity.HasKey(pta => pta.Id);
-
-            entity.Property(pta => pta.ProductId)
-                .IsRequired();
-
-            entity.Property(pta => pta.AttributeId)
-                .IsRequired();
-
-            entity.Property(pta => pta.AttributeValueId)
-                .IsRequired();
-
-            entity.Property(pta => pta.CreatedAt)
-                .IsRequired();
-
-            entity.HasOne(pa => pa.Attribute)
-                .WithMany()
-                .HasForeignKey(pa => pa.AttributeId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            entity.HasOne(pa => pa.AttributeValue)
-                .WithMany()
-                .HasForeignKey(pa => pa.AttributeValueId)
-                .OnDelete(DeleteBehavior.Restrict);
 
         });
 

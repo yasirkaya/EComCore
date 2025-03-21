@@ -11,9 +11,7 @@ public class Product : BaseEntity
     public string ImageUrl { get; set; }
     public decimal Rating { get; set; }
     public bool IsDeleted { get; set; }
-    public ICollection<ProductToCategory> ProductToCategories { get; set; } = new List<ProductToCategory>();
-    public ICollection<ProductToAttribute> ProductToAttributes { get; set; } = new List<ProductToAttribute>();
-    public ICollection<ProductVariant> ProductVariants { get; set; } = new List<ProductVariant>();
-    public ICollection<Review> Reviews { get; set; } = new List<Review>();
-    public ICollection<OrderItem> OrderItems { get; set; }
+    public ICollection<ProductToCategory> ProductToCategories { get; set; }
+    public ICollection<ProductVariant> ProductVariants { get; set; }
+    public ICollection<Review> Reviews { get; set; }
 }

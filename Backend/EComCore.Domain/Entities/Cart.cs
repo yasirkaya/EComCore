@@ -5,5 +5,6 @@ namespace EComCore.Domain.Entities;
 public class Cart : BaseEntity
 {
     public int UserId { get; set; }
-    public ICollection<CartItem> Items { get; set; } = new List<CartItem>();
+    public User User { get; set; }
+    public ICollection<CartItem> CartItems { get; set; }
 }
