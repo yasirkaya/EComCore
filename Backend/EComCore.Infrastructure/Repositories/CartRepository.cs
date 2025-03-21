@@ -27,8 +27,17 @@ namespace EComCore.Infrastructure.Repositories
         public async Task<Cart> GetByUserIdAsync(int userId)
         {
             return await _context.Carts
-                .Include(c => c.Items)
-                .ThenInclude(i => i.Product)
+                .Include(c => c.CartItems)
+                    .ThenInclude(ci => ci.ProductVariant)
+                .FirstOrDefaultAsync(c => c.UserId == userId);
+        }
+
+        public async Task<Cart> GetByUserIdWithDetailsAsync(int userId)
+        {
+            return await _context.Carts
+                .Include(c => c.CartItems)
+                    .ThenInclude(ci => ci.ProductVariant)
+                .Include(c => c.User)
                 .FirstOrDefaultAsync(c => c.UserId == userId);
         }
     }

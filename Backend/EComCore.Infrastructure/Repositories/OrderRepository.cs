@@ -19,7 +19,7 @@ namespace EComCore.Infrastructure.Repositories
         {
             return await _dbSet
                 .Include(o => o.OrderItems)
-                .ThenInclude(oi => oi.Product)
+                    .ThenInclude(oi => oi.ProductVariant)
                 .FirstOrDefaultAsync(o => o.Id == id);
         }
 
@@ -27,16 +27,20 @@ namespace EComCore.Infrastructure.Repositories
         {
             return await _dbSet
                 .Include(o => o.OrderItems)
-                .ThenInclude(oi => oi.Product)
+                    .ThenInclude(oi => oi.ProductVariant)
                 .ToListAsync();
         }
 
         public async Task<List<Order>> GetByUserIdAsync(int userId)
         {
-            return await _dbSet
+            return await _context.Orders
                 .Include(o => o.OrderItems)
-                .ThenInclude(oi => oi.Product)
+                    .ThenInclude(oi => oi.ProductVariant)
+                .Include(o => o.Address)
+                .Include(o => o.Payment)
+                .Include(o => o.Shipment)
                 .Where(o => o.UserId == userId)
+                .OrderByDescending(o => o.CreatedAt)
                 .ToListAsync();
         }
 
@@ -44,7 +48,7 @@ namespace EComCore.Infrastructure.Repositories
         {
             return await _dbSet
                 .Include(o => o.OrderItems)
-                .ThenInclude(oi => oi.Product)
+                    .ThenInclude(oi => oi.ProductVariant)
                 .Where(o => o.OrderStatus == status)
                 .ToListAsync();
         }
@@ -97,5 +101,31 @@ namespace EComCore.Infrastructure.Repositories
                 .Take(count)
                 .ToListAsync();
         }
+
+        public async Task<Order> GetByIdWithDetailsAsync(int id)
+        {
+            return await _context.Orders
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.ProductVariant)
+                .Include(o => o.Address)
+                .Include(o => o.Payment)
+                .Include(o => o.Shipment)
+                .FirstOrDefaultAsync(o => o.Id == id);
+        }
+
+        public async Task<IEnumerable<Order>> GetByDateRangeAsync(DateTime startDate, DateTime endDate)
+        {
+            return await _context.Orders
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.ProductVariant)
+                .Include(o => o.Address)
+                .Include(o => o.Payment)
+                .Include(o => o.Shipment)
+                .Where(o => o.CreatedAt >= startDate && o.CreatedAt <= endDate)
+                .OrderByDescending(o => o.CreatedAt)
+                .ToListAsync();
+        }
+
+
     }
 }

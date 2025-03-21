@@ -1,7 +1,5 @@
 using EComCore.Application.ProductOperations.Commands;
 using EComCore.Application.ProductOperations.Queries;
-using EComCore.Application.ProductToAttributeOperations.Commands;
-using EComCore.Application.ProductToAttributeOperations.Commands.Queries;
 using EComCore.Application.ProductToCategoryOperations.Commands;
 using EComCore.Application.ProductToCategoryOperations.Queries;
 using EComCore.Domain.Shared.RequestFeatures;
@@ -96,37 +94,37 @@ public class ProductsController : BaseController
     #endregion
 
     #region Product Attribute Operations
-    [HttpGet("{productId}/attributes")]
-    public async Task<IActionResult> GetProductAttributes(int productId)
-    {
-        var result = await _mediator.Send(new GetProductToAttributeByIdQuery { Id = productId });
-        return Ok(result);
-    }
+    // [HttpGet("{productId}/attributes")]
+    // public async Task<IActionResult> GetProductAttributes(int productId)
+    // {
+    //     var result = await _mediator.Send(new GetProductToAttributeByIdQuery { Id = productId });
+    //     return Ok(result);
+    // }
 
-    [HttpPost("{productId}/attributes")]
-    [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> AddAttributesToProduct([FromBody] AddAttributesToProductCommand command)
-    {
-        await _mediator.Send(command);
-        return Ok();
-    }
+    // [HttpPost("{productId}/attributes")]
+    // [Authorize(Roles = "Admin")]
+    // public async Task<IActionResult> AddAttributesToProduct([FromBody] AddAttributesToProductCommand command)
+    // {
+    //     await _mediator.Send(command);
+    //     return Ok();
+    // }
 
-    [HttpPut("{productId}/attributes/{attributeId}")]
-    [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> UpdateProductAttribute(int productId, int attributeId, [FromBody] UpdateProductToAttributeCommand command)
-    {
-        command.ProductId = productId;
-        command.AttributeId = attributeId;
-        await _mediator.Send(command);
-        return Ok();
-    }
+    // [HttpPut("{productId}/attributes/{attributeId}")]
+    // [Authorize(Roles = "Admin")]
+    // public async Task<IActionResult> UpdateProductAttribute(int productId, int attributeId, [FromBody] UpdateProductToAttributeCommand command)
+    // {
+    //     command.ProductId = productId;
+    //     command.AttributeId = attributeId;
+    //     await _mediator.Send(command);
+    //     return Ok();
+    // }
 
-    [HttpDelete("{productId}/attributes")]
-    [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> RemoveProductAttributes(int productId)
-    {
-        await _mediator.Send(new DeleteAttributesByProductIdCommand { ProductId = productId });
-        return Ok();
-    }
+    // [HttpDelete("{productId}/attributes")]
+    // [Authorize(Roles = "Admin")]
+    // public async Task<IActionResult> RemoveProductAttributes(int productId)
+    // {
+    //     await _mediator.Send(new DeleteAttributesByProductIdCommand { ProductId = productId });
+    //     return Ok();
+    // }
     #endregion
 }

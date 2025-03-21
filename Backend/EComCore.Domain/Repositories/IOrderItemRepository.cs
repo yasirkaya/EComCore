@@ -5,7 +5,8 @@ namespace EComCore.Domain.Repositories;
 public interface IOrderItemRepository : IRepository<OrderItem>
 {
     Task<IEnumerable<OrderItem>> GetByOrderIdAsync(int orderId);
-    Task<IEnumerable<OrderItem>> GetByProductIdAsync(int productId);
+    Task<IEnumerable<OrderItem>> GetByProductVariantIdAsync(int productVariantId);
+    Task<IEnumerable<OrderItem>> GetByOrderIdWithDetailsAsync(int orderId);
     Task<IEnumerable<RevenueByCategory>> GetRevenueByCategoryAsync();
 }
 

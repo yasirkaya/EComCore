@@ -63,19 +63,20 @@ public class DashboardQueryService : IDashboardQueryService
 
     public async Task<List<TopProductDto>> GetTopProductsAsync()
     {
-        var topProducts = await _productRepository.GetTopSellingProductsAsync(10);
-        var orderItems = await _orderItemRepository.GetByProductIdAsync(topProducts.First().Id);
+        // var topProducts = await _productRepository.GetTopSellingProductsAsync(10);
+        // var orderItems = await _orderItemRepository.GetByProductIdAsync(topProducts.First().Id);
 
-        return topProducts.Select(p => new TopProductDto
-        {
-            Id = p.Id,
-            Name = p.Name,
-            Price = p.Price,
-            TotalSales = orderItems.Where(oi => oi.ProductId == p.Id).Sum(oi => oi.Quantity),
-            TotalRevenue = orderItems.Where(oi => oi.ProductId == p.Id).Sum(oi => oi.TotalPrice),
-            StockQuantity = p.StockQuantity,
-            ImageUrl = p.ImageUrl
-        }).ToList();
+        // return topProducts.Select(p => new TopProductDto
+        // {
+        //     Id = p.Id,
+        //     Name = p.Name,
+        //     Price = p.Price,
+        //     TotalSales = orderItems.Where(oi => oi.ProductId == p.Id).Sum(oi => oi.Quantity),
+        //     TotalRevenue = orderItems.Where(oi => oi.ProductId == p.Id).Sum(oi => oi.TotalPrice),
+        //     StockQuantity = p.StockQuantity,
+        //     ImageUrl = p.ImageUrl
+        // }).ToList();
+        return new List<TopProductDto>();
     }
 
     public async Task<List<RecentOrderDto>> GetRecentOrdersAsync()

@@ -30,7 +30,6 @@ using EComCore.Application.Services.Auth;
 using EComCore.Domain.Services.Auth;
 using EComCore.ınfrastructure.Repositories;
 using EComCore.Application.Services.Dashboard;
-using EComCore.Infrastructure.Data.Seed;
 
 namespace EComCore.API;
 
@@ -69,7 +68,6 @@ public class Program
         builder.Services.AddScoped<IAttributeRepository, AttributeRepository>();
         builder.Services.AddScoped<IAttributeValueRepository, AttributeValueRepository>();
         builder.Services.AddScoped<IProductRepository, ProductRepository>();
-        builder.Services.AddScoped<IProductToAttributeRepository, ProductToAttributeRepository>();
         builder.Services.AddScoped<IProductToCategoryRepository, ProductToCategoryRepository>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IRoleRepository, RoleRepository>();
@@ -82,6 +80,8 @@ public class Program
         builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
         builder.Services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
         builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+        builder.Services.AddScoped<IProductVariantRepository, ProductVariantRepository>();
+        builder.Services.AddScoped<IProductVariantAttributeRepository, ProductVariantAttributeRepository>();
 
 
         // Service registrations
@@ -93,8 +93,6 @@ public class Program
         builder.Services.AddScoped<IAttributeValueQueryService, AttributeValueQueryService>();
         builder.Services.AddScoped<IProductCommandService, ProductCommandService>();
         builder.Services.AddScoped<IProductQueryService, ProductQueryService>();
-        builder.Services.AddScoped<IProductToAttributeCommandService, ProductToAttributeCommandService>();
-        builder.Services.AddScoped<IProductToAttributeQueryService, ProductToAttributeQueryService>();
         builder.Services.AddScoped<IProductToCategoryCommandService, ProductToCategoryCommandService>();
         builder.Services.AddScoped<IProductToCategoryQueryService, ProductToCategoryQueryService>();
         builder.Services.AddScoped<IUserCommandService, UserCommandService>();
@@ -132,7 +130,6 @@ public class Program
         builder.Services.AddScoped<IAuthQueryService, AuthQueryService>();
 
         builder.Services.AddControllers();
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
@@ -178,20 +175,6 @@ public class Program
         app.UseAuthorization();
 
         app.MapControllers();
-
-        using (var scope = app.Services.CreateScope())
-        {
-            var context = scope.ServiceProvider.GetRequiredService<EComCoreDbContext>();
-            try
-            {
-                DataSeeder.SeedDataAsync(context).Wait();
-            }
-            catch (Exception ex)
-            {
-                var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-                logger.LogError(ex, "Veri eklenirken bir hata oluştu.");
-            }
-        }
 
         app.Run();
     }

@@ -5,7 +5,6 @@ using EComCore.Application.CartOperations.Commands;
 using EComCore.Application.CategoryOperations.Commands;
 using EComCore.Application.CustomAttributeOperations.Commands;
 using EComCore.Application.ProductOperations.Commands;
-using EComCore.Application.ProductToAttributeOperations.Commands;
 using EComCore.Application.ProductToCategoryOperations.Commands;
 using EComCore.Application.UserOperations.Commands;
 using EComCore.Domain.DTOs.AttributeDTO;
@@ -14,7 +13,6 @@ using EComCore.Domain.DTOs.AuthDTO;
 using EComCore.Domain.DTOs.CartDTO;
 using EComCore.Domain.DTOs.CategoryDTO;
 using EComCore.Domain.DTOs.ProductDTO;
-using EComCore.Domain.DTOs.ProductToAttributeDTO;
 using EComCore.Domain.DTOs.ProductToCategoryDTO;
 using EComCore.Domain.DTOs.UserDTO;
 using EComCore.Domain.DTOs.UserRoleDTO;
@@ -87,17 +85,17 @@ public class MappingProfile : Profile
                 src.ProductToCategories.Select(ptc => ptc.CategoryId).ToList()));
 
         //ProdusctToAttribute
-        CreateMap<CreateProductToAttributeCommand, CreateProductToAttributeDto>();
-        CreateMap<CreateProductToAttributeDto, ProductToAttribute>()
-            .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow));
-        CreateMap<UpdateProductToAttributeCommand, UpdateProductToAttributeDto>();
-        CreateMap<UpdateProductToAttributeDto, ProductToAttribute>()
-            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
-            .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
-        CreateMap<DeleteProductToAttributeCommand, DeleteProductToAttributeDto>();
-        CreateMap<ProductToAttribute, ProductToAttributeDto>()
-            .ForMember(dest => dest.AttributeName, opt => opt.MapFrom(src => src.Attribute.Name))
-            .ForMember(dest => dest.AttributeValue, opt => opt.MapFrom(src => src.AttributeValue.Value));
+        // CreateMap<CreateProductToAttributeCommand, CreateProductToAttributeDto>();
+        // CreateMap<CreateProductToAttributeDto, ProductToAttribute>()
+        //     .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow));
+        // CreateMap<UpdateProductToAttributeCommand, UpdateProductToAttributeDto>();
+        // CreateMap<UpdateProductToAttributeDto, ProductToAttribute>()
+        //     .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
+        //     .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+        // CreateMap<DeleteProductToAttributeCommand, DeleteProductToAttributeDto>();
+        // CreateMap<ProductToAttribute, ProductToAttributeDto>()
+        //     .ForMember(dest => dest.AttributeName, opt => opt.MapFrom(src => src.Attribute.Name))
+        //     .ForMember(dest => dest.AttributeValue, opt => opt.MapFrom(src => src.AttributeValue.Value));
 
         //ProductToCategory
         CreateMap<CreateProductToCategoryCommand, CreateProductToCategoryDto>();
@@ -140,8 +138,8 @@ public class MappingProfile : Profile
         //Cart
         CreateMap<Cart, CartDto>();
         CreateMap<CartItem, CartItemDto>()
-            .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.Name))
-            .ForMember(dest => dest.UnitPrice, opt => opt.MapFrom(src => src.Product.Price));
+            .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.ProductVariant.Product.Name))
+            .ForMember(dest => dest.UnitPrice, opt => opt.MapFrom(src => src.ProductVariant.Price));
         CreateMap<AddToCartCommand, AddToCartDto>();
         CreateMap<UpdateCartItemCommand, UpdateCartItemDto>();
 
