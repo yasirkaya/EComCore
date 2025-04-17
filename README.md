@@ -1,47 +1,51 @@
-# EComCore Backend Projesi
+# EComCore E-Ticaret Platformu
 
 ## 📋 Proje Hakkında
 
-EComCore, modern e-ticaret uygulamaları için geliştirilmiş bir backend çözümüdür. Clean Architecture prensiplerine uygun olarak geliştirilmiş olup, modüler ve sürdürülebilir bir yapıya sahiptir.
+EComCore, modern e-ticaret ihtiyaçlarını karşılayan, modüler ve ölçeklenebilir bir e-ticaret platformudur. Platform, admin panel, müşteri arayüzü, backend API'leri ve yapay zeka destekli özelliklerden oluşan kapsamlı bir çözüm sunar.
 
-## 🏗️ Proje Yapısı
+## 🏗️ Proje Bileşenleri
 
-Proje, Clean Architecture prensiplerine uygun olarak dört ana katmandan oluşmaktadır:
+### 1. Admin Panel
 
-### EComCore.Domain
+- React tabanlı yönetim arayüzü
+- TypeScript ile tip güvenliği
+- Context API ile state yönetimi
+- [Detaylar için admin-panel/README.md](admin-panel/README.md)
 
-- Temel iş mantığını ve varlıkları içerir
-- DTO'lar ve entity'ler burada tanımlanır
-- Repository interface'leri burada bulunur
+### 2. Backend
 
-### EComCore.Application
+- .NET Core tabanlı API servisleri
+- Clean Architecture prensipleri
+- CQRS pattern implementasyonu
+- [Detaylar için Backend/README.md](Backend/README.md)
 
-- İş mantığının uygulandığı katman
-- CQRS pattern'i ile komut ve sorgular
-- AutoMapper profilleri
-- Servis katmanı implementasyonları
+### 3. Client
 
-### EComCore.Infrastructure
+- React tabanlı müşteri arayüzü
+- TypeScript ile tip güvenliği
+- Context API ile state yönetimi
+- [Detaylar için client/README.md](client/README.md)
 
-- Veritabanı işlemleri
-- Repository implementasyonları
-- DbContext ve migration'lar
-- Harici servis entegrasyonları
+### 4. AIFlow
 
-### EComCore.API
-
-- REST API endpoints
-- Controller'lar
-- Middleware'ler
-- API konfigürasyonları
+- Python tabanlı AI/ML modülleri
+- FastAPI ile API servisleri
+- PostgreSQL ve Redis entegrasyonu
+- [Detaylar için AIFlow/README.md](AIFlow/README.md)
 
 ## 🚀 Başlangıç
 
 ### Gereksinimler
 
-- .NET 6.0 SDK veya üzeri
+- .NET 6.0 SDK
+- Node.js 16.x
+- Python 3.9+
 - SQL Server
-- Visual Studio 2022 veya Visual Studio Code
+- PostgreSQL
+- Redis
+- Docker
+- Modern bir web tarayıcısı
 
 ### Kurulum
 
@@ -51,63 +55,67 @@ Proje, Clean Architecture prensiplerine uygun olarak dört ana katmandan oluşma
 git clone [repository-url]
 ```
 
-2. Backend klasörüne gidin:
+2. Her bir bileşen için ayrı kurulum adımlarını takip edin:
 
-```bash
-cd Backend
-```
+- [Admin Panel Kurulumu](admin-panel/README.md#kurulum)
+- [Backend Kurulumu](Backend/README.md#kurulum)
+- [Client Kurulumu](client/README.md#kurulum)
+- [AIFlow Kurulumu](AIFlow/README.md#kurulum)
 
-3. Projeyi derleyin:
+## 📦 Temel Özellikler
 
-```bash
-dotnet build
-```
+- Ürün ve varyant yönetimi
+- Kategori sistemi
+- Kullanıcı yönetimi ve yetkilendirme
+- Sipariş işlemleri
+- Ödeme entegrasyonları
+- Kargo takip sistemi
+- Ürün değerlendirme ve yorumlar
+- AI destekli özellikler
 
-4. Veritabanını oluşturun:
+## 🛠️ Teknolojiler
 
-```bash
-dotnet ef database update
-```
-
-5. Projeyi çalıştırın:
-
-```bash
-dotnet run --project EComCore.API
-```
-
-## 🔄 API Endpoints
-
-### Siparişler (Orders)
-
-- `GET /api/orders` - Tüm siparişleri listeler
-- `GET /api/orders/{id}` - Belirli bir siparişi getirir
-- `POST /api/orders` - Yeni sipariş oluşturur
-- `PUT /api/orders/{id}` - Sipariş durumunu günceller
-- `DELETE /api/orders/{id}` - Siparişi iptal eder
-
-## 🛠️ Teknolojiler ve Araçlar
+### Backend
 
 - ASP.NET Core 6.0
 - Entity Framework Core
-- AutoMapper
-- MediatR (CQRS implementasyonu için)
 - SQL Server
-- Swagger/OpenAPI
+- MediatR
+- AutoMapper
+- FluentValidation
 
-## 📦 Mimari Özellikler
+### Frontend
 
-- Clean Architecture
-- CQRS Pattern
-- Repository Pattern
-- Dependency Injection
-- Domain Driven Design (DDD) prensipleri
+- React 18
+- TypeScript
+- Context API
+- Axios
+- React Router
+- Formik & Yup
+- Tailwind CSS
+
+### AI/ML
+
+- Python 3.9
+- FastAPI
+- PostgreSQL
+- Redis
+
+### Genel
+
+- Docker
+- JWT Authentication
+- Role-based Authorization
+- CORS politikaları
 
 ## 🔒 Güvenlik
 
 - JWT Authentication
 - Role-based Authorization
 - Input Validation
-- Cross-Origin Resource Sharing (CORS) politikaları
+- CORS politikaları
+- HTTPS zorunluluğu
+- Güvenli şifreleme
 
 ## 📝 Lisans
 

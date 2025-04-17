@@ -1,47 +1,49 @@
-# EComCore Backend Projesi
+# EComCore Backend
 
 ## 📋 Proje Hakkında
 
-EComCore, modern e-ticaret uygulamaları için geliştirilmiş bir backend çözümüdür. Clean Architecture prensiplerine uygun olarak geliştirilmiş olup, modüler ve sürdürülebilir bir yapıya sahiptir.
+EComCore Backend, e-ticaret platformunun temel iş mantığını ve API'lerini içeren .NET Core tabanlı bir uygulamadır. Clean Architecture prensiplerine uygun olarak geliştirilmiştir.
 
 ## 🏗️ Proje Yapısı
 
-Proje, Clean Architecture prensiplerine uygun olarak dört ana katmandan oluşmaktadır:
-
 ### EComCore.Domain
 
-- Temel iş mantığını ve varlıkları içerir
-- DTO'lar ve entity'ler burada tanımlanır
-- Repository interface'leri burada bulunur
+- Entity sınıfları (Product, Order, User, vb.)
+- Repository interface'leri
+- Enum'lar ve sabitler
+- Domain event'ler
 
 ### EComCore.Application
 
-- İş mantığının uygulandığı katman
-- CQRS pattern'i ile komut ve sorgular
+- CQRS pattern implementasyonu
+- MediatR komutları ve sorguları
 - AutoMapper profilleri
-- Servis katmanı implementasyonları
+- FluentValidation kuralları
+- DTO'lar
 
 ### EComCore.Infrastructure
 
-- Veritabanı işlemleri
+- Entity Framework Core implementasyonu
 - Repository implementasyonları
-- DbContext ve migration'lar
-- Harici servis entegrasyonları
+- Veritabanı migration'ları
+- JWT Authentication servisleri
+- Email servisleri
 
 ### EComCore.API
 
 - REST API endpoints
 - Controller'lar
 - Middleware'ler
-- API konfigürasyonları
+- Swagger/OpenAPI dökümantasyonu
+- CORS konfigürasyonları
 
 ## 🚀 Başlangıç
 
 ### Gereksinimler
 
-- .NET 6.0 SDK veya üzeri
+- .NET 6.0 SDK
 - SQL Server
-- Visual Studio 2022 veya Visual Studio Code
+- Visual Studio 2022 veya VS Code
 
 ### Kurulum
 
@@ -57,23 +59,47 @@ git clone [repository-url]
 cd Backend
 ```
 
-3. Projeyi derleyin:
+3. Bağımlılıkları yükleyin:
 
 ```bash
-dotnet build
+dotnet restore
 ```
 
 4. Veritabanını oluşturun:
 
 ```bash
-dotnet ef database update
+dotnet ef database update --project EComCore.Infrastructure
 ```
 
-5. Projeyi çalıştırın:
+5. Uygulamayı çalıştırın:
 
 ```bash
 dotnet run --project EComCore.API
 ```
+
+## 📦 Özellikler
+
+- JWT tabanlı kimlik doğrulama
+- Rol tabanlı yetkilendirme
+- Ürün ve varyant yönetimi
+- Sipariş işlemleri
+- Ödeme entegrasyonları
+- Kargo takip sistemi
+- Kullanıcı yönetimi
+- Kategori yönetimi
+- Ürün değerlendirme sistemi
+
+## 🛠️ Teknolojiler
+
+- ASP.NET Core 6.0
+- Entity Framework Core
+- SQL Server
+- MediatR
+- AutoMapper
+- FluentValidation
+- JWT Authentication
+- Swagger/OpenAPI
+- Docker
 
 ## 🔄 API Endpoints
 
@@ -84,30 +110,6 @@ dotnet run --project EComCore.API
 - `POST /api/orders` - Yeni sipariş oluşturur
 - `PUT /api/orders/{id}` - Sipariş durumunu günceller
 - `DELETE /api/orders/{id}` - Siparişi iptal eder
-
-## 🛠️ Teknolojiler ve Araçlar
-
-- ASP.NET Core 6.0
-- Entity Framework Core
-- AutoMapper
-- MediatR (CQRS implementasyonu için)
-- SQL Server
-- Swagger/OpenAPI
-
-## 📦 Mimari Özellikler
-
-- Clean Architecture
-- CQRS Pattern
-- Repository Pattern
-- Dependency Injection
-- Domain Driven Design (DDD) prensipleri
-
-## 🔒 Güvenlik
-
-- JWT Authentication
-- Role-based Authorization
-- Input Validation
-- Cross-Origin Resource Sharing (CORS) politikaları
 
 ## 📝 Lisans
 
