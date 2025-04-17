@@ -88,7 +88,6 @@ git clone [repository-url]
 
 - React 18
 - TypeScript
-- Context API
 - Axios
 - React Router
 - Formik & Yup

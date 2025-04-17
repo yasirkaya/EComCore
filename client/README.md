@@ -8,7 +8,6 @@ EComCore Client, e-ticaret platformunun müşteri arayüzüdür. Kullanıcılar�
 
 - React tabanlı modern web uygulaması
 - TypeScript ile tip güvenliği
-- Context API ile state yönetimi
 - Axios ile API entegrasyonu
 - JWT tabanlı kimlik doğrulama
 
@@ -55,7 +54,6 @@ yarn start
 - Ürün listeleme ve filtreleme
 - Ürün detay sayfaları
 - Alışveriş sepeti
-- Kullanıcı hesap yönetimi
 - Sipariş takibi
 - Ödeme işlemleri
 - Ürün değerlendirme ve yorumlar
@@ -65,7 +63,6 @@ yarn start
 
 - React 18
 - TypeScript
-- Context API
 - Axios
 - React Router
 - Formik & Yup

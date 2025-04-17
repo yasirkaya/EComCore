@@ -8,7 +8,6 @@ EComCore Admin Panel, e-ticaret platformunun yönetim arayüzüdür. Yöneticile
 
 - React tabanlı modern web uygulaması
 - TypeScript ile tip güvenliği
-- Context API ile state yönetimi
 - Axios ile API entegrasyonu
 - JWT tabanlı kimlik doğrulama
 
@@ -56,7 +55,7 @@ yarn start
 - Kategori yönetimi
 - Sipariş yönetimi ve takibi
 - Kullanıcı yönetimi ve rol atamaları
-- İstatistikler ve raporlama
+- İstatistikler
 - Stok takibi
 - Fiyatlandırma yönetimi
 
@@ -64,7 +63,6 @@ yarn start
 
 - React 18
 - TypeScript
-- Context API
 - Axios
 - React Router
 - Formik & Yup
